@@ -56,8 +56,8 @@ touch ${DIR}/supervisord.log
 
 BIN=${BIN} DIR=${DIR} ETC=${ETC} OPT=${OPT} SRC=${SRC} TMP=${TMP} VAR=${VAR} WEB=${WEB} \
 ENV=${ENV} DEBUG=${DEBUG} \
-CACHE_DIR=${VAR}\cache \
-LOG_DIR=${VAR}\logs \
+CACHE_DIR=${VAR}/cache \
+LOG_DIR=${VAR}/logs \
 FORCE_SSL=__FORCE_SSL__ \
 DEBUG=__DEBUG__ \
 REDIS_HOST=127.0.0.1 \
