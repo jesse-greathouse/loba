@@ -1,0 +1,67 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+#vscode junk
+*.vscode/
+
+# ds stores
+*.DS_Store
+
+# intellij
+*.idea/
+
+# bin
+*-e
+/bin/*
+!bin/wp.dist
+!bin/install-amazon.sh
+!bin/install-osx.sh
+!bin/install-ubuntu.sh
+!bin/install-rhel.sh
+!bin/install-centos.sh
+!bin/install.sh
+!bin/install-wordpress.sh
+!bin/run.sh.dist
+!bin/stop.sh
+!bin/stop-docker.sh.dist
+!bin/run-docker.sh.dist
+!bin/run_tests.sh
+!bin/configure-osx.sh
+!bin/configure-amazon.sh
+!bin/configure-docker.sh
+!bin/configure-ubuntu.sh
+!bin/configure-centos.sh
+!bin/configure-rhel.sh
+
+# etc
+etc/php/php.ini
+etc/php/php-fpm.conf
+etc/nginx/nginx.conf
+etc/*.service
+etc/*.conf
+etc/init.d/*.sh
+etc/*.plist
+!etc/com.greathouse.technology.template.plist
+
+# opt
+opt/php/*
+opt/openresty*/*
+
+# cache and logs
+error.log
+var/cache/*
+var/logs/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+tmp/
+
+# vendor
+vendor/
+
+# node
+node_modules/
+
+# supervisord
+supervisord.log
+supervisord.pid
+
+# web

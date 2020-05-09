@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="">
+    {* meta *}
+
+    <!-- CSS stylesheet links -->
+    <link rel="stylesheet" type="text/css" href="/css/css-reset.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    {* head_style *}
+    {* head_js *}
+
+    <title>{{title}}</title>
+</head>
+<body class="d-flex flex-column h-100" data-uri="{{ uri }}" data-qs="{{ qs }}">
+    <header>
+        {* noscript *}
+
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <a class="navbar-brand" href="#">Loba</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+            <div id="site-search" class="form-inline mt-2 mt-md-0">
+              {* search_form *}
+            </div>
+
+            <ul class="navbar-nav mt-2 mt-md-0">
+              {% if not token then %}
+                <li class="nav-item active"><a class="nav-link" href="/login">Login</a></li>
+              {% else %}
+                {% if user ~= nil then %}
+                  <li class="nav-item" ><img id="avatar" src="{{user.avatar_url}}" alt="avatar"></li>
+                {% end %}
+                <li class="nav-item active"><a class="nav-link" href="/logout">logout</a></li>
+              {% end %}
+            </ul>
+          </div>
+        </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" data-page-id="{{ page_id }}" class="flex-shrink-0">
+        <div id="{{ page_id }}" class="container">
+            {*view*}
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+          <span class="text-muted">Copyright 2020 greathouse.technology</span>
+        </div>
+    </footer>
+
+    {* footer_js *}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    {% if blocks.js then %}
+        {* blocks.js *}
+    {% end %}
+</body>
+</html>

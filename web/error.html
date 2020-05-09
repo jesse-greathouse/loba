@@ -1,0 +1,14 @@
+<div class="alert alert-{{ alert_level }}" role="alert">
+    <h4 class="alert-heading">
+      {% if alert_level == "danger" then %}
+          Yikes!
+      {% else %}
+          Whoops!
+      {% end %}
+      ... {{ status }} {{ message }}</h4>
+    {% if trace then %}
+      <pre class="error-message">{{ trace }}</pre>
+    {% end %}
+    <hr>
+    <p class="mb-0">We're sorry this happened. Please contact an administrator if you continue to experience problems.</p>
+</div>
