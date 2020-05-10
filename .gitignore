@@ -36,10 +36,14 @@
 etc/php/php.ini
 etc/php/php-fpm.conf
 etc/nginx/nginx.conf
+etc/nginx/upstream/*
+etc/nginx/server/*
 etc/*.service
 etc/*.conf
 etc/init.d/*.sh
 etc/*.plist
+
+
 !etc/com.greathouse.technology.template.plist
 
 # opt
