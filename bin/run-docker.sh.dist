@@ -87,6 +87,7 @@ docker run -d -p __PORT__:3000 \
     -e CACHE_DIR="/app/var/cache" \
     -e LOG_DIR="/app/var/logs" \
     -e REDIS_HOST="__REDIS_HOST__" \
+    -e DB_DRIVER="__DB_DRIVER__" \
     -e DB_NAME="__DB_NAME__" \
     -e DB_USER="__DB_USER__" \
     -e DB_PASSWORD="__DB_PASSWORD__" \

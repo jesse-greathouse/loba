@@ -77,10 +77,10 @@ printf "=================================================================\n"
 printf "Hello, "${USER}".  This will create your site's run script\n"
 printf "=================================================================\n"
 printf "\n"
-printf "Enter your name of your site [MySite]: "
+printf "Enter your name of your site [loba]: "
 read SITE_NAME
 if  [ "${SITE_NAME}" == "" ]; then
-    SITE_NAME="MySite"
+    SITE_NAME="loba"
 fi
 printf "Enter the domains of your site [127.0.0.1 localhost]: "
 read SITE_DOMAINS
@@ -92,25 +92,30 @@ read PORT
 if  [ "${PORT}" == "" ]; then
     PORT="3000"
 fi
+printf "Enter your database driver [mysql]: "
+read DB_DRIVER
+if  [ "${DB_DRIVER}" == "" ]; then
+    DB_DRIVER="mysql"
+fi
 printf "Enter your database host [192.168.0.1]: "
 read DB_HOST
 if  [ "${DB_HOST}" == "" ]; then
     DB_HOST="192.168.0.1"
 fi
-printf "Enter your database name [db_name]: "
+printf "Enter your database name [loba]: "
 read DB_NAME
 if  [ "${DB_NAME}" == "" ]; then
-    DB_NAME="db_name"
+    DB_NAME="loba"
 fi
-printf "Enter your database user [db_user]: "
+printf "Enter your database user [loba]: "
 read DB_USER
 if  [ "${DB_USER}" == "" ]; then
-    DB_USER="db_user"
+    DB_USER="loba"
 fi
-printf "Enter your database password [db_password]: "
+printf "Enter your database password [loba]: "
 read DB_PASSWORD
 if  [ "${DB_PASSWORD}" == "" ]; then
-    DB_PASSWORD="db_password"
+    DB_PASSWORD="loba"
 fi
 printf "Enter your database port [3306]: "
 read DB_PORT
@@ -150,6 +155,7 @@ printf "\n"
 printf "Site Name: ${SITE_NAME} \n"
 printf "Site Domains: ${SITE_DOMAINS} \n"
 printf "Web Port: ${PORT} \n"
+printf "Database Driver: ${DB_DRIVER} \n"
 printf "Database Host: ${DB_HOST} \n"
 printf "Database Name: ${DB_NAME} \n"
 printf "Database User: ${DB_USER} \n"
@@ -173,6 +179,7 @@ if  [ "${CORRECT}" == "y" ]; then
 
     sed -i -e s/__SITE_NAME__/"${SITE_NAME}"/g ${RUN_SCRIPT}
     sed -i -e s/__PORT__/"${PORT}"/g ${RUN_SCRIPT}
+    sed -i -e s/__DB_DRIVER__/"${DB_DRIVER}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_HOST__/"${DB_HOST}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_NAME__/"${DB_NAME}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_USER__/"${DB_USER}"/g ${RUN_SCRIPT}
