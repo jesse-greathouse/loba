@@ -12,6 +12,7 @@
 # bin
 *-e
 /bin/*
+!bin/db-init
 !bin/wp.dist
 !bin/install-amazon.sh
 !bin/install-osx.sh
