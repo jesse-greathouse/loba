@@ -67,6 +67,7 @@ sudo yum install -y \
     libicu-devel \
     sendmail \
     sendmail-cf \
+    perl(DBD::mysql) \
     m4
 
 sudo easy_install supervisor

@@ -43,6 +43,7 @@ SRC="$( cd -P "$DIR/src" && pwd )"
 TMP="$( cd -P "$DIR/tmp" && pwd )"
 VAR="$( cd -P "$DIR/var" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
+LOBA_DIR=${SRC}/jesse-greathouse/loba/lib
 PATH=~/Library/Python/2.7/bin:${PATH}
 
 if [ -z "$ENV" ]; then
@@ -55,9 +56,10 @@ touch ${DIR}/error.log
 touch ${DIR}/supervisord.log
 
 BIN=${BIN} DIR=${DIR} ETC=${ETC} OPT=${OPT} SRC=${SRC} TMP=${TMP} VAR=${VAR} WEB=${WEB} \
-ENV=${ENV} DEBUG=${DEBUG} \
-CACHE_DIR=${VAR}/cache \
-LOG_DIR=${VAR}/logs \
+ENV=${ENV} DEBUG=${DEBUG} LOBA_DIR=${LOBA_DIR} \
+SQL_QUERY_DIR=${LOBA_DIR}/sql/__DB_DRIVER__ \
+CACHE_DIR=${VAR}\cache \
+LOG_DIR=${VAR}\logs \
 FORCE_SSL=__FORCE_SSL__ \
 DEBUG=__DEBUG__ \
 REDIS_HOST=__REDIS_HOST__ \

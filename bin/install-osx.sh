@@ -50,11 +50,15 @@ chmod 755 ${DIR}/..
 #install dependencies
 
 brew upgrade
-echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> ~/.bash_profile
 
 brew install intltool icu4c autoconf automake python@3.8 \
-  pcre curl-openssl libiconv pkg-config openssl@1.1
+  pcre curl-openssl libiconv pkg-config openssl@1.1 cpanm
 
+echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="/usr/local/opt/mysql-client/bin:$PATH"' >> ~/.bash_profile
+
+cpan App::cpanminus
+cpanm install DBD::mysql
 pip install supervisor
 
 # Compile and Install Openresty

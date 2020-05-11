@@ -28,10 +28,18 @@ function _M.new(self)
         return nil, err
     end
 
-    return setmetatable({ db = db, env=env }, mt)
+    return setmetatable({ db = db, env = env }, mt)
 end
 
-function _M.db_init(self)
+function _M.init_db(self)
+    
+end
+
+function _M.init_upstream(self)
+    
+end
+
+function _M.init_server(self)
     
 end
 

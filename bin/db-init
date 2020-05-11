@@ -1,0 +1,54 @@
+#!/usr/local/bin/perl
+
+# Requires DBI module
+# Currently the only supported adapter is mysql
+use DBI;
+use strict;
+
+# List of SQL scripts in the order they are to be run
+my @initScripts = (
+    'create_table_site.sql',
+);
+
+# Set up variables from the environment
+my $driver =  $ENV{'DB_DRIVER'};
+my $database = $ENV{'DB_NAME'};
+my $dsn = "DBI:$driver:database=$database";
+my $userid = $ENV{'DB_USER'};
+my $password = $ENV{'DB_PASSWORD'};
+my $sql = $ENV{'SQL_QUERY_DIR'};
+
+# Make the database connection
+my $dbh = DBI->connect($dsn, $userid, $password) 
+    or die $DBI::errstr;
+
+# Read the contents of the SQL directory
+opendir my $dir, $sql or die "Cannot open directory: $sql";
+my @files = readdir $dir;
+closedir $dir;
+
+# Loop through the list of init scripts
+foreach my $script (@initScripts) {
+
+    # See if the init script is found in the SQL files
+    foreach my $file (@files){
+        if ($script eq $file) {
+
+            # Open the file 
+            open my $fh, '<',  "$sql/$file"
+                or die("Can't open file $sql/$file for reading");
+
+            # Read the contents of the file into a string
+            my $sqlStatement = do { local $/; <$fh> };
+
+            # Make a prepared statement from the string
+            my $sth = $dbh->prepare($sqlStatement)
+                or die("Can't prepare $sqlStatement");
+
+            # Execute the SQL
+            $sth->execute()
+                or die("Can't execute $sqlStatement");
+        }
+    }
+}
+

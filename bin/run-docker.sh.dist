@@ -84,6 +84,8 @@ docker run -d -p __PORT__:3000 \
     -e TMP="/app/tmp" \
     -e VAR="/app/var" \
     -e WEB="/app/web" \
+    -e LOBA_DIR = "/app/src/jesse-greathouse/loba/lib" \
+    -e SQL_QUERY_DIR = "/app/src/jesse-greathouse/loba/lib/sql/__DB_DRIVER__" \
     -e CACHE_DIR="/app/var/cache" \
     -e LOG_DIR="/app/var/logs" \
     -e REDIS_HOST="__REDIS_HOST__" \
