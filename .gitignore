@@ -13,6 +13,7 @@
 *-e
 /bin/*
 !bin/db-init
+!bin/compose-sites
 !bin/wp.dist
 !bin/install-amazon.sh
 !bin/install-osx.sh

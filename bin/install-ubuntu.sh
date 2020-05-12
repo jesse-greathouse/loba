@@ -71,6 +71,7 @@ sudo apt-get install -y \
     cmake \
     sendmail \
     libdbd-mysql-perl \
+    libtemplate-perl \
     supervisor
 
 # Compile and Install Openresty

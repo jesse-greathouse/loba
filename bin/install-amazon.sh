@@ -68,7 +68,8 @@ sudo yum install -y \
     pcre-devel \
     sendmail \
     sendmail-cf \
-    perl(DBD::mysql) \
+    perl-DBD-MySQL \
+    perl-Template-Toolkit \
     m4
 
 sudo easy_install supervisor

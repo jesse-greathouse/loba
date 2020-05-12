@@ -1,0 +1,11 @@
+server {
+    listen [% port %];
+    server_name [% domain %];
+
+    access_log ../../../var/logs/[% domain %]/access.log proxy_pass_access;
+    error_log ../../../var/logs/[% domain %]/error.log warn;
+
+    location / {
+        proxy_pass http://[% domain %];
+    }
+}

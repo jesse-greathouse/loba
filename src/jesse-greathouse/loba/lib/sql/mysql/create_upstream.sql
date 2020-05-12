@@ -1,0 +1,1 @@
+INSERT INTO `upstream` (`site_id`, `method_id`, `hash`, `consistent`) VALUES (?, ?, ?, ?);

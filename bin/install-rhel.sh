@@ -68,6 +68,7 @@ sudo yum install -y \
     sendmail \
     sendmail-cf \
     perl(DBD::mysql) \
+    perl-Template-Toolkit \
     m4
 
 sudo easy_install supervisor

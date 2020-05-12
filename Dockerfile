@@ -26,9 +26,9 @@ ENV PATH /app/bin:$PATH
 
 # Get core utils
 RUN apk add --no-cache \
-    bash curl openssh nasm dpkg-dev dpkg file coreutils \
-    libc-dev curl-dev libressl-dev python py-curl supervisor \
-    pcre-dev perl g++ gcc make ca-certificates pkgconf perl-dbd-mysql
+    bash curl openssh nasm dpkg-dev dpkg file coreutils libc-dev \
+    curl-dev libressl-dev python py-curl supervisor pcre-dev perl \
+    g++ gcc make ca-certificates pkgconf perl-dbd-mysql perl-template-toolkit
 
 # Add preliminary file structure
 RUN mkdir /app

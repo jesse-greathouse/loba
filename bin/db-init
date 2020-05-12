@@ -11,6 +11,7 @@ my @initScripts = (
     'create_table_method.sql',
     'insert_initial_methods.sql',
     'create_table_upstream.sql',
+    'create_table_upstream_server.sql',
 );
 
 # Set up variables from the environment
@@ -26,11 +27,11 @@ if ($driver eq "mysql") {
     $dsn = $dsn . ";mysql_multi_statements=1"
 }
 
-my %attr = (RaiseError=>1,  # error handling enabled
+my %dbAttr = (RaiseError=>1,  # error handling enabled
 	        AutoCommit=>0); # transaction enabled
 
 # Make the database connection
-my $dbh = DBI->connect($dsn, $userid, $password, \%attr)
+my $dbh = DBI->connect($dsn, $userid, $password, \%dbAttr)
     or die $DBI::errstr;
 
 # Read the contents of the SQL directory
@@ -42,7 +43,7 @@ closedir $dir;
 foreach my $script (@initScripts) {
 
     # See if the init script is found in the SQL files
-    foreach my $file (@files){
+    foreach my $file (@files) {
         if ($script eq $file) {
 
             # Open the file
@@ -63,14 +64,14 @@ foreach my $script (@initScripts) {
 
             };
         }
-
-        # Commit the transaction
-        $dbh->commit();
-
-        if ($@) {
-            warn "Transaction aborted: $@";
-            eval { $dbh->rollback( ) }; # in case rollback() fails
-        }
     }
+}
+
+# Commit the transaction
+$dbh->commit();
+
+if ($@) {
+    warn "Transaction aborted: $@";
+    eval { $dbh->rollback( ) }; # in case rollback() fails
 }
 

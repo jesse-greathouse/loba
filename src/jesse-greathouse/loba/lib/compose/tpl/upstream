@@ -1,0 +1,12 @@
+upstream [% domain %] {
+    [% IF directive %][% directive %][% IF hash %] [% hash %][% IF consistent %] consistent[% END %][% END %];[% END %] 
+[% FOREACH server IN servers -%]
+[% INCLUDE upstream_server
+    host            = server.host,
+    weight          = server.weight,
+    backup          = server.backup,
+    fail_timeout    = server.fail_timeout,
+    max_fails       = server.max_fails
+%]
+[% END -%]
+}

@@ -1,0 +1,1 @@
+SELECT * FROM `site` WHERE `active` = 0;

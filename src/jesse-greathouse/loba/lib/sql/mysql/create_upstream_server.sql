@@ -1,0 +1,1 @@
+INSERT INTO `upstream_server` (`host`, `weight`, `backup`, `fail_timeout`, `max_fails`, `upstream_id`) VALUES (?, ?, ?, ?, ?, ?);
