@@ -91,7 +91,7 @@ tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
 
 cd ${OPT}/lua-*/
 
-make macosx test
+make macosx MYCFLAGS=-fPIC
 make local
 
 cd ${DIR}

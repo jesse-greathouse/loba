@@ -106,7 +106,7 @@ tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
 
 cd ${OPT}/lua-*/
 
-make linux test
+make linux MYCFLAGS=-fPIC
 make local
 
 cd ${DIR}
