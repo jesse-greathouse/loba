@@ -6,7 +6,7 @@ my $etc = $ENV{'ETC'};
 my $opt = $ENV{'OPT'};
 my $lobaDir = $ENV{'LOBA_DIR'};
 my $cDir = "$lobaDir/c";
-my $luaDir = "$opt/lua-5.1.2";
+my $luaDir = "$opt/openresty/luajit";
 
 # Change to the Directory with the C Modules
 chdir "$cDir";
@@ -19,9 +19,9 @@ while ($_ = glob("$cDir/*.c")) {
     push @cmd, '-c';
     push @cmd, '-Wall';
     push @cmd, '-Werror';
-    push @cmd, '-fPIC';
     push @cmd, $_;
-    push @cmd, "-I$luaDir/include";
+    push @cmd, "-I$luaDir/include/luajit-2.1";
+    push @cmd, '-fPIC';
     system(@cmd);
 
     command_result($?, $!, "PIC pass for: $_", \@cmd);
@@ -37,9 +37,9 @@ while ($_ = glob("$cDir/*.o")) {
     push @cmd, '-o';
     push @cmd, "$name.so";
     push @cmd, $_;
-    push @cmd, "-I$luaDir/include";
+    push @cmd, "-I$luaDir/include/luajit-2.1";
     push @cmd, "-L$luaDir/lib";
-    push @cmd, '-llua';
+    push @cmd, '-lluajit-5.1';
     system(@cmd);
 
     command_result($?, $!, "Shared library pass for: $_", \@cmd);

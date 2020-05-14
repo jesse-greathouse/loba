@@ -86,16 +86,6 @@ make install
 
 cd ${DIR}
 
-# Compile Lua 5.1.2
-tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
-
-cd ${OPT}/lua-*/
-
-make macosx MYCFLAGS=-fPIC
-make local
-
-cd ${DIR}
-
 # Compile Perl 5.30.2
 tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
 
