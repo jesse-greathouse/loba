@@ -3,8 +3,12 @@
 local _M = { }
 local mt = { __index = _M }
 
-function _M.new(self)
+function _M.new(self, env)
     local queries = {}
+
+    for fname in dir(".") do
+        print(fname)
+    end
 
     
 

@@ -43,29 +43,35 @@ ETC="$( cd -P "$DIR/etc" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
+PERL_BASE="${OPT}/perl"
+PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
+PERL_MB_OPT="--install_base ${PERL_BASE}"
+PERL5LIB="${PERL_BASE}/lib/perl5"
 YACC="$( brew --prefix bison )/bin/bison"
 
 chmod 755 ${DIR}/..
 
 #install dependencies
-
 brew upgrade
 
-brew install intltool icu4c autoconf automake python@3.8 \
-  pcre curl-openssl libiconv pkg-config openssl@1.1 cpanm
+brew install intltool icu4c autoconf automake python@3.8 gcc \
+  pcre curl-openssl libiconv pkg-config openssl@1.1
 
-echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> ~/.bash_profile
+export PATH=$PATH:/usr/local/mysql/bin
 
-cpan App::cpanminus
-cpanm install DBD::mysql
-cpanm install Template
+# If curl isn't available to the command line then add it to the PATH
+if ! [ -x "$(command -v curl)" ]; then
+  echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> ~/.bash_profile
+  export PATH="/usr/local/opt/curl/bin:${PATH}"
+fi
+
 pip install supervisor
 
 # Compile and Install Openresty
 tar -xf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 
 # Fix the escape frontslash feature of lua-cjson
-sed -i '' s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
+sed -i '' s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/ßg ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
 
 cd ${OPT}/openresty-*/
 
@@ -79,7 +85,41 @@ cd ${OPT}/openresty-*/
 make install
 
 cd ${DIR}
-ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-rm -rf ${OPT}/openresty-*/
 
+# Compile Lua 5.1.2
+tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
+
+cd ${OPT}/lua-*/
+
+make macosx test
+make local
+
+cd ${DIR}
+
+# Compile Perl 5.30.2
+tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
+
+cd ${OPT}/perl-*/
+
+./Configure -des -Dprefix=${OPT}/perl
+make
+make install
+
+curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
+
+# Install perl modules
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBI
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBD::mysql
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install Template
+
+cd ${DIR}
+
+# Cleanup
+ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
+ln -sf ${OPT}/lua-5.1.2/bin/lua ${BIN}/lua
+ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
+rm -rf ${OPT}/openresty-*/
+rm -rf ${OPT}/perl-*/
+
+# Run the configuration
 ${BIN}/configure-osx.sh

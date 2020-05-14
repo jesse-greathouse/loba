@@ -19,16 +19,15 @@
 #   | Author: Jesse Greathouse <jesse@greathouse.technology>                          |
 #   +---------------------------------------------------------------------------------+
 
-FROM alpine:3.8
+FROM ubuntu:bionic
 LABEL maintainer="Jesse Greathouse <jesse.greathouse@gmail.com>"
 
 ENV PATH /app/bin:$PATH
 
-# Get core utils
-RUN apk add --no-cache \
-    bash curl openssh nasm dpkg-dev dpkg file coreutils libc-dev \
-    curl-dev libressl-dev python py-curl supervisor pcre-dev perl \
-    g++ gcc make ca-certificates pkgconf perl-dbd-mysql perl-template-toolkit
+RUN apt-get update && apt-get install -y \
+    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
+    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
+    ncurses-dev cmake sendmail libmysqlclient-dev curl python supervisor
 
 # Add preliminary file structure
 RUN mkdir /app
@@ -42,10 +41,14 @@ RUN mkdir /app/tmp/session
 RUN mkdir /app/var
 RUN mkdir /app/var/cache
 RUN mkdir /app/var/logs
-RUN touch /app/var/logs/app.log
 RUN touch /app/error.log
 ADD opt /app/opt
+
+# Add Scripts
 ADD bin/install.sh /app/bin/install.sh
+ADD bin/compile-modules /app/bin/compile-modules
+ADD bin/db-init /app/bin/db-init
+ADD bin/compose-sites /app/bin/compose-sites
 
 WORKDIR /app
 

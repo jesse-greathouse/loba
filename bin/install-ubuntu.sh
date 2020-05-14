@@ -40,9 +40,16 @@ BIN="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
+SRC="$( cd -P "$DIR/src" && pwd )"
+PUBLIC="$( cd -P "$DIR/web" && pwd )"
+PERL_BASE="${OPT}/perl"
+PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
+PERL_MB_OPT="--install_base ${PERL_BASE}"
+PERL5LIB="${PERL_BASE}/lib/perl5"
 
 #install dependencies
 sudo apt-get install -y \
+    gcc \
     build-essential \
     git-core \
     autoconf \
@@ -70,8 +77,7 @@ sudo apt-get install -y \
     zlib1g-dev \
     cmake \
     sendmail \
-    libdbd-mysql-perl \
-    libtemplate-perl \
+    default-libmysqlclient-dev
     supervisor
 
 # Compile and Install Openresty
@@ -93,7 +99,40 @@ make
 make install
 
 cd ${DIR}
-rm -rf ${OPT}/openresty-*/
+
+# Compile Lua 5.1.2
+tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
+
+cd ${OPT}/lua-*/
+
+make linux test
+make local
+
+cd ${DIR}
+
+# Compile Perl 5.30.2
+tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
+
+cd ${OPT}/perl-*/
+
+./Configure -des -Dprefix=${OPT}/perl
+make
+make install
+
+curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
+
+# Install perl modules
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBI
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBD::mysql
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install Template
+
+cd ${DIR}
+
+# Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
+ln -sf ${OPT}/lua-5.1.2/bin/lua ${BIN}/lua
+ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
+rm -rf ${OPT}/openresty-*/
+rm -rf ${OPT}/perl-*/
 
 ${BIN}/configure-ubuntu.sh

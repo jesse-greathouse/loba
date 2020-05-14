@@ -1,4 +1,5 @@
-#!/usr/local/bin/perl
+# We don't know where the script is going to live on the host system
+# Let's force this script to be invoked with the perl interpreter instead of a shebang line
 
 # Requires DBI module
 # Currently the only supported adapter is mysql
@@ -17,7 +18,8 @@ my @initScripts = (
 # Set up variables from the environment
 my $driver =  $ENV{'DB_DRIVER'};
 my $database = $ENV{'DB_NAME'};
-my $dsn = "DBI:$driver:database=$database";
+my $host = $ENV{'DB_HOST'};
+my $dsn = "DBI:$driver:database=$database;host=$host";
 my $userid = $ENV{'DB_USER'};
 my $password = $ENV{'DB_PASSWORD'};
 my $sql = $ENV{'SQL_QUERY_DIR'};

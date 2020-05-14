@@ -68,7 +68,7 @@ rm -r ${DIR}/supervisord.log
 touch ${DIR}/supervisord.log
 touch ${DIR}/error.log
 
-docker pull jessegreathouse/greathouse-openresty
+docker pull jessegreathouse/loba
 docker kill __SITE_NAME__
 docker rm __SITE_NAME__
 
@@ -84,8 +84,10 @@ docker run -d -p __PORT__:3000 \
     -e TMP="/app/tmp" \
     -e VAR="/app/var" \
     -e WEB="/app/web" \
-    -e LOBA_DIR = "/app/src/jesse-greathouse/loba/lib" \
-    -e SQL_QUERY_DIR = "/app/src/jesse-greathouse/loba/lib/sql/__DB_DRIVER__" \
+    -e PERL_BASE="/app/opt/perl" \
+    -e PERL5LIB="/app/opt/perl/lib/perl5" \
+    -e LOBA_DIR="/app/src/jesse-greathouse/loba/lib" \
+    -e SQL_QUERY_DIR="/app/src/jesse-greathouse/loba/lib/sql/__DB_DRIVER__" \
     -e CACHE_DIR="/app/var/cache" \
     -e LOG_DIR="/app/var/logs" \
     -e REDIS_HOST="__REDIS_HOST__" \
@@ -102,4 +104,4 @@ docker run -d -p __PORT__:3000 \
     -v $(pwd)/web/:/app/web \
     --restart __RESTART_POLICY__ \
     --name __SITE_NAME__ \
-    jessegreathouse/greathouse-openresty
+    jessegreathouse/loba

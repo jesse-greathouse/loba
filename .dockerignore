@@ -1,6 +1,8 @@
 node_modules/
 opt/openresty/
 opt/php/
+opt/perl/
+opt/lua-5.1.2/
 var/
 *-e
 tmp/
@@ -9,23 +11,21 @@ Dockerfile
 .git/
 .idea/
 .gitignore
+.vscode/
 supervisord.log
 supervisord.pid
 *error.log
 
 bin/*
 !bin/install.sh
+!bin/compile-modules
+!bin/db-init
+!bin/compose-sites
 !bin/run_tests.sh
 
 etc/*.plist
-etc/*.conf
-
-etc/init.d
-
+etc/nginx/server/*.conf
+etc/nginx/upstream/*.conf
 etc/nginx/nginx.dist.conf
 etc/nginx/nginx.conf
 etc/nginx/*-e
-
-etc/php/*
-
-web/*

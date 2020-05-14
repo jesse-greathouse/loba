@@ -14,6 +14,7 @@
 /bin/*
 !bin/db-init
 !bin/compose-sites
+!bin/compile-modules
 !bin/wp.dist
 !bin/install-amazon.sh
 !bin/install-osx.sh
@@ -49,8 +50,10 @@ etc/*.plist
 !etc/com.greathouse.technology.template.plist
 
 # opt
-opt/php/*
+opt/php*/*
+opt/perl*/*
 opt/openresty*/*
+opt/lua*/*
 
 # cache and logs
 error.log
@@ -62,6 +65,10 @@ tmp/
 
 # vendor
 vendor/
+
+# src
+src/jesse-greathouse/loba/lib/c/*.o
+src/jesse-greathouse/loba/lib/c/*.so
 
 # node
 node_modules/
