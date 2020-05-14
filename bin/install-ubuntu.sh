@@ -48,37 +48,10 @@ PERL_MB_OPT="--install_base ${PERL_BASE}"
 PERL5LIB="${PERL_BASE}/lib/perl5"
 
 #install dependencies
-sudo apt-get install -y \
-    gcc \
-    build-essential \
-    git-core \
-    autoconf \
-    bison \
-    libgmp-dev \
-    libxml2-dev \
-    libbz2-dev \
-    libmcrypt-dev \
-    openssl \
-    libssl-dev \
-    libcurl4-openssl-dev \
-    pkg-config \
-    libltdl-dev \
-    libpng12-dev \
-    libpspell-dev \
-    libreadline-dev \
-    libicu-dev \
-    libxml2-dev \
-    libpng-dev \
-    libmcrypt-dev \
-    libfreetype6 \
-    libfreetype6-dev \
-    imagemagick \
-    libmagickwand-dev \
-    zlib1g-dev \
-    cmake \
-    sendmail \
-    default-libmysqlclient-dev
-    supervisor
+sudo apt-get update && apt-get install -y \
+    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
+    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
+    ncurses-dev cmake sendmail libmysqlclient-dev curl python supervisor
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
