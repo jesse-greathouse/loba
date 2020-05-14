@@ -47,31 +47,31 @@ PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
 PERL_MB_OPT="--install_base ${PERL_BASE}"
 PERL5LIB="${PERL_BASE}/lib/perl5"
 
-#install dependencies
-sudo apt-get update && sudo apt-get install -y \
-    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
-    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
-    ncurses-dev cmake sendmail libmysqlclient-dev curl python supervisor
+# #install dependencies
+# sudo apt-get update && sudo apt-get install -y \
+#     gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
+#     libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
+#     ncurses-dev cmake sendmail libmysqlclient-dev curl python supervisor
 
-# Compile and Install Openresty
-tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
+# # Compile and Install Openresty
+# tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 
-# Fix the escape frontslash feature of cjson
-sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
+# # Fix the escape frontslash feature of cjson
+# sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
 
-cd ${OPT}/openresty-*/
-./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \
-            --with-ld-opt="-L/usr/local/lib -L/usr/local/opt/openssl/lib" \
-            --prefix=${OPT}/openresty \
-            --with-pcre-jit \
-            --with-ipv6 \
-            --with-http_iconv_module \
-            --with-http_realip_module \
-            -j2 && \
-make
-make install
+# cd ${OPT}/openresty-*/
+# ./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \
+#             --with-ld-opt="-L/usr/local/lib -L/usr/local/opt/openssl/lib" \
+#             --prefix=${OPT}/openresty \
+#             --with-pcre-jit \
+#             --with-ipv6 \
+#             --with-http_iconv_module \
+#             --with-http_realip_module \
+#             -j2 && \
+# make
+# make install
 
-cd ${DIR}
+# cd ${DIR}
 
 # Compile Lua 5.1.2
 tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
@@ -83,29 +83,29 @@ make local
 
 cd ${DIR}
 
-# Compile Perl 5.30.2
-tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
+# # Compile Perl 5.30.2
+# tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
 
-cd ${OPT}/perl-*/
+# cd ${OPT}/perl-*/
 
-./Configure -des -Dprefix=${OPT}/perl
-make
-make install
+# ./Configure -des -Dprefix=${OPT}/perl
+# make
+# make install
 
-curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
+# curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
 
-# Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBI
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBD::mysql
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install Template
+# # Install perl modules
+# PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBI
+# PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBD::mysql
+# PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install Template
 
-cd ${DIR}
+# cd ${DIR}
 
-# Cleanup
-ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/lua-5.1.2/bin/lua ${BIN}/lua
-ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
-rm -rf ${OPT}/openresty-*/
-rm -rf ${OPT}/perl-*/
+# # Cleanup
+# ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
+# ln -sf ${OPT}/lua-5.1.2/bin/lua ${BIN}/lua
+# ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
+# rm -rf ${OPT}/openresty-*/
+# rm -rf ${OPT}/perl-*/
 
-${BIN}/configure-ubuntu.sh
+# ${BIN}/configure-ubuntu.sh
