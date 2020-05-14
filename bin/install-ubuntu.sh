@@ -78,6 +78,7 @@ tar -xf ${OPT}/lua-*.tar.gz -C ${OPT}/
 
 cd ${OPT}/lua-*/
 
+make clean
 make linux MYCFLAGS=-fPIC
 make local
 
