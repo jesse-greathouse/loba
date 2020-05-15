@@ -59,8 +59,6 @@ sudo pip install supervisor
 
 export PATH=$PATH:/usr/local/mysql/bin
 
-sudo easy_install supervisor
-
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 
