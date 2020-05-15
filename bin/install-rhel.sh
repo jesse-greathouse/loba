@@ -69,9 +69,7 @@ tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
 
 cd ${OPT}/openresty-*/
-./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \
-            --with-ld-opt="-L/usr/local/lib -L/usr/local/opt/openssl/lib" \
-            --prefix=${OPT}/openresty \
+./configure --prefix="${OPT}/openresty" \
             --with-pcre-jit \
             --with-ipv6 \
             --with-http_iconv_module \
