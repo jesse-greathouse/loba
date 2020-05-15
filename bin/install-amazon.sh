@@ -55,7 +55,7 @@ sudo yum -y update && sudo yum -y install \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
     zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
 
-sudo pip install supervisor
+sudo easy_install supervisor
 
 export PATH=$PATH:/usr/local/mysql/bin
 
