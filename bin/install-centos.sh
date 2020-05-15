@@ -53,9 +53,9 @@ chmod 755 ${DIR}/..
 sudo yum -y update && sudo yum -y install \
     gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
-    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python3 python3-pip
+    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel
 
-sudo pip install supervisor
+sudo easy_install supervisor
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
