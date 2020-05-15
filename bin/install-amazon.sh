@@ -49,33 +49,13 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 
 chmod 755 ${DIR}/..
 
-##install dependencies
-sudo yum install -y \
-    gcc \
-    gcc-c++ \
-    libxml2-devel \
-    pkgconfig \
-    openssl-devel \
-    bzip2-devel \
-    curl-devel \
-    libpng-devel \
-    libjpeg-devel \
-    libXpm-devel \
-    freetype-devel \
-    gmp-devel \
-    libmcrypt-devel \
-    mariadb-devel \
-    aspell-devel \
-    recode.x86_64 \
-    autoconf \
-    bison \
-    re2c \
-    libicu-devel \
-    pcre-devel \
-    sendmail \
-    sendmail-cf \
-    mysql-devel \
-    m4
+# install dependencies
+sudo yum update && sudo yum install -y \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl \
+    libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
+    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
+
+sudo pip install supervisor
 
 export PATH=$PATH:/usr/local/mysql/bin
 

@@ -19,15 +19,16 @@
 #   | Author: Jesse Greathouse <jesse@greathouse.technology>                          |
 #   +---------------------------------------------------------------------------------+
 
-FROM ubuntu:bionic
+FROM alpine:3.11
 LABEL maintainer="Jesse Greathouse <jesse.greathouse@gmail.com>"
 
 ENV PATH /app/bin:$PATH
 
-RUN apt-get update && apt-get install -y \
-    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
-    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
-    ncurses-dev cmake sendmail libmysqlclient-dev curl python supervisor
+# Get core utils
+RUN apk add --no-cache \
+    bash curl openssh nasm dpkg-dev dpkg file coreutils libc-dev ncurses-dev curl-dev \
+    libressl-dev python py-curl supervisor pcre-dev perl mariadb-dev mariadb-connector-c \
+    g++ gcc make ca-certificates pkgconf mysql-client readline-dev 
 
 # Add preliminary file structure
 RUN mkdir /app
