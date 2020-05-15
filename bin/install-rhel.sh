@@ -55,6 +55,11 @@ sudo yum -y update && sudo yum -y install \
     pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel gcc-toolset-9-make \
     zlib ncurses-devel cmake sendmail mariadb-devel python38 python38-pip
 
+# point make at cmake if it doesn't exist
+if [ ! -f /usr/bin/make ]; then
+    sudo ln -s /usr/bin/cmake /usr/bin/make
+fi
+
 sudo pip install supervisor
 
 # Compile and Install Openresty
