@@ -51,9 +51,14 @@ chmod 755 ${DIR}/..
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
-    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel \
-    curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
-    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python38 
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl \
+    pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel \
+    zlib ncurses-devel cmake sendmail mariadb-devel python38 python38-pip
+
+# point make at cmake if it doesn't exist
+if [ ! -f /usr/bin/make ]; then
+    sudo ln -s /usr/bin/cmake /usr/bin/make
+fi
 
 sudo pip install supervisor
 
