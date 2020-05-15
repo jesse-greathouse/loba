@@ -49,34 +49,13 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 
 chmod 755 ${DIR}/..
 
-#install dependencies
-sudo yum install -y \
-    gcc \
-    gcc-c++ \
-    libxml2-devel \
-    pkgconfig \
-    openssl-devel \
-    bzip2-devel \
-    curl-devel \
-    libpng-devel \
-    libjpeg-devel \
-    libXpm-devel \
-    freetype-devel \
-    gmp-devel \
-    libmcrypt-devel \
-    mariadb-devel \
-    aspell-devel \
-    recode.x86_64 \
-    autoconf \
-    bison \
-    re2c \
-    libicu-devel \
-    sendmail \
-    sendmail-cf \
-    mysql-devel \
-    m4
+# install dependencies
+sudo yum -y update && sudo yum -y install \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel \
+    curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
+    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
 
-sudo easy_install supervisor
+sudo pip install supervisor
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
