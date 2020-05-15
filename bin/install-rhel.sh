@@ -53,7 +53,7 @@ chmod 755 ${DIR}/..
 sudo yum -y update && sudo yum -y install \
     gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel \
     curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
-    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
+    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python38 
 
 sudo pip install supervisor
 
