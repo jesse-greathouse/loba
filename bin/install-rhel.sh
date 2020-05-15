@@ -51,14 +51,9 @@ chmod 755 ${DIR}/..
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
-    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl devtoolset-8 \
     pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel gcc-toolset-9-make \
-    zlib ncurses-devel cmake sendmail mariadb-devel python38 python38-pip
-
-# point make at cmake if it doesn't exist
-if [ ! -f /usr/bin/make ]; then
-    sudo ln -s /usr/bin/cmake /usr/bin/make
-fi
+    zlib ncurses-devel sendmail mariadb-devel python38 python38-pip
 
 sudo pip install supervisor
 
@@ -69,7 +64,9 @@ tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
 
 cd ${OPT}/openresty-*/
-./configure --prefix="${OPT}/openresty" \
+./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \
+            --with-ld-opt="-L/usr/local/lib -L/usr/local/opt/openssl/lib" \
+            --prefix="${OPT}/openresty" \
             --with-pcre-jit \
             --with-ipv6 \
             --with-http_iconv_module \
