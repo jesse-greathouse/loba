@@ -79,9 +79,7 @@ make install
 curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus --no-wget
 
 # Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBI --no-wget
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install DBD::mysql --no-wget
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm install Template --no-wget
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template --no-wget
 
 cd ${DIR}
 
