@@ -50,7 +50,7 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 chmod 755 ${DIR}/..
 
 # install dependencies
-sudo yum update && sudo yum install -y \
+sudo yum update && sudo yum -y install \
     gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
     zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
