@@ -49,8 +49,6 @@ PERL_MB_OPT="--install_base ${PERL_BASE}"
 PERL5LIB="${PERL_BASE}/lib/perl5"
 YACC="$( brew --prefix bison )/bin/bison"
 
-chmod 755 ${DIR}/..
-
 #install dependencies
 brew upgrade
 
@@ -106,7 +104,6 @@ cd ${DIR}
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/lua-5.1.2/bin/lua ${BIN}/lua
 ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
 rm -rf ${OPT}/perl-*/
