@@ -61,6 +61,7 @@ var/cache/*
 var/logs/*
 !var/cache/.gitkeep
 !var/logs/.gitkeep
+!var/logs/loba/.gitkeep
 
 # tmp
 tmp/

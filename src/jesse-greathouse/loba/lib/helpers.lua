@@ -1,6 +1,52 @@
 -- helper functions for accplimplishing tasks
+local str = require "string"
 
 local Helpers = {}
+
+function Helpers.parse_route_params(route)
+    local params = {}
+    local pattern = "/([\\-A-Za-z0-9\\:]+)"
+    local uri = ngx.var.request_uri
+    local rit, err = ngx.re.gmatch(route, pattern, "i")
+    if not rit then
+        return route, err
+    end
+
+    local uit, err = ngx.re.gmatch(uri, pattern, "i")
+    if not uit then
+        return route, err
+    end
+
+    while true do
+        local rm, err = rit()
+        if err then
+            return route, err
+        end
+
+        local um, err = uit()
+        if err then
+            return route, err
+        end
+
+        if not rm then
+            -- no match found (any more)
+            break
+        end
+
+        if not um then
+            -- no match found (any more)
+            break
+        end
+
+        if (rm[1]:find(":")) ~= nil then
+            -- found a match
+            local param = rm[1]:gsub(":", "")
+            params[param] = um[1]
+        end
+    end
+
+    return params, err;
+end
 
 local function encode(str)
     return (str:gsub("([^A-Za-z0-9%_%.%-%~])", function(v)

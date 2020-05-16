@@ -1,5 +1,4 @@
 -- methods for producing each endpoint of the application
-local cjson = require "cjson"
 local helpers = require "helpers"
 local base = require "views.base"
 
