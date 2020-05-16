@@ -1,0 +1,1 @@
+INSERT INTO `site` (`domain`, `active`) VALUES (?, ?);
