@@ -1,6 +1,5 @@
 -- Copyright (C) 2012 Yichun Zhang (agentzh)
 
-
 local bit = require "bit"
 local ffi = require("ffi")
 local sub = string.sub
@@ -121,57 +120,6 @@ converters[MYSQL_TYPE_INT24] = tonumber  -- int24
 converters[MYSQL_TYPE_YEAR]  = tonumber  -- year
 converters[MYSQL_TYPE_NEWDECIMAL] = tonumber  -- newdecimal
 
-
-local function _get_byte1(data, i)
-    local a = strbyte(data, i)
-    return a, i + 1
-end
-
-
-local function _get_byte2(data, i)
-    local a, b = strbyte(data, i, i + 1)
-    return bor(a, lshift(b, 8)), i + 2
-end
-
-
-local function _get_byte3(data, i)
-    local a, b, c = strbyte(data, i, i + 2)
-    return bor(a, lshift(b, 8), lshift(c, 16)), i + 3
-end
-
-
-local function _get_byte4(data, i)
-    local a, b, c, d = strbyte(data, i, i + 3)
-    return bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24)), i + 4
-end
-
-
-local function _get_byte8(data, i)
-    local a, b, c, d, e, f, g, h = strbyte(data, i, i + 7)
-
-    -- XXX workaround for the lack of 64-bit support in bitop:
-    local lo = bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24))
-    local hi = bor(e, lshift(f, 8), lshift(g, 16), lshift(h, 24))
-    return lo + hi * 4294967296, i + 8
-
-    -- return bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24), lshift(e, 32),
-               -- lshift(f, 40), lshift(g, 48), lshift(h, 56)), i + 8
-end
-
-
-local function _get_byte_bit(data)
-    -- get bytes which encoded with bit
-    local a = strbyte(data, 1)
-    local len = #data
-
-    for j = 2, len do
-        a = bor(lshift(a, 8), strbyte(data, j))
-    end
-
-    return a
-end
-
-
 local function _set_byte2(n)
     return strchar(band(n, 0xff), band(rshift(n, 8), 0xff))
 end
@@ -191,6 +139,91 @@ local function _set_byte4(n)
                    band(rshift(n, 24), 0xff))
 end
 
+
+local function _get_byte1(data, i)
+    local a = strbyte(data, i)
+    local atype = (type(a) == "number")
+    if atype then
+        return a, i + 1
+    else
+        return null, i + 1
+    end
+end
+
+
+local function _get_byte2(data, i)
+    local a, b = strbyte(data, i, i + 1)
+    local atype = (type(a) == "number")
+    local btype = (type(b) == "number")
+    if atype and btype then
+        return bor(a, lshift(b, 8)), i + 2
+    else
+        return null, i + 1
+    end
+end
+
+
+local function _get_byte3(data, i)
+    local a, b, c = strbyte(data, i, i + 2)
+    local atype = (type(a) == "number")
+    local btype = (type(b) == "number")
+    local ctype = (type(c) == "number")
+    if atype and btype and ctype then
+        return bor(a, lshift(b, 8), lshift(c, 16)), i + 3
+    else
+        return null, i + 1
+    end
+end
+
+
+local function _get_byte4(data, i)
+    local a, b, c, d = strbyte(data, i, i + 3)
+    local atype = (type(a) == "number")
+    local btype = (type(b) == "number")
+    local ctype = (type(c) == "number")
+    local dtype = (type(d) == "number")
+    if atype and btype and ctype and dtype then
+        return bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24)), i + 4
+    else
+        return null, i + 1
+    end
+end
+
+
+local function _get_byte8(data, i)
+    local a, b, c, d, e, f, g, h = strbyte(data, i, i + 7)
+    local atype = (type(a) == "number")
+    local btype = (type(b) == "number")
+    local ctype = (type(c) == "number")
+    local dtype = (type(d) == "number")
+    local etype = (type(e) == "number")
+    local ftype = (type(f) == "number")
+    local gtype = (type(g) == "number")
+    local htype = (type(h) == "number")
+    if atype and btype and ctype and dtype and etype and ftype and gtype and htype then
+        local lo = bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24))
+        local hi = bor(e, lshift(f, 8), lshift(g, 16), lshift(h, 24))
+        return lo + hi * 4294967296, i + 8
+    else
+        return null, i + 1
+    end
+
+    -- return bor(a, lshift(b, 8), lshift(c, 16), lshift(d, 24), lshift(e, 32),
+               -- lshift(f, 40), lshift(g, 48), lshift(h, 56)), i + 8
+end
+
+
+local function _get_byte_bit(data)
+    -- get bytes which encoded with bit
+    local a = strbyte(data, 1)
+    local len = #data
+
+    for j = 2, len do
+        a = bor(lshift(a, 8), strbyte(data, j))
+    end
+
+    return a
+end
 
 local function _from_cstring(data, i)
     local last = strfind(data, "\0", i, true)
@@ -325,8 +358,6 @@ end
 
 local function _from_length_coded_bin(data, pos)
     local first = strbyte(data, pos)
-
-    --print("LCB: first: ", first)
 
     if not first then
         return nil, pos
@@ -946,7 +977,7 @@ local function _parse_result_data_packet(data, pos, cols, compact)
         local typ = col.type
         local name = col.name
 
-        if     typ == MYSQL_TYPE_TINY then
+        if typ == MYSQL_TYPE_TINY then
             value, pos = _get_byte1(data, pos)
 
         elseif typ == MYSQL_TYPE_SHORT or
@@ -987,8 +1018,6 @@ local function _parse_result_data_packet(data, pos, cols, compact)
         else
             value, pos = _from_length_coded_str(data, pos)
         end
-
-        -- print("row [", name, "] value: ", value, ", type: ", typ)
 
         if compact then
             row[i] = value
