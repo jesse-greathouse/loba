@@ -19,12 +19,10 @@ function HomeView.error()
     view.status = ngx.var.status
     view.alert_level, view.message = helpers.get_error_info(view.status)
     if helpers.is_debug() then
-        local errlog = require "ngx.errlog"
-        view.trace = ""
-        local loglines = errlog.get_logs(20)
-        for k, v in pairs(loglines) do
-            view.trace = view.trace .. v
-          end
+        local trace = helpers.get_stacktrace()
+        if next(trace) ~= nil then
+            view.trace = trace
+        end
     end
     view.title      = "Loba  | " .. view.status .. " " .. view.message
     view:render()

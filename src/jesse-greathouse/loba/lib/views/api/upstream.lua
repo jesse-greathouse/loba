@@ -1,13 +1,13 @@
-local cjson = require "cjson"
-local env = require "env"
+local base = require "views.api.base"
+local setmetatable = setmetatable
 
-local ApiUpstreamView = {}
+local _M = {}
+local mt = { __index = _M }
 
-function ApiUpstreamView.get()
-    local dbmodule = "db." .. env.DB_DRIVER
-    local db = require(dbmodule):new()
-    ngx.say(cjson.encode(db:get_upstreams()))
+function _M.new(self, route)
+    return setmetatable(base:new('upstream', route), mt)
 end
 
+setmetatable( _M, { __index = base } )
 
-return ApiUpstreamView;
+return _M;

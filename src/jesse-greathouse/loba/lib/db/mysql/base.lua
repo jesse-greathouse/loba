@@ -1,23 +1,22 @@
--- Collection of general use functions specific to this application
 local setmetatable = setmetatable
 
-local _M = { }
+local _M = {}
 local mt = { __index = _M }
 
-function _M:insert_site(args)
-    local res, err = self.db:execute(self:get_statement("insert_site"), args.domain, args.active)
-    if err then
-        ngx.log(ngx.ERR, "execute failed.", err)
+function _M.all(self, sname)
+    local res, err, errcode, sqlstate = self.db:query(self.query[sname])
+    if not res then
+        ngx.log(ngx.ERR, "bad result: ", err, ": ", errcode, ": ", sqlstate, ".")
         return ngx.exit(500)
     end
 
-    return self:get_site(res.insert_id)
+    return res
 end
 
-function _M:get_site(id)
-    local res, err = self.db:execute(self:get_statement("select_site_by_id"), id)
+function _M.get(self, sname, id)
+    local res, err = self.db:execute(self:get_statement(sname), id)
     if err then
-        ngx.log(ngx.ERR, "execute failed.", err)
+        ngx.log(ngx.ERR, "select failed.", err)
         return ngx.exit(500)
     end
 
@@ -29,10 +28,30 @@ function _M:get_site(id)
     return nil
 end
 
-function _M:get_sites()
-    local res, err, errcode, sqlstate = self.db:query(self.query.select_sites)
-    if not res then
-        ngx.log(ngx.ERR, "bad result: ", err, ": ", errcode, ": ", sqlstate, ".")
+function _M.insert(self, sname, ...)
+    local res, err = self.db:execute(self:get_statement(sname), ...)
+    if err then
+        ngx.log(ngx.ERR, "insert failed.", err)
+        return ngx.exit(500)
+    end
+
+    return res.insert_id
+end
+
+function _M.update(self, sname, ...)
+    local res, err = self.db:execute(self:get_statement(sname), ...)
+    if err then
+        ngx.log(ngx.ERR, "update failed.", err)
+        return ngx.exit(500)
+    end
+
+    return res
+end
+
+function _M.delete(self, sname, id)
+    local res, err = self.db:execute(self:get_statement(sname), id)
+    if err then
+        ngx.log(ngx.ERR, "delete failed.", err)
         return ngx.exit(500)
     end
 
@@ -82,7 +101,10 @@ function _M.new(self)
         return nil, err
     end
 
-    return setmetatable({ db = db, env = env, query = query, statement = statement}, mt)
+    return setmetatable({   db = db,
+                            env = env,
+                            query = query,
+                            statement = statement}, mt)
 end
 
 return _M

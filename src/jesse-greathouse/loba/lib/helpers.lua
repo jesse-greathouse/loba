@@ -265,4 +265,23 @@ function Helpers.spawn_curl(url, args)
     ngx_pipe.spawn({"curl", url .. "?" .. qs})
 end
 
+function Helpers.get_stacktrace()
+    local numlines = 20
+    local errlog = require "ngx.errlog"
+    local loglines = errlog.get_logs(numlines)
+    local trace = {}
+
+    if next(loglines) ~= nil then
+        for _, v in pairs(loglines) do
+            if type(v) == "string" then
+                for i in v:gmatch("[^\r\n]+") do
+                    trace[#trace + 1] = i
+                 end
+            end
+        end
+    end
+
+    return trace
+end
+
 return Helpers

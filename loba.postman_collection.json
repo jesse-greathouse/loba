@@ -1,0 +1,527 @@
+{
+	"info": {
+		"_postman_id": "8cb4ea89-dc4c-4da3-bbdf-e3881f090a32",
+		"name": "loba",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "site",
+					"item": [
+						{
+							"name": "site",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/site",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"site"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "site",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "domain",
+											"value": "www.mysite.com",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/site",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"site"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "site/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/site/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"site",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "site/:id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "domain",
+											"value": "dev.newdomain.com",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/site/3",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"site",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "site/:id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/site/4",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"site",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "method",
+					"item": [
+						{
+							"name": "method",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/method",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"method"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "method/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/method/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"method",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "upstream",
+					"item": [
+						{
+							"name": "upstream",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/upstream",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"upstream"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upstream",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "site_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "method_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "hash",
+											"value": "NULL",
+											"type": "text"
+										},
+										{
+											"key": "consistent",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/upstream",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"upstream"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upstream/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/upstream/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"upstream",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upstream/:id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "site_id",
+											"value": "34",
+											"type": "text"
+										},
+										{
+											"key": "method_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "hash",
+											"value": "NULL",
+											"type": "text"
+										},
+										{
+											"key": "consistent",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/upstream/5",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"upstream",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upstream/:id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/upstream/5",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"upstream",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "server",
+					"item": [
+						{
+							"name": "server",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"server"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "server",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "host",
+											"value": "127.0.0.1:5002",
+											"type": "text"
+										},
+										{
+											"key": "weight",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "backup",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "fail_timeout",
+											"value": "30",
+											"type": "text"
+										},
+										{
+											"key": "max_fails",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "upstream_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"server"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "server/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"server",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "server/:id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "host",
+											"value": "127.0.0.1:5002",
+											"type": "text"
+										},
+										{
+											"key": "weight",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "backup",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "fail_timeout",
+											"value": "30",
+											"type": "text"
+										},
+										{
+											"key": "max_fails",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "upstream_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server/3",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"server",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "server/:id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server/3",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"server",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

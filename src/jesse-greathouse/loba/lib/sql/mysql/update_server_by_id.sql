@@ -1,0 +1,1 @@
+UPDATE `upstream_server` SET `host` = ?, `weight` = ?, `backup` = ?, `fail_timeout` = ?, `max_fails` = ?, `upstream_id` = ? WHERE `id` = ?;

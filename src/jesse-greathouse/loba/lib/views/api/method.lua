@@ -5,7 +5,7 @@ local _M = {}
 local mt = { __index = _M }
 
 function _M.new(self, route)
-    return setmetatable(base:new('site', route), mt)
+    return setmetatable(base:new('method', route), mt)
 end
 
 setmetatable( _M, { __index = base } )

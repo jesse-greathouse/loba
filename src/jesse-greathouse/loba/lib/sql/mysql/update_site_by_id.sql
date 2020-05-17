@@ -1,0 +1,1 @@
+UPDATE `site` SET `domain` = ?, `active` = ? WHERE `id` = ?;
