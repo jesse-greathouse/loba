@@ -1,0 +1,1 @@
+SELECT * FROM `upstream` WHERE `site_id` = ?;

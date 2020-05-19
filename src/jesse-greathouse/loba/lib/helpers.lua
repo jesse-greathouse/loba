@@ -1,7 +1,45 @@
 -- helper functions for accplimplishing tasks
-local str = require "string"
+local env = require "env"
 
 local Helpers = {}
+
+function Helpers.is_debug()
+    -- ngx.var are always string
+    return ngx.var.DEBUG == "true"
+end
+
+function Helpers.module_exists(name)
+    if package.loaded[name] then
+        return true
+    else
+        for _, searcher in ipairs(package.searchers or package.loaders) do
+            local loader = searcher(name)
+            if type(loader) == 'function' then
+                package.preload[name] = loader
+                return true
+            end
+        end
+        return false
+    end
+end
+
+function  Helpers.dbm(name)
+    local m = "db." .. env.DB_DRIVER .. "." .. name
+    if not Helpers.module_exists(m) then
+        ngx.log(ngx.ERR, "Database module: ", m , " not found.")
+        ngx.exit(500)
+    end
+    return require(m):new()
+end
+
+function  Helpers.resource(name)
+    local m = "resource." .. name
+    if Helpers.module_exists(m) then
+        return require(m)
+    else
+        return false
+    end
+end
 
 function Helpers.parse_route_params(route)
     local params = {}
@@ -103,17 +141,6 @@ function Helpers.format_query(tab, sep, key)
     return table.concat(query, sep)
 end
 
--- function for producing the search url for demotivational images
-function Helpers.get_search_url(query)
-    local base_url = "https://www.googleapis.com/customsearch/v1?"
-    local params = {
-        q       = query,
-        imgType = "photo"
-    }
-    local url = base_url .. Helpers.format_query(params)
-    return url
-end
-
 function Helpers.in_array(t, val)
     for _, v in ipairs(t) do
         if v == val then
@@ -122,11 +149,6 @@ function Helpers.in_array(t, val)
     end
 
     return false
-end
-
-function Helpers.is_debug()
-    -- ngx.var are always string
-    return ngx.var.DEBUG == "true"
 end
 
 function Helpers.calling_parent(level)
@@ -189,80 +211,10 @@ function Helpers.get_error_info(status)
     return alertlevel, statusdefinitions[statusnum]
 end
 
-function Helpers.model_set_defaults(o, defaults)
-    for key, val in pairs(defaults) do
-        if not o[key] then
-            if type(val) == "function" then
-                o[key] = val(o)
-            else
-                o[key] = val
-            end
-        end
-    end
-    return o
-end
-
 function Helpers.tablelength(t)
     local count = 0
     for _ in pairs(t) do count = count + 1 end
     return count
-end
-
-function  Helpers.get_google_rpp()
-    -- google searches are 10 records per page
-    -- google image searches are 20 rpp
-    local rpp = 10
-    local args = ngx.req.get_uri_args()
-
-    if args.tbm and args.tbm == "isch" then
-        rpp = 20
-    end
-
-    return rpp
-end
-
-function Helpers.google_serp_start_indexes()
-    local rpp = Helpers.get_google_rpp()
-    local current_start = 0
-    local previous_start = 0
-    if ngx.var.arg_start then
-        current_start = tonumber(ngx.var.arg_start)
-    end
-
-    if (current_start > rpp) then
-        previous_start = current_start - rpp
-    end
-
-    local next_start = current_start + rpp
-    return current_start, previous_start, next_start
-end
-
-function Helpers.cache_adjacent_google_serp()
-    local rpp = Helpers.get_google_rpp()
-    local args = ngx.req.get_uri_args()
-    local url = table.concat({ngx.var.scheme, "://", ngx.var.host, ngx.var.uri})
-    local current_start, previous_start, next_start = Helpers.google_serp_start_indexes()
-    args.nospawn = "true"
-
-    if not (args.start) then
-        args.start = current_start
-        Helpers.spawn_curl(url, args)
-    end
-
-    if current_start >= rpp then
-        args.start = previous_start
-        Helpers.spawn_curl(url, args)
-    end
-
-    args.start = next_start
-    Helpers.spawn_curl(url, args)
-end
-
-function Helpers.spawn_curl(url, args)
-    local ngx_pipe = require "ngx.pipe"
-    local client = require "clients.google":new()
-    local qs = Helpers.format_query(client:filter_args(args))
-    ngx_pipe.spawn({"curl", url .. "?" .. qs})
 end
 
 function Helpers.get_stacktrace()

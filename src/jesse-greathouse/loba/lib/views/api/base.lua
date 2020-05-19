@@ -1,7 +1,6 @@
 -- methods for producing each endpoint of the api
 local helpers = require "helpers"
 local cjson = require "cjson"
-local env = require "env"
 local response = require "models.api.response"
 
 local _M = {}
@@ -9,12 +8,19 @@ local _M = {}
 local mt = { __index = _M }
 
 function _M:get()
-    local db = self:dbm(self.resource)
-    self:response(db:all())
+    local db = helpers.dbm(self.resource_name)
+    local resource = helpers.resource(self.resource_name .. "_collection")
+    local rs = db:all()
+
+    if not resource then
+        return self:response(rs)
+    else
+        self:response(resource:new(rs))
+    end
 end
 
 function _M:post()
-    local db = self:dbm(self.resource)
+    local db = helpers.dbm(self.resource_name)
     local args, err = self:get_post()
     if err then
         ngx.log(ngx.ERR, "bad post args: ", cjson.encode(args), " ", err)
@@ -23,32 +29,37 @@ function _M:post()
 
     local o, err = db:insert(args)
     if err then
-        ngx.log(ngx.ERR, "Creating ", self.resource, " failed: ", cjson.encode(args), " ", err)
+        ngx.log(ngx.ERR, "Creating ", self.resource_name, " failed: ", cjson.encode(args), " ", err)
         return ngx.exit(500)
     end
 
-    self:response(o, string.format("Created new %s.", self.resource), 201)
+    self:response(o, string.format("Created new %s.", self.resource_name), 201)
 end
 
 function _M:get_id()
-    local db = self:dbm(self.resource)
+    local db = helpers.dbm(self.resource_name)
+    local resource = helpers.resource(self.resource_name)
     local r = self:route_params()
 
     local o = db:get(r.id)
     if not o then
-        self:not_found("A %s, with the id: %s, was not found.", self.resource, r.id)
+        self:not_found("A %s, with the id: %s, was not found.", self.resource_name, r.id)
     else
-        self:response(o)
+        if not resource then
+            return self:response(o)
+        else
+            self:response(resource:new(o))
+        end
     end
 end
 
 function _M:put()
-    local db = self:dbm(self.resource)
+    local db = helpers.dbm(self.resource_name)
     local r = self:route_params()
 
     local o = db:get(r.id)
     if not o then
-        self:not_found("A %s, with the id: %s, was not found.", self.resource, r.id)
+        self:not_found("A %s, with the id: %s, was not found.", self.resource_name, r.id)
     else
         local args, err = self:get_post()
         if err then
@@ -58,28 +69,28 @@ function _M:put()
 
         o, err = db:update(args, o.id)
         if err then
-            ngx.log(ngx.ERR, "Updating ",  self.resource , ": ", r.id, " failed: ", cjson.encode(args), " ", err)
+            ngx.log(ngx.ERR, "Updating ",  self.resource_name , ": ", r.id, " failed: ", cjson.encode(args), " ", err)
             return ngx.exit(500)
         end
 
-        self:response(o, string.format("Updated %s with id: %s.", self.resource, o.id))
+        self:response(o, string.format("Updated %s with id: %s.", self.resource_name, o.id))
     end
 end
 
 function _M:delete()
-    local db = self:dbm(self.resource)
+    local db = helpers.dbm(self.resource_name)
     local r = self:route_params()
 
     local o = db:get(r.id)
     if not o then
-        self:not_found("A %s, with the id: %s, was not found.", self.resource, r.id)
+        self:not_found("A %s, with the id: %s, was not found.", self.resource_name, r.id)
     else
         local _, err = db:delete(r.id)
         if err then
-            ngx.log(ngx.ERR, "Deleting ", self.resource, " id: ", r.id, " failed. ", err)
+            ngx.log(ngx.ERR, "Deleting ", self.resource_name, " id: ", r.id, " failed. ", err)
             return ngx.exit(500)
         end
-        self:response({}, string.format("Deleted %s with id: %s.", self.resource, r.id), 200)
+        self:response({}, string.format("Deleted %s with id: %s.", self.resource_name, r.id), 200)
     end
 end
 
@@ -133,11 +144,6 @@ function _M:error(message)
     ngx.say(cjson.encode(response:new({}, meta)))
 end
 
-function _M:dbm(name)
-    local m = "db." .. env.DB_DRIVER .. "." .. name
-    return require(m):new()
-end
-
 function _M:route_params()
     local params, err = helpers.parse_route_params(self.route)
     if err then
@@ -148,8 +154,8 @@ function _M:route_params()
     return params
 end
 
-function _M.new(self, resource, route)
-    return setmetatable({route = route, resource = resource}, mt)
+function _M.new(self, resource_name, route)
+    return setmetatable({route = route, resource_name = resource_name}, mt)
 end
 
 return _M

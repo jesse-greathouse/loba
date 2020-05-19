@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `upstream` (
   PRIMARY KEY (`id`),
   INDEX `id_site_id` (`site_id` ASC),
   INDEX `id_method_id` (`method_id` ASC),
+  UNIQUE INDEX `site_id_UNIQUE` (`site_id` ASC),
   CONSTRAINT `fk_site_id`
     FOREIGN KEY (`site_id`)
     REFERENCES `site` (`id`)

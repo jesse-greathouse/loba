@@ -8,6 +8,10 @@ function _M:all()
     return base.all(self, "select_sites")
 end
 
+function _M:find_by_uptream_list(args)
+    return base.find(self, "select_sites_by_upstream_list", args)
+end
+
 function _M:get(id)
     return base.get(self, "select_site_by_id", id)
 end

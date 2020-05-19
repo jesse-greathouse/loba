@@ -1,0 +1,1 @@
+SELECT * FROM `upstream_server` WHERE `upstream_id` = ?;
