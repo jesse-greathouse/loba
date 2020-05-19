@@ -12,9 +12,9 @@
 # bin
 *-e
 /bin/*
-!bin/db-init
-!bin/compose-sites
-!bin/compile-modules
+!bin/db-init.pl
+!bin/compose-sites.pl
+!bin/compile-modules.pl
 !bin/wp.dist
 !bin/install-amazon.sh
 !bin/install-osx.sh
