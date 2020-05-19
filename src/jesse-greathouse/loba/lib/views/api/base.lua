@@ -19,6 +19,18 @@ function _M:get()
     end
 end
 
+function _M:find(args)
+    local db = helpers.dbm(self.resource_name)
+    local resource = helpers.resource(self.resource_name .. "_collection")
+    local rs = db:find(args)
+
+    if not resource then
+        return self:response(rs)
+    else
+        self:response(resource:new(rs))
+    end
+end
+
 function _M:post()
     local db = helpers.dbm(self.resource_name)
     local args, err = self:get_post()

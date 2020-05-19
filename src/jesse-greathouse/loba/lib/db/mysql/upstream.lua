@@ -8,6 +8,10 @@ function _M:all()
     return base.all(self, "select_upstreams")
 end
 
+function _M:find(args)
+    return base.find(self, "select_upstreams", args)
+end
+
 function _M:get(id)
     return base.get(self, "select_upstream_by_id", id)
 end

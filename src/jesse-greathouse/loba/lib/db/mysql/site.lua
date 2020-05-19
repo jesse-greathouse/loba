@@ -8,8 +8,12 @@ function _M:all()
     return base.all(self, "select_sites")
 end
 
+function _M:find(args)
+    return base.find(self, "select_sites", args)
+end
+
 function _M:find_by_uptream_list(args)
-    return base.find(self, "select_sites_by_upstream_list", args)
+    return base.find_by_list(self, "select_sites_by_upstream_list", args)
 end
 
 function _M:get(id)
@@ -24,7 +28,7 @@ function _M:insert(args)
 end
 
 function _M:update(args, id)
-    local _ = base.update(self, "update_site_by_id", 
+    local _ = base.update(self, "update_site_by_id",
                                     args.domain,
                                     args.active,
                                     id)

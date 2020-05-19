@@ -67,7 +67,7 @@ end
     replaced by the number of elements in the list.
 ]]
 function _M.find_by_list(self, sname, list)
-    local res, err = self.db:execute(self:get_statement(sname, list))
+    local res, err = self.db:execute(self:get_statement(sname, list, nil, true))
     if err then
         ngx.log(ngx.ERR, "select failed.", err)
         return ngx.exit(500)
@@ -142,25 +142,38 @@ function _M:compose_where(t, cond, clause)
         clause = " WHERE 1 AND ("
     end
 
-    for j, e in ipairs(t) do
+    local first = true
+    if t[1] ~= nil then
+        -- table is an array
+        for i, _ in ipairs(t) do
+            local str, val = self:compose_where(t[i], cond, clause)
+            if not first then clause = clause .. "  " .. cond end
+                clause = clause .. "(" .. str .. ")"
 
-        -- if an args element exists then nested
-        if e["args"] ~= nil then
-            if not e["cond"] then e["conf"] = MYSQL_AND_CONDITION end
-            local str, val = self:compose_where(e.args, e.cond, clause)
-
-            if j ~= 1 then clause = clause .. ",  " .. cond end
-            clause = clause .. "(" .. str .. ")"
-
-            for i, _ in ipairs(val) do
-                values[#values + 1] = val[i]
+            for j, _ in ipairs(val) do
+                values[#values + 1] = val[j]
             end
-        else
-            for k, v in pairs(e) do
-                if j ~= 1 then clause = clause .. ",  " .. cond end
-                clause = " " .. k .. " = ?"
+            first = false
+        end
+    else
+        for k, v in pairs(t) do
+            -- if an args element exists then nested
+            if k == "args" then
+                if not t["cond"] then t["cond"] = MYSQL_AND_CONDITION end
+                local str, val = self:compose_where(v, t.cond, clause)
+
+                if not first then clause = clause .. "  " .. cond end
+                clause = clause .. "(" .. str .. ")"
+
+                for i, _ in ipairs(val) do
+                    values[#values + 1] = val[i]
+                end
+            else
+                if not first then clause = clause .. "  " .. cond end
+                clause = clause .. " " .. k .. " = ?"
                 values[#values + 1] = v
             end
+            first = false
         end
     end
 
@@ -172,7 +185,7 @@ function _M:compose_where(t, cond, clause)
 end
 
 -- A way of only preparing a statement a single time
-function _M:get_statement(name, args, cond)
+function _M:get_statement(name, args, cond, is_list)
     local where, placeholders
     local sname = name
 
@@ -180,7 +193,7 @@ function _M:get_statement(name, args, cond)
         -- If args is an array use the from_list method
         -- If args is a table, dynamically compose the where clause
         if next(args) ~= nil then
-            if args[1] ~= nil then
+            if is_list then
                 sname = name .. "-list-" .. #args
                 placeholders = ""
                 for i = 1, #args do

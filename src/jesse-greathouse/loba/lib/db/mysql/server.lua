@@ -8,6 +8,10 @@ function _M:all()
     return base.all(self, "select_servers")
 end
 
+function _M:find(args)
+    return base.find(self, "select_servers", args)
+end
+
 function _M:find_by_uptream_list(list)
     return base.find_by_list(self, "select_servers_by_upstream_list", list)
 end

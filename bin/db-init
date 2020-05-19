@@ -13,6 +13,7 @@ my @initScripts = (
     'insert_initial_methods.sql',
     'create_table_upstream.sql',
     'create_table_upstream_server.sql',
+    'create_table_user.sql',
 );
 
 # Set up variables from the environment
