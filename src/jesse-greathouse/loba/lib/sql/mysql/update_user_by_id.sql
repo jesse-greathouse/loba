@@ -1,0 +1,1 @@
+UPDATE `user` SET `email` = ?, `first_name` = ?, `last_name` = ?, `avatar_url` = ? WHERE `id` = ?;
