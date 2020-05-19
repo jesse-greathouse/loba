@@ -76,6 +76,8 @@ printf "=================================================================\n"
 printf "Hello, "${USER}".  This will create your site's run script\n"
 printf "=================================================================\n"
 printf "\n"
+printf "Enter the Admin Email: "
+read ADMIN_EMAIL
 printf "Enter your name of your site [loba]: "
 read SITE_NAME
 if  [ "${SITE_NAME}" == "" ]; then
@@ -144,6 +146,7 @@ fi
 printf "\n"
 printf "You have entered the following configuration: \n"
 printf "\n"
+printf "Admin Email: ${ADMIN_EMAIL} \n"
 printf "Site Name: ${SITE_NAME} \n"
 printf "Site Domains: ${SITE_DOMAINS} \n"
 printf "Web Port: ${PORT} \n"
@@ -168,6 +171,7 @@ if  [ "${CORRECT}" == "y" ]; then
     fi
     cp ${BIN}/run.sh.dist ${RUN_SCRIPT}
 
+    sed -i -e s/__ADMIN_EMAIL__/"${ADMIN_EMAIL}"/g ${RUN_SCRIPT}
     sed -i -e s/__SITE_NAME__/"${SITE_NAME}"/g ${RUN_SCRIPT}
     sed -i -e s/__PORT__/"${PORT}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_DRIVER__/"${DB_DRIVER}"/g ${RUN_SCRIPT}

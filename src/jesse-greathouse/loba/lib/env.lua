@@ -11,6 +11,7 @@ _M.SRC = ngx.var.SRC
 _M.TMP = ngx.var.TMP
 _M.VAR = ngx.var.VAR
 _M.WEB = ngx.var.WEB
+_M.ADMIN_EMAIL = ngx.var.ADMIN_EMAIL
 _M.LOBA_DIR = ngx.var.LOBA_DIR
 _M.SQL_QUERY_DIR = ngx.var.SQL_QUERY_DIR
 _M.CACHE_DIR = ngx.var.CACHE_DIR

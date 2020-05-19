@@ -76,6 +76,7 @@ docker run -d -p __PORT__:3000 \
     -e ENV=prod \
     -e DEBUG=__DEBUG__ \
     -e FORCE_SSL=__FORCE_SSL__ \
+    -e ADMIN_EMAIL=__ADMIN_EMAIL__ \
     -e DIR="/app" \
     -e BIN="/app/bin" \
     -e ETC="/app/etc" \
