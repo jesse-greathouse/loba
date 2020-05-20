@@ -1,2 +1,0 @@
-{"id":{"started":{}},"started":{"command":"build","start_time_millis":1589987827921}}
-{"id":{"finished":{}},"finished":{"finish_time_millis":1589987838440,"exit_code":{"code":0}}}
