@@ -69,7 +69,9 @@ opt/openresty*/*
 opt/lua*/*
 
 # cache and logs
+build-event.log
 error.log
+varcache/
 var/cache/*
 var/logs/*
 !var/cache/.gitkeep
@@ -95,25 +97,25 @@ supervisord.log
 supervisord.pid
 
 # web
-web/dist
-web/tmp
-web/out-tsc
+web/loba/dist
+web/loba/tmp
+web/loba/out-tsc
 # Only exists if Bazel was run
-/bazel-out
+web/loba/bazel-out
 
 # dependencies
-web/node_modules/
+web/loba/node_modules/
 
 # profiling files
-web/chrome-profiler-events*.json
-web/speed-measure-plugin*.json
+web/loba/chrome-profiler-events*.json
+web/loba/speed-measure-plugin*.json
 
 # misc
-web/.sass-cache
-web/connect.lock
-web/coverage
-web/libpeerconnection.log
-web/npm-debug.log
-web/yarn-error.log
-web/testem.log
-web/typings
+web/loba/.sass-cache
+web/loba/connect.lock
+web/loba/coverage
+web/loba/libpeerconnection.log
+web/loba/npm-debug.log
+web/loba/yarn-error.log
+web/loba/testem.log
+web/loba/typings
