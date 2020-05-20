@@ -6,15 +6,15 @@ local HomeView = {}
 
 function HomeView.index()
     local session = base.get_session()
-    local view = base.get_view("index.html", "layout.html")
+    local view = base.get_view("index.html")
 
     -- Dress the view
-    view.title      = "Loba | Home"
+    view.title      = "Loba"
     view:render()
 end
 
 function HomeView.error()
-    local view = base.get_view("error.html", "layout.html")
+    local view = base.get_view("error.html")
 
     view.status = ngx.var.status
     view.alert_level, view.message = helpers.get_error_info(view.status)

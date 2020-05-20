@@ -1,7 +1,20 @@
 # Created by .ignore support plugin (hsz.mobi)
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
 #vscode junk
-*.vscode/
+.history/*
+.vscode/*
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
 
 # ds stores
 *.DS_Store
@@ -82,3 +95,25 @@ supervisord.log
 supervisord.pid
 
 # web
+web/dist
+web/tmp
+web/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+web/node_modules/
+
+# profiling files
+web/chrome-profiler-events*.json
+web/speed-measure-plugin*.json
+
+# misc
+web/.sass-cache
+web/connect.lock
+web/coverage
+web/libpeerconnection.log
+web/npm-debug.log
+web/yarn-error.log
+web/testem.log
+web/typings

@@ -17,7 +17,6 @@ function _M.get_view(tpl, layout)
     view.page_id = get_template_name(tpl)
     view.uri = ngx.var.uri
     view.qs = helpers.format_query(ngx.req.get_uri_args(), "&")
-    view.jsmodel = ""
     return view
 end
 
