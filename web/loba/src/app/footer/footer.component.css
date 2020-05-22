@@ -1,0 +1,9 @@
+footer {
+  margin-top: 8px;
+  align-items: center;
+}
+
+footer a {
+  display: flex;
+  align-items: center;
+}

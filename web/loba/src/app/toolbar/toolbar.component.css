@@ -1,0 +1,41 @@
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  color: white;
+  font-weight: 600;
+}
+
+.toolbar img {
+  margin: 0 16px;
+}
+
+.toolbar nav {
+  margin: 0 30px 0 30px;
+}
+
+.toolbar nav a {
+  padding: 10px;
+  text-decoration: none;
+  display: inline-block;
+  background-color: rgb(4, 4, 88);
+  border-radius: 4px;
+}
+
+.toolbar nav a:visited, a:link {
+  color: #b5d1df;
+}
+
+.toolbar nav a:hover {
+  color: #f3f9fc;
+  background-color: #0a1d88;
+}
+
+.toolbar nav a.active {
+  color: #f3f9fc;
+}

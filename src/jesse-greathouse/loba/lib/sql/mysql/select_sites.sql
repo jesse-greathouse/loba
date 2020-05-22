@@ -1,1 +1,1 @@
-SELECT * FROM `site`
+SELECT * FROM `site`;

@@ -1,0 +1,17 @@
+<div>
+  <label>New Site:
+    <input #domain />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(domain.value); domain.value=''">
+    add
+  </button>
+</div>
+
+<ul class="sites">
+  <li *ngFor="let site of sites" >
+    <a routerLink="/site/{{site.domain}}">
+      {{site.domain}}
+    </a>
+  </li>
+</ul>

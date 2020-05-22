@@ -7,6 +7,9 @@ local _M = {}
 
 local mt = { __index = _M }
 
+local CONTENT_TYPE_X_WWW_FORM_URLENCODED    = "application/x-www-form-urlencoded"
+local CONTENT_TYPE_APPLICATION_JSON         = "application/json"
+
 function _M:get()
     local db = helpers.dbm(self.resource_name)
     local resource = helpers.resource(self.resource_name .. "_collection")
@@ -106,9 +109,34 @@ function _M:delete()
     end
 end
 
+--[[
+    application supports 2 content types:
+        application/x-www-form-urlencoded
+        "application/json
+]]
 function _M:get_post()
     ngx.req.read_body()
-    return ngx.req.get_post_args()
+    local h = ngx.req.get_headers()
+    local ct = h['Content-Type'] or nil
+    local post = ngx.req.get_post_args()
+    if ct == CONTENT_TYPE_X_WWW_FORM_URLENCODED then
+        return post
+    elseif ct == CONTENT_TYPE_APPLICATION_JSON then
+        -- loop through the weird table
+        -- decode the first key that has a value of true
+        for k, v in pairs(post) do
+            if v then
+                return cjson.decode(k)
+            end
+        end
+
+        -- If we didn't find a viable post in the reuqest, exit
+        ngx.log(ngx.ERR, "Request body had malformed payload for content-type: ", ct)
+        ngx.exit(500)
+    else
+        ngx.log(ngx.ERR, "Request body had unsupported content-type: ", ct)
+        ngx.exit(500)
+    end
 end
 
 function _M:not_found(message, ...)
