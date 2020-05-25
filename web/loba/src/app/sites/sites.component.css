@@ -1,0 +1,12 @@
+#new-site {
+  margin: 10px 0 10px 0;
+}
+
+#sites {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+#sites li {
+  margin: 10px 0  10px 0;
+}

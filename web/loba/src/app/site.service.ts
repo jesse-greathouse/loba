@@ -24,13 +24,13 @@ export class SiteService {
   }
 
   /** Log a SiteService message with the MessageService */
-  private log(message: string) {
-    this.messageService.add(`SiteService: ${message}`);
+  private log(message: string, level: string|false = false) {
+    this.messageService.add(message, level, `SiteService: `);
   }
 
   getSites(): Observable<Site[]> {
     return this.http.get<Site[]>(this.siteUrl).pipe(
-      tap(_ => this.log('fetched sites')),
+      // tap(_ => this.log('fetched sites')),
       map((resp: any) => {
         return resp.data;
       }),
@@ -42,7 +42,7 @@ export class SiteService {
   getSiteByDomain(domain: string): Observable<Site> {
     const url = `${this.siteUrl}?domain=${domain}`;
     return this.http.get<Site>(url).pipe(
-      tap(_ => this.log(`fetched site domain: ${domain}`)),
+      tap(_ => this.log(`fetched site domain: ${domain}`, false)),
       map((resp: any) => {
         return resp.data;
       }),
@@ -66,8 +66,8 @@ export class SiteService {
   updateSite(site: Site): Observable<any> {
     const url = `${this.siteUrl}/${site.id}`;
     return this.http.put(url, site, this.httpOptions).pipe(
-      tap(_ => this.log(`updated site: ${site.domain}`)),
       map((resp: any) => {
+        this.log(resp.meta.message, 'success');
         return resp.data;
       }),
       catchError(this.handleError<any>('updateSite'))
@@ -77,8 +77,8 @@ export class SiteService {
   /** POST: add a new site */
   addSite(site: Site): Observable<Site> {
     return this.http.post<Site>(this.siteUrl, site, this.httpOptions).pipe(
-      tap((newSite: Site) => this.log(`added site: ${newSite.domain}`)),
       map((resp: any) => {
+        this.log(resp.meta.message, 'success');
         return resp.data;
       }),
       catchError(this.handleError<Site>('addSite'))
@@ -104,12 +104,13 @@ export class SiteService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      const message = (typeof error.error.meta !== "undefined") 
+        ? error.error.meta.message : error.message;
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      console.error(error);
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this.log(`${operation} failed -- ${message}`, 'danger');
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

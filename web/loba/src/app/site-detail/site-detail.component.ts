@@ -5,6 +5,9 @@ import { Site } from '../site';
 import { SiteService } from '../site.service';
 
 @Component({
+  host: {
+    class:'content-wrapper',
+  },
   selector: 'app-site-detail',
   templateUrl: './site-detail.component.html',
   styleUrls: ['./site-detail.component.css']
@@ -51,6 +54,10 @@ export class SiteDetailComponent implements OnInit {
   getSite(id: number): void {
     this.siteService.getSite(id)
       .subscribe(site => this.site = site);
+  }
+
+  focusOut(): void {
+    this.save();
   }
 
   save(): void {

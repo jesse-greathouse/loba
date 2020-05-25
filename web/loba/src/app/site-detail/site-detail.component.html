@@ -1,11 +1,4 @@
-<div *ngIf="site">
-  <h2>{{site.domain | uppercase}}</h2>
-  <div><span>id: </span>{{site.id}}</div>
-  <div>
-    <label>domain:
-      <input [(ngModel)]="site.domain" placeholder="doman"/>
-    </label>
-    <button (click)="save()">save</button>
-  </div>
+<div *ngIf="site" id="site-detail">
+  <input [(ngModel)]="site.domain" placeholder="doman" (focusout)="focusOut()"/>
 
 </div>

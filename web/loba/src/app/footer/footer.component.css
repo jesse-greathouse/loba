@@ -1,9 +1,24 @@
 footer {
-  margin-top: 8px;
+  position: fixed;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  display: flex;
   align-items: center;
+  border-top: 1px solid #9e9e9e;
+  background-color: #c7c7c7;
+  font-weight: 600;
+}
+
+footer div {
+  width: 100%;
+  padding: 10px;
+  align-items: center;
+  text-align: center;
 }
 
 footer a {
-  display: flex;
   align-items: center;
 }

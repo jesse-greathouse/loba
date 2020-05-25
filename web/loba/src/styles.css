@@ -1,1 +1,202 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+:host {
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+p {
+  margin: 0;
+}
+
+a,
+a:visited,
+a:hover {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #125699;
+}
+
+h1 {
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+input {
+  box-sizing : border-box;
+  width: 100%;
+	padding:11px 14px; 
+  font-size:18px;
+  border-radius: 6px;
+  border:1px solid #dcdcdc;
+  border-color:#dfdfdf; 
+	text-shadow:0px 1px 0px #ffffff;
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+} 
+
+input:focus { 
+  outline:none; 
+}
+
+button {
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+	background-color:#f9f9f9;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-size:18px;
+	font-weight:bold;
+	padding:11px 24px;
+	text-decoration:none;
+}
+
+button:focus { 
+  outline:none; 
+}
+
+button:hover {
+	background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+	background-color:#e9e9e9;
+}
+
+button:active {
+	position:relative;
+	top:1px;
+}
+
+
+
+.inline-button-wrapper {
+  display: inline-block;
+}
+
+.inline-button-wrapper input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  display: inline-block;
+  width: 75%;
+}
+
+.inline-button-wrapper button {
+  display: inline-block;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding-left: 5px;
+  width: 25%;
+}
+
+.button-inside {
+  margin-left: -20%;
+  border: none;
+  background-color: transparent;
+}
+
+.spacer {
+  flex: 1;
+}
+
+svg.material-icons {
+  height: 24px;
+  width: auto;
+}
+
+svg.material-icons:not(:last-child) {
+  margin-right: 8px;
+}
+
+.card svg.material-icons path {
+  fill: #888;
+}
+
+.card {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  height: 40px;
+  width: 200px;
+  margin: 0 8px 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  line-height: 24px;
+}
+
+.card.card-small {
+  box-sizing : border-box;
+  height: 40px;
+  width: 100%;
+  margin: 0px;
+  padding: 0;
+}
+
+.card.highlight-card {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border: none;
+  width: auto;
+  min-width: 30%;
+  position: relative;
+}
+
+.card.card.highlight-card span {
+  margin-left: 60px;
+}
+
+/* style for elements placed by router-outlet */
+#router-outlet + * {
+  width: 100%;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 767px) {
+  .card:not(.highlight-card) {
+    height: 16px;
+    margin: 8px 0;
+  }
+
+  .card.highlight-card span {
+    margin-left: 72px;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

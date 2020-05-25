@@ -8,15 +8,15 @@
 
 <!-- Main Panel -->
 <div class="content" role="main">
-  <router-outlet (activate)="onActivate($event)" ></router-outlet>
+  <router-outlet id="router-outlet" (activate)="onActivate($event)" ></router-outlet>
 
   <!-- Links -->
   <!-- TODO: links -->
   <!-- <app-links></app-links> -->
-
-  <!-- Messages -->
-  <app-messages></app-messages>
-
-  <!-- Footer -->
-  <app-footer></app-footer>
 </div>
+
+<!-- Messages -->
+<app-messages></app-messages>
+
+<!-- Footer -->
+<app-footer></app-footer>

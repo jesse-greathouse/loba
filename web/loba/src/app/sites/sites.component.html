@@ -1,17 +1,18 @@
-<div>
-  <label>New Site:
-    <input #domain />
-  </label>
+<div id="new-site" class="inline-button-wrapper">
+  <input #domain placeholder="New Site" />
   <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add(domain.value); domain.value=''">
-    add
-  </button>
+  <button (click)="add(domain.value); domain.value=''"
+          class="" >Add</button>
 </div>
 
-<ul class="sites">
+<ul id="sites">
   <li *ngFor="let site of sites" >
-    <a routerLink="/site/{{site.domain}}">
-      {{site.domain}}
+    <a  [ngxFitText] 
+        [ngxFitTextMin]="16"
+        [ngxFitTextMax]="20"
+        class="card card-small" 
+        routerLink="/site/{{site.domain}}" >
+      {{site.domain | slice : 0 : 24 }} 
     </a>
   </li>
 </ul>
