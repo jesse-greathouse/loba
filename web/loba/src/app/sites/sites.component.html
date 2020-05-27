@@ -1,9 +1,10 @@
-<div id="new-site" class="inline-button-wrapper">
-  <input #domain placeholder="New Site" />
-  <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add(domain.value); domain.value=''"
-          class="" >Add</button>
-</div>
+<mat-form-field id="new-site" >
+  <mat-label>New Site</mat-label>
+  <input matInput type="text" #domain placeholder="www.mysite.com" >
+  <button mat-button *ngIf="domain" matSuffix mat-icon-button aria-label="Create" (click)="add(domain.value); domain.value=''" >
+    <mat-icon>add_box</mat-icon>
+  </button>
+</mat-form-field>
 
 <ul id="sites">
   <li *ngFor="let site of sites" >

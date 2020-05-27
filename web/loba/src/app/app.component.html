@@ -2,12 +2,15 @@
 <app-toolbar></app-toolbar>
 
 <!-- Side Navigation -->
-<div class="sidenav">
+<mat-sidenav mode="side" opened id="sidenav">
   <app-sites [refresh]="refresh"></app-sites>
-</div>
+</mat-sidenav>
 
 <!-- Main Panel -->
 <div class="content" role="main">
+  <div *ngIf="isLoading | async" id="spinner-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
   <router-outlet id="router-outlet" (activate)="onActivate($event)" ></router-outlet>
 
   <!-- Links -->
@@ -16,7 +19,8 @@
 </div>
 
 <!-- Messages -->
-<app-messages></app-messages>
+<!-- TODO: Make an interacrtive panel for message log -->
+<!-- <app-messages></app-messages> -->
 
 <!-- Footer -->
 <app-footer></app-footer>

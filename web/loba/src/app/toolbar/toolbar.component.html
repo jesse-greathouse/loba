@@ -1,11 +1,23 @@
-<div class="toolbar" role="banner">
-    <img
-        width="40" height="40"
-        alt="Loba Logo"
-        src="/assets/loba-logo.png"
-    />
-    <span>Loba</span>
+<mat-toolbar id="top-toolbar">
+    <div id="logo-container">
+        <img class="logo-image"
+            alt="Loba Logo"
+            src="/assets/loba-logo.png"
+        />
+        <div class="logo-text" >Loba</div>
+    </div>
+
+    <div id="middle-menu-container"></div>
+
     <nav>
-        <a routerLink="">Sites</a>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+            <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="goHome()">
+                <mat-icon>info</mat-icon>
+                <span> <a routerLink="">About</a></span>
+            </button>
+        </mat-menu>
     </nav>
-</div>
+</mat-toolbar>

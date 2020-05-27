@@ -1,13 +1,42 @@
 /* The sidebar menu */
-.sidenav {
+#sidenav {
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   width: 240px; /* Set the width of the sidebar */
-  z-index: 2; /* Stay on top */
+  z-index: 1; /* Stay on top */
   top: 60px; /* Stay at the top */
   bottom: 30px; /* Stay at the top */
   left: 0;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding: 20px 20px 0 20px;
+  border: 0;
+}
+
+#sidenav::-webkit-scrollbar {
+  width: 5px;
+}
+
+#sidenav::-webkit-scrollbar * {
+  background:transparent;
+}
+
+#sidenav::-webkit-scrollbar-thumb {
+  background:rgba(155, 155, 155, 0.336) !important;
+}
+
+#sidenav::-webkit-scrollbar-track {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=) repeat-y !important;
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=) repeat-y !important;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=) repeat-y !important;
+}
+
+#sidenav:focus {
+  outline:none;
 }
 
 /* Structural frame element of layout */
@@ -16,7 +45,8 @@
   flex-direction: column;
   align-items: center;
   top: 60px;
-  margin: 82px 30px 30px 280px; /* greater than the width + padding of the sidebar */
+  height: 84%;
+  margin: 82px 30px 80px 280px; /* greater than the width + padding of the sidebar */
   padding: 0 20px 0 20px;
 }
 
@@ -24,7 +54,15 @@
   width: 100%;
 }
 
+#spinner-wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  #sidenav {padding-top: 15px;}
+  #sidenav a {font-size: 18px;}
 }

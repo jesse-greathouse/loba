@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import { Site } from '../site';
 import { SiteService } from '../site.service';
+import { IsLoadingService } from '../is-loading.service';
 
 @Component({
   host: {
@@ -18,17 +19,13 @@ export class SiteDetailComponent implements OnInit {
   @Output() siteUpdated: EventEmitter<Site> = new EventEmitter();
 
   constructor(
-    private siteService: SiteService, 
+    private siteService: SiteService,
     private route: ActivatedRoute,
+    private isLoadingService: IsLoadingService,
     private router: Router) {
 
       this.router.events.subscribe(event => {
-        if (event instanceof NavigationStart) {
-          // TODO: Show loading indicator
-        }
-
         if (event instanceof NavigationEnd) {
-          // TODO: Hide loading indicator
           this.loadSiteDetail();
         }
       });
@@ -47,13 +44,21 @@ export class SiteDetailComponent implements OnInit {
   }
 
   getSiteByDomain(domain: string): void {
+    this.isLoadingService.add();
     this.siteService.getSiteByDomain(domain)
-      .subscribe(site => this.site = site);
+      .subscribe(site => {
+        this.site = site;
+        this.isLoadingService.remove();
+      });
   }
 
   getSite(id: number): void {
+    this.isLoadingService.add();
     this.siteService.getSite(id)
-      .subscribe(site => this.site = site);
+      .subscribe(site => {
+        this.site = site;
+        this.isLoadingService.remove();
+      });
   }
 
   focusOut(): void {
@@ -61,9 +66,11 @@ export class SiteDetailComponent implements OnInit {
   }
 
   save(): void {
+    this.isLoadingService.add();
     this.siteService.updateSite(this.site)
       .subscribe(site => {
         this.site = site;
+        this.isLoadingService.remove();
         this.siteUpdated.emit(this.site);
       });
   }

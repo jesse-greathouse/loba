@@ -1,5 +1,9 @@
 #new-site {
-  margin: 10px 0 10px 0;
+  width: 100%;
+}
+
+#new-site button {
+  font-size: 26px;
 }
 
 #sites {
