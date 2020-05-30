@@ -40,4 +40,10 @@ export class UpstreamService extends BaseService {
   deleteUpstream(upstream: Upstream | number): Observable<Upstream> {
     return this.delete(upstream);
   }
+
+  protected transform(data: any) {
+    data = super.transform(data);
+    data.consistent = (data.consistent) ? true : false;
+    return data;
+  }
 }

@@ -1,0 +1,25 @@
+<div *ngIf="site.upstream" id="site-detail">
+  <app-method [selectedMethod]="site.upstream.method" 
+              (methodSelected)="changeMethod($event.value)">
+  </app-method>
+
+  <mat-form-field  class="field">
+    <mat-label>hash</mat-label>
+    <input
+        matInput
+        [formControl]="hashFormControl"
+        [errorStateMatcher]="hashMatcher"
+        (focusout)="focusOut()" />
+    <mat-hint>User‑defined key</mat-hint>
+    <mat-error *ngIf="site.upstream.method.id == 4 && hashFormControl.hasError('required')">
+      This field is required for Generic Hash
+    </mat-error>
+  </mat-form-field>
+
+  <mat-checkbox class="field"
+      [(ngModel)]="site.upstream.consistent"
+      [disabled]="site.upstream.method.id != 4"
+      (change)="focusOut()" >
+    consistent
+  </mat-checkbox>
+</div>

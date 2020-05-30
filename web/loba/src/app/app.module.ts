@@ -1,6 +1,6 @@
 // Angular
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // Anguar Material
@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Platform Browser
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,6 +39,9 @@ import { LinksComponent } from './links/links.component';
 import { SitesComponent } from './sites/sites.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SiteDetailComponent } from './site-detail/site-detail.component';
+import { UpstreamComponent } from './upstream/upstream.component';
+import { MethodComponent } from './method/method.component';
+import { ServersComponent } from './servers/servers.component';
 
 
 @NgModule({
@@ -48,10 +53,14 @@ import { SiteDetailComponent } from './site-detail/site-detail.component';
     LinksComponent,
     SitesComponent,
     MessagesComponent,
-    SiteDetailComponent
+    SiteDetailComponent,
+    UpstreamComponent,
+    MethodComponent,
+    ServersComponent,
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -65,7 +74,9 @@ import { SiteDetailComponent } from './site-detail/site-detail.component';
     MatInputModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   exports: [
     MatSidenavModule,
@@ -77,7 +88,9 @@ import { SiteDetailComponent } from './site-detail/site-detail.component';
     MatButtonModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     HttpInterceptorProviders,

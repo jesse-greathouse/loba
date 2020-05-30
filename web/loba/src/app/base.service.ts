@@ -41,7 +41,7 @@ export class BaseService {
     return this.http.get<any>(url).pipe(
       tap(_ => this.log(`fetched ${this.resourceName} id: ${id}`)),
       map((resp: any) => {
-        return resp.data;
+        return this.transform(resp.data);
       }),
       catchError(this.handleError<any>(`get${this.capResourceName}: ${id}`))
     );
@@ -53,7 +53,7 @@ export class BaseService {
     return this.http.put(url, ob, this.httpOptions).pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
-        return resp.data;
+        return this.transform(resp.data);
       }),
       catchError(this.handleError<any>(`update${this.capResourceName}`))
     );
@@ -64,7 +64,7 @@ export class BaseService {
     return this.http.post<any>(this.apiUrl, ob, this.httpOptions).pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
-        return resp.data;
+        return this.transform(resp.data);
       }),
       catchError(this.handleError<any>(`add${this.capResourceName}`))
     );
@@ -81,9 +81,26 @@ export class BaseService {
     );
   }
 
+  protected clean(data: any) {
+    if (data === null || typeof(data) !== "object") return data;
+
+    Object.keys(data).forEach((key, i) => {
+      if (typeof(data[key]) === "object") {
+        data[key] = this.clean(data[key]);
+      } else {
+        if (data[key] === "NULL") data[key] = null;
+      }
+    })
+    return data;
+  }
+
   /** Log a SiteService message with the MessageService */
   protected log(message: string, level: string|false = false) {
     this.messageService.add(message, level, `${this.capResourceName}Service: `);
+  }
+
+  protected transform(data: any) {
+    return this.clean(data);
   }
 
   /**
@@ -94,7 +111,7 @@ export class BaseService {
    */
   protected handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      const message = (typeof error.error.meta !== "undefined") 
+      const message = (typeof error.error !== "undefined"  && typeof error.error.meta !== "undefined") 
         ? error.error.meta.message : error.message;
 
       // TODO: send the error to remote logging infrastructure

@@ -20,6 +20,8 @@ export class TransformerInterceptor implements HttpInterceptor {
         // Distribute transform based on request url
         if (/^api\/site/.test(req.url)) {
           this.transformSite(newBody);
+        } else if (/^api\/upstream/.test(req.url)) {
+          this.transformUpstream(newBody);
         }
 
         // return a clone of the request with the transformed body
@@ -32,5 +34,19 @@ export class TransformerInterceptor implements HttpInterceptor {
 
   transformSite(body: any): void {
     body.active = (body.active) ? 1 : 0;
+
+    // remove unused input from the request
+    delete body.upstream;
+  }
+
+  transformUpstream(body: any): void {
+    body.method_id = body.method.id;
+    body.site_id = body.site.id;
+    body.consistent = (body.consistent) ? 1 : 0;
+
+    // remove unused input from the request
+    delete body.method;
+    delete body.site;
+    delete body.servers;
   }
 }

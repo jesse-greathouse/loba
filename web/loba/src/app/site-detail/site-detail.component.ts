@@ -34,6 +34,10 @@ export class SiteDetailComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  focusOut(): void {
+    this.save();
+  }
+
   loadSiteDetail(): void {
     const domain = this.route.snapshot.paramMap.get('domain');
     // If a domain is requested and it's not the same as the currently diplayed domain
@@ -59,10 +63,6 @@ export class SiteDetailComponent implements OnInit {
         this.site = site;
         this.isLoadingService.remove();
       });
-  }
-
-  focusOut(): void {
-    this.save();
   }
 
   save(): void {

@@ -36,6 +36,7 @@ end
 
 function _M:post()
     local db = helpers.dbm(self.resource_name)
+    local resource = helpers.resource(self.resource_name)
     local args, err = self:get_post()
     if err then
         ngx.log(ngx.ERR, "bad post args: ", cjson.encode(args), " ", err)
@@ -46,6 +47,10 @@ function _M:post()
     if err then
         ngx.log(ngx.ERR, "Creating ", self.resource_name, " failed: ", cjson.encode(args), " ", err)
         return ngx.exit(500)
+    end
+
+    if resource then
+        o = resource:new(o)
     end
 
     self:response(o, string.format("Created new %s.", self.resource_name), 201)
@@ -70,6 +75,7 @@ end
 
 function _M:put()
     local db = helpers.dbm(self.resource_name)
+    local resource = helpers.resource(self.resource_name)
     local r = self:route_params()
 
     local o = db:get(r.id)
@@ -86,6 +92,10 @@ function _M:put()
         if err then
             ngx.log(ngx.ERR, "Updating ",  self.resource_name , ": ", r.id, " failed: ", cjson.encode(args), " ", err)
             return ngx.exit(500)
+        end
+
+        if resource then
+            o = resource:new(o)
         end
 
         self:response(o, string.format("Updated %s with id: %s.", self.resource_name, o.id))

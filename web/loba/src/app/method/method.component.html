@@ -1,0 +1,8 @@
+<mat-form-field  class="field">
+  <mat-label>Method</mat-label>
+  <mat-select name="method" [(value)]="selected" (selectionChange)="selectionChange($event)">
+    <mat-option *ngFor="let method of methods" [value]="method.id">
+      {{method.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

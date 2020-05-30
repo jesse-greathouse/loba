@@ -1,8 +1,10 @@
 <div *ngIf="site" id="site-detail">
-  <form id="site-form">
-    <mat-form-field>
+  <form id="site-form" >
+    <mat-form-field class="field">
       <mat-label>Domain</mat-label>
       <input matInput placeholder="www.mysite.com" [(ngModel)]="site.domain" (focusout)="focusOut()"  name="domain">
     </mat-form-field>
+
+    <app-upstream [site]="site"></app-upstream>
   </form>
 </div>

@@ -1323,8 +1323,12 @@ end
 local function _encode_param_types(args)
     local buf = new_tab(#args, 0)
 
-    for i, _ in ipairs(args) do
-        buf[i] = _set_byte2(MYSQL_TYPE_STRING)
+    for i, v in ipairs(args) do
+        if v ~= ngx.null then
+            buf[i] = _set_byte2(MYSQL_TYPE_STRING)
+        else
+            buf[i] = _set_byte2(MYSQL_TYPE_NULL)
+        end
     end
 
     return concat(buf, "")
@@ -1335,7 +1339,11 @@ local function _encode_param_values(args)
     local buf = new_tab(#args, 0)
 
     for i, v in ipairs(args) do
-        buf[i] = _to_binary_coded_string(tostring(v))
+        if v ~= ngx.null then
+            buf[i] = _to_binary_coded_string(tostring(v))
+        else
+            buf[i] = _to_binary_coded_string('NULL')
+        end
     end
 
     return concat(buf, "")
