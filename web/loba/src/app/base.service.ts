@@ -4,11 +4,12 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { MessageService } from './message.service';
+import { Transformable } from './transformable';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BaseService {
+export abstract class BaseService implements Transformable {
 
   protected apiUrl: string;
   private capResourceName: string;
@@ -81,6 +82,10 @@ export class BaseService {
     );
   }
 
+  transform(data: any): any {
+    return this.clean(data);
+  }
+
   protected clean(data: any) {
     if (data === null || typeof(data) !== "object") return data;
 
@@ -97,10 +102,6 @@ export class BaseService {
   /** Log a SiteService message with the MessageService */
   protected log(message: string, level: string|false = false) {
     this.messageService.add(message, level, `${this.capResourceName}Service: `);
-  }
-
-  protected transform(data: any) {
-    return this.clean(data);
   }
 
   /**

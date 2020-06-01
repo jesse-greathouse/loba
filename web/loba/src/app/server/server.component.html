@@ -1,0 +1,57 @@
+<div *ngIf="server" class="server-wrapper">
+  <div class="remove-button-container">
+    <button aria-label="Remove Server"
+      mat-mini-fab 
+      (click)="removeConfirm()" >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field  class="small">
+    <mat-label>host</mat-label>
+    <input 
+        matInput
+        name="host"
+        placeholder="127.0.0.1:5000"
+        [(ngModel)]="server.host"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="xsmall">
+    <mat-label>weight</mat-label>
+    <input
+        matInput
+        type="number"
+        name="weight"
+        [(ngModel)]="server.weight"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="xsmall">
+    <mat-label>fail timeout</mat-label>
+    <input
+        matInput
+        name="fail_timeout"
+        type="number"
+        [disabled]="lockHealth == true"
+        [(ngModel)]="server.fail_timeout"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="xsmall">
+    <mat-label>max fails</mat-label>
+    <input
+        matInput
+        name="max_fails"
+        type="number"
+        [disabled]="lockHealth == true"
+        [(ngModel)]="server.max_fails"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-checkbox class="field"
+    [(ngModel)]="server.backup"
+    (change)="focusOut()" >
+    backup
+  </mat-checkbox>
+</div>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { Transformable } from './transformable';
 import { BaseService } from './base.service';
 import { MessageService } from './message.service';
 import { Site } from './site';
@@ -10,7 +11,7 @@ import { Site } from './site';
 @Injectable({
   providedIn: 'root'
 })
-export class SiteService extends BaseService {
+export class SiteService extends BaseService implements Transformable {
 
   constructor(
       protected http: HttpClient,
@@ -28,7 +29,7 @@ export class SiteService extends BaseService {
     return this.http.get<Site>(url).pipe(
       tap(_ => this.log(`fetched site domain: ${domain}`, false)),
       map((resp: any) => {
-        return resp.data;
+        return this.transform(resp.data);
       }),
       catchError(this.handleError<Site>(`getSiteByDomain: ${domain}`))
     );
@@ -52,5 +53,13 @@ export class SiteService extends BaseService {
   /** DELETE: delete the site from the server */
   deleteSite(site: Site | number): Observable<Site> {
     return this.delete(site);
+  }
+
+  transform(data: any): any {
+    data = super.transform(data);
+    if (data.upstream !== null) {
+      data.upstream.servers = (Object.keys(data.upstream.servers).length === 0) ? [] : data.upstream.servers;
+    }
+    return data;
   }
 }

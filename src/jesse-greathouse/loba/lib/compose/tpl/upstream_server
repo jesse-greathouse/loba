@@ -1,1 +1,1 @@
-    server [% host %][% IF weight %] weight=[% hash %] [% END %][% IF backup %] backup [% END %][% IF max_fails %] max_fails=[% max_fails %] [% END %][% IF fail_timeout %] fail_timeout=[% max_fails %]s [% END %];
+    server [% host %][% IF weight AND weight !== 'NULL' %] weight=[% weight %] [% END %][% IF backup %] backup [% END %][% IF max_fails AND max_fails !== 'NULL' %] max_fails=[% max_fails %] [% END %][% IF fail_timeout AND fail_timeout !== 'NULL' %] fail_timeout=[% fail_timeout %]s [% END %];

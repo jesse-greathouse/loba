@@ -9,3 +9,30 @@
 .field {
   margin: 0 10px 10px 0;
 }
+
+#site-form button {
+  width: 24px;
+  height: 24px;
+  padding: 1px 2px 0 0;
+  /* background-color: #ff11008f; */
+  color: rgb(250, 250, 250); 
+}
+
+.remove-button-container .mat-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0;
+}
+
+::ng-deep .mat-mini-fab:not([class*=mat-elevation-z]) {
+  box-shadow: 0px 1px 2px -2px rgba(0, 0, 0, 0.12), 
+              2px 3px 2px 0px rgba(0, 0, 0, 0.10), 
+              0px 1px 22px 1px rgba(0, 0, 0, 0.08);
+}
+
+::ng-deep .mat-mini-fab, ::ng-deep .mat-mini-fab .mat-button-wrapper {
+  padding: 0;
+  line-height: 24px;
+}

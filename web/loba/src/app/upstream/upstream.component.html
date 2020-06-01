@@ -22,4 +22,72 @@
       (change)="focusOut()" >
     consistent
   </mat-checkbox>
+
+  <mat-accordion class="expansion-headers-align">
+    <mat-expansion-panel [expanded]="true" hideToggle >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Servers
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="filler"></div>
+          <mat-icon>storage</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="meta-controls" >
+        <mat-form-field id="new-server" class="small" >
+          <mat-label>New Server</mat-label>
+          <input matInput type="text" #host placeholder="127.0.0.1:5000" >
+          <button mat-button *ngIf="host" matSuffix mat-icon-button aria-label="Create" (click)="addServer(host.value); host.value=''" >
+            <mat-icon>add_box</mat-icon>
+          </button>
+        </mat-form-field>
+        
+        <div class="filler"></div>
+
+        <mat-form-field  class="xsmall">
+          <mat-label>fail timeout</mat-label>
+          <input
+              matInput
+              name="fail_timeout"
+              type="number"
+              [disabled]="lockHealth != true"
+              (focusout)="serverFocusOut()"
+              [(ngModel)]="fail_timeout" />
+        </mat-form-field>
+      
+        <mat-form-field  class="xsmall">
+          <mat-label>max fails</mat-label>
+          <input
+              matInput
+              name="max_fails"
+              type="number"
+              [disabled]="lockHealth != true"
+              (focusout)="serverFocusOut()"
+              [(ngModel)]="max_fails" />
+        </mat-form-field>
+
+        <mat-checkbox 
+          class="field"
+          name="lockHealth"
+          [(ngModel)]="lockHealth"
+          (change)="serverFocusOut()" >
+          lock
+        </mat-checkbox>
+      </div>
+
+      <div *ngFor="let server of site.upstream.servers" >
+        <app-server
+          [site]="site"
+          [lockHealth]="lockHealth"
+          [locked_fail_timeout]="fail_timeout"
+          [locked_max_fails]="max_fails"
+          [server]="server"
+          (serverRemoved)="getUpstream()" >
+        </app-server>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Platform Browser
 import { BrowserModule } from '@angular/platform-browser';
@@ -41,7 +43,9 @@ import { MessagesComponent } from './messages/messages.component';
 import { SiteDetailComponent } from './site-detail/site-detail.component';
 import { UpstreamComponent } from './upstream/upstream.component';
 import { MethodComponent } from './method/method.component';
-import { ServersComponent } from './servers/servers.component';
+import { ServerComponent } from './server/server.component';
+import { RemoveServerConfirmComponent } from './remove-server-confirm/remove-server-confirm.component';
+import { RemoveSiteConfirmComponent } from './remove-site-confirm/remove-site-confirm.component';
 
 
 @NgModule({
@@ -56,7 +60,9 @@ import { ServersComponent } from './servers/servers.component';
     SiteDetailComponent,
     UpstreamComponent,
     MethodComponent,
-    ServersComponent,
+    ServerComponent,
+    RemoveServerConfirmComponent,
+    RemoveSiteConfirmComponent
   ],
   imports: [
     FormsModule,
@@ -76,7 +82,9 @@ import { ServersComponent } from './servers/servers.component';
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatDialogModule
   ],
   exports: [
     MatSidenavModule,
@@ -90,7 +98,9 @@ import { ServersComponent } from './servers/servers.component';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatDialogModule
   ],
   providers: [
     HttpInterceptorProviders,

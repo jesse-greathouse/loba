@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Site } from '../site';
 import { SiteService } from '../site.service';
 import { IsLoadingService } from '../is-loading.service';
+import { RemoveSiteConfirmComponent } from '../remove-site-confirm/remove-site-confirm.component'
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   host: {
@@ -17,8 +19,10 @@ export class SiteDetailComponent implements OnInit {
 
   @Input() site: Site;
   @Output() siteUpdated: EventEmitter<Site> = new EventEmitter();
+  @Output() siteRemoved: EventEmitter<Site> = new EventEmitter();
 
   constructor(
+    public dialog: MatDialog,
     private siteService: SiteService,
     private route: ActivatedRoute,
     private isLoadingService: IsLoadingService,
@@ -73,6 +77,19 @@ export class SiteDetailComponent implements OnInit {
         this.isLoadingService.remove();
         this.siteUpdated.emit(this.site);
       });
+  }
+
+  removeConfirm(): void {
+    const dialogRef = this.dialog.open(RemoveSiteConfirmComponent, {
+      width: '400px',
+      data: { site: this.site }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.siteRemoved.emit(this.site);
+      }
+    });
   }
 
 }

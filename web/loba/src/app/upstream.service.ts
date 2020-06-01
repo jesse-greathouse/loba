@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { Transformable } from './transformable';
 import { BaseService } from './base.service';
 import { MessageService } from './message.service';
 import { Upstream } from './upstream';
@@ -9,7 +10,7 @@ import { Upstream } from './upstream';
 @Injectable({
   providedIn: 'root'
 })
-export class UpstreamService extends BaseService {
+export class UpstreamService extends BaseService implements Transformable {
 
   constructor(
     protected http: HttpClient,
@@ -41,9 +42,10 @@ export class UpstreamService extends BaseService {
     return this.delete(upstream);
   }
 
-  protected transform(data: any) {
+  transform(data: any) {
     data = super.transform(data);
     data.consistent = (data.consistent) ? true : false;
+    data.servers = (Object.keys(data.servers).length === 0) ? [] : data.servers;
     return data;
   }
 }

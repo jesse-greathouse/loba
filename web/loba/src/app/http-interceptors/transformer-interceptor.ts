@@ -22,6 +22,8 @@ export class TransformerInterceptor implements HttpInterceptor {
           this.transformSite(newBody);
         } else if (/^api\/upstream/.test(req.url)) {
           this.transformUpstream(newBody);
+        } else if (/^api\/server/.test(req.url)) {
+          this.transformServer(newBody);
         }
 
         // return a clone of the request with the transformed body
@@ -39,12 +41,21 @@ export class TransformerInterceptor implements HttpInterceptor {
     delete body.upstream;
   }
 
+  transformServer(body: any): void {
+    body.backup = (body.backup) ? 1 : 0;
+
+    // remove unused input from the request
+    if (!body.id) delete(body.id);
+    delete body.upstream;
+  }
+
   transformUpstream(body: any): void {
     body.method_id = body.method.id;
     body.site_id = body.site.id;
     body.consistent = (body.consistent) ? 1 : 0;
 
     // remove unused input from the request
+    if (!body.id) delete(body.id);
     delete body.method;
     delete body.site;
     delete body.servers;

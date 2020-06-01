@@ -51,5 +51,10 @@ export class AppComponent implements OnInit{
       this.refresh = (this.refresh == false);
       this.router.navigateByUrl(`/site/${site.domain}`);
     });
+
+    componentReference.siteRemoved.subscribe((site: Site) => {
+      this.refresh = (this.refresh == false);
+      this.router.navigateByUrl(``);
+    });
   }
 }

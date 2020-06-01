@@ -5,6 +5,12 @@
       <input matInput placeholder="www.mysite.com" [(ngModel)]="site.domain" (focusout)="focusOut()"  name="domain">
     </mat-form-field>
 
+    <button aria-label="Remove Site"
+      mat-mini-fab 
+      (click)="removeConfirm()" >
+      <mat-icon>close</mat-icon>
+    </button>
+
     <app-upstream [site]="site"></app-upstream>
   </form>
 </div>
