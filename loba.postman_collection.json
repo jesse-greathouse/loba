@@ -380,13 +380,18 @@
 											"type": "text"
 										},
 										{
-											"key": "weight",
+											"key": "backup",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "upstream_id",
 											"value": "1",
 											"type": "text"
 										},
 										{
-											"key": "backup",
-											"value": "0",
+											"key": "weight",
+											"value": "5",
 											"type": "text"
 										},
 										{
@@ -396,12 +401,7 @@
 										},
 										{
 											"key": "max_fails",
-											"value": "10",
-											"type": "text"
-										},
-										{
-											"key": "upstream_id",
-											"value": "1",
+											"value": "5",
 											"type": "text"
 										}
 									]
@@ -426,7 +426,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server/1",
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/server/2",
 									"protocol": "{{loba-protocol}}",
 									"host": [
 										"{{loba-domain}}{{loba-port}}"
@@ -434,7 +434,7 @@
 									"path": [
 										"api",
 										"server",
-										"1"
+										"2"
 									]
 								}
 							},
@@ -518,6 +518,246 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/user",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "someone@somewhere.com",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "John",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Doe",
+											"type": "text"
+										},
+										{
+											"key": "avatar_url",
+											"value": "https://i.pinimg.com/originals/c2/af/09/c2af0941a9eace5f0ba3dc63284d3860.jpg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/user",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/user/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user/:id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "someguy@somewhere.com",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "John",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Doe",
+											"type": "text"
+										},
+										{
+											"key": "avatar_url",
+											"value": "https://i.pinimg.com/originals/c2/af/09/c2af0941a9eace5f0ba3dc63284d3860.jpg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/user/1",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user/:id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/user/2",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "rpc",
+			"item": [
+				{
+					"name": "compose-sites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/rpc/compose-sites",
+							"protocol": "{{loba-protocol}}",
+							"host": [
+								"{{loba-domain}}{{loba-port}}"
+							],
+							"path": [
+								"rpc",
+								"compose-sites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reload-nginx",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/rpc/reload-nginx",
+							"protocol": "{{loba-protocol}}",
+							"host": [
+								"{{loba-domain}}{{loba-port}}"
+							],
+							"path": [
+								"rpc",
+								"reload-nginx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test-nginx",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/rpc/test-nginx",
+							"protocol": "{{loba-protocol}}",
+							"host": [
+								"{{loba-domain}}{{loba-port}}"
+							],
+							"path": [
+								"rpc",
+								"test-nginx"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "86503d75-81cd-4ed4-ac59-ceef77a7c0a3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "cda25860-37f1-4cdd-bb30-6a695aeca44e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			],
 			"protocolProfileBehavior": {}
