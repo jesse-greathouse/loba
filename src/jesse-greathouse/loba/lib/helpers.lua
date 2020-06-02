@@ -3,6 +3,30 @@ local env = require "env"
 
 local Helpers = {}
 
+function Helpers.get_perl_bin()
+    return env.OPT .. "/perl/bin/perl"
+end
+
+function Helpers.get_nginx_bin()
+    return env.OPT .. "/openresty/nginx/sbin/nginx"
+end
+
+function Helpers.get_nginx_conf()
+    return env.ETC .. "/nginx/nginx.conf"
+end
+
+-- Creates a string env var assignments
+function Helpers.get_env_str(...)
+    local args = {...}
+    local env_str = ""
+
+    for _, var in ipairs(args) do
+        env_str = string.format("%s %s=%s", env_str, var, env[var])
+    end
+
+    return env_str
+end
+
 function Helpers.is_debug()
     -- ngx.var are always string
     return ngx.var.DEBUG == "true"

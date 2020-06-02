@@ -11,6 +11,7 @@ _M.SRC = ngx.var.SRC
 _M.TMP = ngx.var.TMP
 _M.VAR = ngx.var.VAR
 _M.WEB = ngx.var.WEB
+_M.PORT = ngx.var.PORT
 _M.ADMIN_EMAIL = ngx.var.ADMIN_EMAIL
 _M.LOBA_DIR = ngx.var.LOBA_DIR
 _M.SQL_QUERY_DIR = ngx.var.SQL_QUERY_DIR
@@ -24,5 +25,6 @@ _M.DB_PASSWORD = ngx.var.DB_PASSWORD
 _M.DB_HOST = ngx.var.DB_HOST
 _M.DB_HOST = ngx.var.DB_HOST
 _M.DB_PORT = ngx.var.DB_PORT
+_M.PERL5LIB = _M.OPT .."/perl/lib/perl5"
 
 return _M

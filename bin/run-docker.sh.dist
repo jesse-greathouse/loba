@@ -91,6 +91,7 @@ docker run -d -p __PORT__:3000 \
     -e SQL_QUERY_DIR="/app/src/jesse-greathouse/loba/lib/sql/__DB_DRIVER__" \
     -e CACHE_DIR="/app/var/cache" \
     -e LOG_DIR="/app/var/logs" \
+    -e PORT="__PORT__" \
     -e REDIS_HOST="__REDIS_HOST__" \
     -e DB_DRIVER="__DB_DRIVER__" \
     -e DB_NAME="__DB_NAME__" \
