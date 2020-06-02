@@ -9,6 +9,7 @@
   flex-flow: row;
   background-color: #000000;
   color: white;
+  padding: 0 20px 0 20px;
   -webkit-box-shadow: 0px 6px 34px -9px rgba(0,0,0,0.45);
   -moz-box-shadow: 0px 6px 34px -9px rgba(0,0,0,0.45);
   box-shadow: 0px 6px 34px -9px rgba(0,0,0,0.45);
@@ -20,6 +21,8 @@
   font-weight: 600;
   align-items: center;
   flex-grow:0;
+  flex-shrink: 0;
+  width: 240px;
 }
 
 #logo-container .logo-text {
@@ -29,12 +32,13 @@
 #logo-container img {
   height: 40px;
   width: 40px;
-  margin: 0 16px;
+  margin: 0 20px 0 0;
 }
 
 #middle-menu-container {
   display: flex;
   width: 100%;
+  padding: 0 0 0 40px;
 }
 
 #top-toolbar nav {

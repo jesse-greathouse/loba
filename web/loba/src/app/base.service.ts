@@ -12,7 +12,7 @@ import { Transformable } from './transformable';
 export abstract class BaseService implements Transformable {
 
   protected apiUrl: string;
-  private capResourceName: string;
+  protected capResourceName: string;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
