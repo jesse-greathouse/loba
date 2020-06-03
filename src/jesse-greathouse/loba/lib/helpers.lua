@@ -15,6 +15,10 @@ function Helpers.get_nginx_conf()
     return env.ETC .. "/nginx/nginx.conf"
 end
 
+function Helpers.get_openssl_conf()
+    return env.SSL .. "/openssl.cnf"
+end
+
 -- Creates a string env var assignments
 function Helpers.get_env_str(...)
     local args = {...}

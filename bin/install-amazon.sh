@@ -51,7 +51,7 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 sudo yum -y update && sudo yum -y install \
     gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel \
-    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python 
+    zlib-devel zlib ncurses-devel cmake sendmail mariadb-devel python mariadb-client
 
 sudo easy_install supervisor
 

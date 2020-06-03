@@ -58,6 +58,8 @@ etc/*.service
 etc/*.conf
 etc/init.d/*.sh
 etc/*.plist
+etc/ssl/certs/*
+etc/ssl/private/*
 
 
 !etc/com.greathouse.technology.template.plist

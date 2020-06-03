@@ -53,7 +53,7 @@ YACC="$( brew --prefix bison )/bin/bison"
 brew upgrade
 
 brew install intltool icu4c autoconf automake python@3.8 gcc \
-  pcre curl-openssl libiconv pkg-config openssl@1.1
+  pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client
 
 export PATH=$PATH:/usr/local/mysql/bin
 

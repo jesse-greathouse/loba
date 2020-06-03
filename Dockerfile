@@ -34,8 +34,6 @@ RUN apk add --no-cache \
 RUN mkdir /app
 RUN mkdir /app/bin
 RUN mkdir /app/etc
-RUN mkdir /app/etc/pki
-RUN mkdir /app/etc/pki/tls
 RUN mkdir /app/opt
 RUN mkdir /app/tmp
 RUN mkdir /app/tmp/session

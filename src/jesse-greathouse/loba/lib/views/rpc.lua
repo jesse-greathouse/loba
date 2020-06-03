@@ -79,6 +79,32 @@ function _M:test_nginx()
   self:response(resp, string.format("run of %s exited with status: %s.", cmd, resp.status))
 end
 
+function _M:sscert()
+  local cmd = {}
+  local resp = {}
+  local args = ngx.req.get_uri_args()
+  if not args.domain then
+    ngx.log(ngx.ERR, "A domain name is required to create a self-signed certificate.")
+    ngx.exit(403);
+  end
+
+  cmd[#cmd+1] = "openssl req"
+  cmd[#cmd+1] = "-x509 -nodes -days 365 -newkey rsa:2048"
+  cmd[#cmd+1] = "-subj \"/CN=" .. args.domain .. "\""
+  cmd[#cmd+1] = "-config " .. helpers.get_openssl_conf()
+  cmd[#cmd+1] = "-keyout " .. env.SSL_PRIVATE .. "/" .. args.domain .. ".key"
+  cmd[#cmd+1] = "-out " .. env.SSL_CERTS .. "/" .. args.domain .. ".crt"
+
+  local ok, stdout, stderr, reason, status = shell.run(table.concat(cmd, " "))
+
+  resp.stdout = stdout
+  resp.stderr = stderr
+  resp.status = status
+  resp.ok = ok
+
+  self:response(resp, string.format("run of %s exited with status: %s.", table.concat(cmd, " "), resp.status))
+end
+
 function _M:error(message)
   ngx.req.read_body()
   local args = ngx.req.get_post_args()

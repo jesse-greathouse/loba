@@ -29,3 +29,6 @@ etc/nginx/upstream/*.conf
 etc/nginx/nginx.dist.conf
 etc/nginx/nginx.conf
 etc/nginx/*-e
+etc/ssl/certs/*.crt
+etc/ssl/certs/*.pem
+etc/ssl/private/*.key
