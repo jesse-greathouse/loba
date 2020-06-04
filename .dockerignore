@@ -15,6 +15,8 @@ Dockerfile
 supervisord.log
 supervisord.pid
 *error.log
+*.crt
+*.key
 
 bin/*
 !bin/install.sh
@@ -28,7 +30,10 @@ etc/nginx/server/*.conf
 etc/nginx/upstream/*.conf
 etc/nginx/nginx.dist.conf
 etc/nginx/nginx.conf
+etc/nginx/ssl-params.conf
+etc/nginx/force-ssl.conf
 etc/nginx/*-e
 etc/ssl/certs/*.crt
 etc/ssl/certs/*.pem
 etc/ssl/private/*.key
+etc/ssl/.rnd

@@ -2,7 +2,7 @@ local _M = { }
 
 _M.DEBUG = ngx.var.DEBUG == "true"
 _M.ENV = ngx.var.ENV
-_M.FORCE_SSL = ngx.var.FORCE_SSL == "true"
+_M.SSL = ngx.var.SSL == "true"
 _M.DIR = ngx.var.DIR
 _M.BIN = ngx.var.BIN
 _M.ETC = ngx.var.ETC

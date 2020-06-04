@@ -75,7 +75,7 @@ docker rm __SITE_NAME__
 docker run -d -p __PORT__:3000 \
     -e ENV=prod \
     -e DEBUG=__DEBUG__ \
-    -e FORCE_SSL=__FORCE_SSL__ \
+    -e SSL=__SSL__ \
     -e ADMIN_EMAIL=__ADMIN_EMAIL__ \
     -e DIR="/app" \
     -e BIN="/app/bin" \
@@ -102,6 +102,11 @@ docker run -d -p __PORT__:3000 \
     -v $(pwd)/error.log:/app/error.log \
     -v $(pwd)/supervisord.log:/app/supervisord.log \
     -v $(pwd)/etc/nginx/nginx.conf:/app/etc/nginx/nginx.conf \
+    -v $(pwd)/etc/nginx/ssl-params.conf:/app/etc/nginx/ssl-params.conf \
+    -v $(pwd)/etc/nginx/force-ssl.conf:/app/etc/nginx/force-ssl.conf \
+    -v $(pwd)/etc/ssl/certs/dhparam.pem:/app/etc/ssl/certs/dhparam.pem \
+    -v $(pwd)/etc/ssl/certs/loba.crt:/app/etc/ssl/certs/loba.crt \
+    -v $(pwd)/etc/ssl/private/loba.key:/app/etc/ssl/private/loba.key \
     -v $(pwd)/src/:/app/src \
     -v $(pwd)/web/:/app/web \
     --restart __RESTART_POLICY__ \

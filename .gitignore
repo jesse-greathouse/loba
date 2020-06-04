@@ -22,12 +22,17 @@
 # intellij
 *.idea/
 
+# certificates and private keys
+*.crt
+*.key
+
 # bin
 *-e
 /bin/*
 !bin/db-init.pl
 !bin/compose-sites.pl
 !bin/compile-modules.pl
+!bin/generate-diffie-hellman.pl
 !bin/wp.dist
 !bin/install-amazon.sh
 !bin/install-osx.sh
@@ -52,6 +57,8 @@
 etc/php/php.ini
 etc/php/php-fpm.conf
 etc/nginx/nginx.conf
+etc/nginx/ssl-params.conf
+etc/nginx/force-ssl.conf
 etc/nginx/upstream/*
 etc/nginx/server/*
 etc/*.service
@@ -60,6 +67,7 @@ etc/init.d/*.sh
 etc/*.plist
 etc/ssl/certs/*
 etc/ssl/private/*
+etc/ssl/.rnd
 
 
 !etc/com.greathouse.technology.template.plist

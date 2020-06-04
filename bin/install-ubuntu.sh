@@ -67,6 +67,7 @@ cd ${OPT}/openresty-*/
             --with-ipv6 \
             --with-http_iconv_module \
             --with-http_realip_module \
+            --with-http_ssl_module \
             -j2 && \
 make
 make install

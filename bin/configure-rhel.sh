@@ -42,11 +42,14 @@ BIN="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 TMP="$( cd -P "$DIR/tmp" && pwd )"
+OPT="$( cd -P "$DIR/opt" && pwd )"
 USER="$(whoami)"
 LOG="${DIR}/error.log"
 RUN_SCRIPT="${BIN}/run-rhel.sh"
 SERVICE_RUN_SCRIPT="${BIN}/run-rhel-service.sh"
 NGINX_CONF="${ETC}/nginx/nginx.conf"
+SSL_PARAMS_CONF="${ETC}/nginx/ssl-params.conf"
+FORCE_SSL_CONF="${ETC}/nginx/force-ssl.conf"
 
 printf "\n"
 printf "\n"
@@ -128,12 +131,49 @@ read REDIS_HOST
 if  [ "${REDIS_HOST}" == "" ]; then
     REDIS_HOST="127.0.0.1"
 fi
-printf "Force visitors to https? (y or n): "
-read -n 1 FORCE_SSL
-if  [ "${FORCE_SSL}" == "y" ]; then
-    FORCE_SSL="true"
+printf "Use https? (y or n): "
+read -n 1 SSL
+if  [ "${SSL}" == "y" ]; then
+    printf "\nDo you have a certificate and key pair?: (y or n): "
+    read -n 1 SSL_PAIR
+    if  [ "${SSL_PAIR}" == "y" ]; then
+        printf "\nPath to certificate: (/path/to/certificate.crt): "
+        read SSL_CERT
+        if  [ "${SSL_CERT}" == "" ]; then
+            printf "Please run this script again to enter the correct certificate location. \n"
+            exit 1
+        fi
+        if [ ! -f ${SSL_CERT} ]; then
+            printf "Certificate not found at: ${SSL_CERT}\n"
+            printf "Please run this script again to enter the correct certificate location. \n"
+            exit 1
+        fi
+
+        printf "Path to key: (/path/to/key.key): "
+        read SSL_KEY
+        if  [ "${SSL_KEY}" == "" ]; then
+            printf "Please run this script again to enter the correct key location. \n"
+            exit 1
+        fi
+        if [ ! -f ${SSL_KEY} ]; then
+            printf "Key not found at: ${SSL_KEY}\n"
+            printf "Please run this script again to enter the correct key location. \n"
+            exit 1
+        fi
+    else
+        printf "\nWould you like to create a self signed certificate and key pair? \n"
+        printf "!!WARNING: NOT RECOMMENDED FOR A PRODUCTION ENVIRONMENT!! \n"
+        printf "(y or n): "
+        read -n 1 SSL_SELF_SIGNED
+        if  [ "${SSL_SELF_SIGNED}" != "y" ]; then
+            printf "\nPlease run this script again to enter the correct SSL imputs. \n"
+            exit 1
+        fi
+    fi
+
+    SSL="true"
 else
-    FORCE_SSL="false"
+    SSL="false"
 fi
 printf "\nDebug (Not recommended for production environments) (y or n): "
 read -n 1 DEBUG
@@ -157,14 +197,30 @@ printf "Database User: ${DB_USER} \n"
 printf "Database Password: ${DB_PASSWORD} \n"
 printf "Database Port: ${DB_PORT} \n"
 printf "Redis Host: ${REDIS_HOST} \n"
-printf "Force Https: ${FORCE_SSL} \n"
+printf "Use Https: ${SSL} \n"
+if [ "${SSL}" == "true" ]; then
+    if  [ "${SSL_PAIR}" == "y" ]; then
+        printf "SSL Cert: ${SSL_CERT} \n"
+        printf "SSL Key: ${SSL_KEY} \n"
+    else
+        printf "Self signed key pair will be generated. \n"
+    fi
+fi
 printf "Debug: ${DEBUG} \n"
 printf "\n"
 printf "Is this correct (y or n): "
 read -n 1 CORRECT
 printf "\n"
 
+##==================================================================##
+## The configurations options are confirmed, start templating here. ##
+##==================================================================##
+
 if  [ "${CORRECT}" == "y" ]; then
+
+    ##============================
+    ## Template Run Script
+    ##============================
 
     if [ -f ${RUN_SCRIPT} ]; then
        rm ${RUN_SCRIPT}
@@ -179,11 +235,42 @@ if  [ "${CORRECT}" == "y" ]; then
     sed -i -e s/__DB_NAME__/"${DB_NAME}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_USER__/"${DB_USER}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_PASSWORD__/"${DB_PASSWORD}"/g ${RUN_SCRIPT}
-    sed -i -e s/__DB_PORT__/"${DB_PORT}"/g ${RUN_SCRIPT}
     sed -i -e s/__REDIS_HOST__/"${REDIS_HOST}"/g ${RUN_SCRIPT}
-    sed -i -e s/__FORCE_SSL__/"${FORCE_SSL}"/g ${RUN_SCRIPT}
+    sed -i -e s/__DB_PORT__/"${DB_PORT}"/g ${RUN_SCRIPT}
+    sed -i -e s/__SSL__/"${SSL}"/g ${RUN_SCRIPT}
     sed -i -e s/__DEBUG__/"${DEBUG}"/g ${RUN_SCRIPT}
     chmod +x ${RUN_SCRIPT}
+
+
+    ##==============================
+    ## Template the ssl-params.conf
+    ##==============================
+
+    # Generate Diffie-hellman param
+    ${OPT}/perl/bin/perl ${BIN}/generate-diffie-hellman.pl --etc ${ETC}
+
+    if [ -f ${SSL_PARAMS_CONF} ]; then
+       rm ${SSL_PARAMS_CONF}
+    fi
+    cp ${ETC}/nginx/ssl-params.dist.conf ${SSL_PARAMS_CONF}
+
+    sed -i -e "s __ETC__ $ETC g" ${SSL_PARAMS_CONF}
+
+
+    ##==============================
+    ## Template the force-ssl.conf
+    ##==============================
+
+    if [ -f ${FORCE_SSL_CONF} ]; then
+        rm ${FORCE_SSL_CONF}
+    fi
+    cp ${ETC}/nginx/force-ssl.dist.conf ${FORCE_SSL_CONF}
+    sed -i -e s/__SITE_DOMAINS__/"${SITE_DOMAINS}"/g ${FORCE_SSL_CONF}
+
+
+    ##==============================
+    ## Template the nginx.conf
+    ##==============================
 
     if [ -f ${NGINX_CONF} ]; then
        rm ${NGINX_CONF}
@@ -196,6 +283,77 @@ if  [ "${CORRECT}" == "y" ]; then
     sed -i -e s/__SITE_DOMAINS__/"${SITE_DOMAINS}"/g ${NGINX_CONF}
     sed -i -e s/__PORT__/"${PORT}"/g ${NGINX_CONF}
     sed -i -e s/__SESSION_SECRET__/"${SESSION_SECRET}"/g ${NGINX_CONF}
+
+    ## If the "Use https" option was selected, configure the nginx.conf for SSL
+    if [ "${SSL}" == "true" ]; then
+        SSL_FLAG="ssl"
+
+        ## Directives for the SSL cert and key
+        SSL_CERT_LINE="ssl_certificate\\ ${ETC}/ssl/certs/loba.crt;"
+        SSL_KEY_LINE="ssl_certificate_key\\ ${ETC}/ssl/private/loba.key;"
+    
+        ## If there is a SSL Key Pair, provided by the user, copy them in place
+        if  [ "${SSL_PAIR}" == "y" ]; then
+            # Checking to see if the provided key pair already exists
+            # If the user supplied a new key pair, then replace it
+            # If the key pair already exists, then  do nothing
+
+            # If the cert doesn't exist, copy into place
+            if [ ! -f ${ETC}/ssl/certs/loba.crt ]; then
+                cp ${SSL_CERT} ${ETC}/ssl/certs/loba.crt
+            else
+                ## if the provided cert is different, remove the old and replace it
+                if [ -n  "$(cmp ${ETC}/ssl/certs/loba.crt ${SSL_CERT})" ]; then
+                    rm ${ETC}/ssl/certs/loba.crt
+                    cp ${SSL_CERT} ${ETC}/ssl/certs/loba.crt
+                else
+                    printf "The provided cert is already in use. Skipping...\n"
+                fi
+            fi
+
+            # If the key doesn't exist, copy into place
+            if [ ! -f ${ETC}/ssl/private/loba.key ]; then
+                cp ${SSL_KEY} ${ETC}/ssl/private/loba.key
+            else
+                ## if the provided key is different, remove the old and replace it
+                if [ -n  "$(cmp ${ETC}/ssl/private/loba.key ${SSL_KEY})" ]; then
+                    rm ${ETC}/ssl/private/loba.key
+                    cp ${SSL_KEY} ${ETC}/ssl/private/loba.key
+                else
+                    printf "The provided key is already in use. Skipping...\n"
+                fi
+            fi
+
+        else
+            SSL_CERT="${ETC}/ssl/certs/loba.crt"
+            SSL_KEY="${ETC}/ssl/private/loba.key"
+            CORRECTED_DOMAINS=`echo ${SITE_DOMAINS} | sed 's/ /_/g'`
+            
+            if [[ ! -f ${SSL_CERT}  ||  ! -f ${SSL_KEY} ]]; then
+                rm ${SSL_CERT};
+                rm ${SSL_KEY};
+
+                openssl req \
+                -x509 -nodes -days 365 -newkey rsa:2048 \
+                -writerand ${ETC}/ssl/.rnd \
+                -subj "/CN=${CORRECTED_DOMAINS}" \
+                -config ${ETC}/ssl/openssl.cnf \
+                -keyout ${SSL_KEY} \
+                -out ${SSL_CERT}
+
+            else 
+                printf "SSL Key pair already exists. Skipping... \n"
+            fi
+        fi
+
+        INCLUDE_FORCE_SSL="include\\ ${FORCE_SSL_CONF};"
+    fi
+
+    ## Template lines will be blank if the "Use https" option was not selected
+    sed -i -e s/__SSL__/${SSL_FLAG}/g ${NGINX_CONF}
+    sed -i -e "s __SSL_CERT_LINE__ $SSL_CERT_LINE g" ${NGINX_CONF}
+    sed -i -e "s __SSL_KEY_LINE__ $SSL_KEY_LINE g" ${NGINX_CONF}
+    sed -i -e "s __INCLUDE_FORCE_SSL__ $INCLUDE_FORCE_SSL g" ${NGINX_CONF}
 
 printf "\n"
 printf "\n"
