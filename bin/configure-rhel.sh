@@ -48,6 +48,7 @@ LOG="${DIR}/error.log"
 RUN_SCRIPT="${BIN}/run-rhel.sh"
 SERVICE_RUN_SCRIPT="${BIN}/run-rhel-service.sh"
 NGINX_CONF="${ETC}/nginx/nginx.conf"
+SSL_CONF="${ETC}/ssl/openssl.cnf"
 SSL_PARAMS_CONF="${ETC}/nginx/ssl-params.conf"
 FORCE_SSL_CONF="${ETC}/nginx/force-ssl.conf"
 
@@ -217,6 +218,16 @@ printf "\n"
 ##==================================================================##
 
 if  [ "${CORRECT}" == "y" ]; then
+
+    ##============================
+    ## Template SSL Config
+    ##============================
+
+    if [ -f ${SSL_CONF} ]; then
+       rm ${SSL_CONF}
+    fi
+    cp ${ETC}/ssl/openssl.dist.cnf ${SSL_CONF}
+    sed -i -e "s __ETC__ $ETC g" ${SSL_CONF}
 
     ##============================
     ## Template Run Script

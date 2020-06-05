@@ -68,7 +68,9 @@ foreach my $site (@sites) {
 
     # Get upstream data of the site
     my %upstream = get_upstream($site->{id});
-    $upstream{'port'} = $port;
+
+    # If upstream is marked as SSL use the standard SSL port
+    $upstream{'port'} = ($upstream{'ssl'}) ? '443' : $port;
 
     # Create the upstream config from template
     my $upstreamConfFile = "$upstreamDir/" . $site->{domain} . ".conf";
@@ -137,12 +139,13 @@ sub get_upstream {
         or die("Can't prepare " . $queries{"selectUpstream"}{query});
     $sth->bind_param(1, $id);
     $sth->execute();
-    my ($domain, $directive, $hash, $consistent) = $sth->fetchrow_array();
+    my ($domain, $directive, $hash, $consistent, $ssl) = $sth->fetchrow_array();
     my @servers = get_upstream_servers($id);
     my %upstream = (domain      => $domain, 
                     directive   => $directive, 
                     hash        => $hash, 
                     consistent  => $consistent,
+                    ssl         => $ssl,
                     servers     => \@servers,
     );
 

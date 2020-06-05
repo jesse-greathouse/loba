@@ -236,7 +236,8 @@ export class UpstreamComponent implements OnInit, OnChanges {
       servers: [],
       method: method,
       hash: null,
-      consistent: false
+      consistent: false,
+      ssl: false,
     }
   }
 

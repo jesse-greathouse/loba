@@ -53,6 +53,7 @@ export class TransformerInterceptor implements HttpInterceptor {
     body.method_id = body.method.id;
     body.site_id = body.site.id;
     body.consistent = (body.consistent) ? 1 : 0;
+    body.ssl = (body.ssl) ? 1 : 0;
 
     // remove unused input from the request
     if (!body.id) delete(body.id);

@@ -45,6 +45,7 @@ export class UpstreamService extends BaseService implements Transformable {
   transform(data: any) {
     data = super.transform(data);
     data.consistent = (data.consistent) ? true : false;
+    data.ssl = (data.ssl) ? true : false;
     data.servers = (Object.keys(data.servers).length === 0) ? [] : data.servers;
     return data;
   }

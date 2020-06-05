@@ -1,4 +1,4 @@
-SELECT `site`.`domain`, `method`.`directive`, `upstream`.`hash`, `upstream`.`consistent`
+SELECT `site`.`domain`, `method`.`directive`, `upstream`.`hash`, `upstream`.`consistent`, `upstream`.`ssl`
 FROM `upstream`
 INNER JOIN `site` ON  `site`.`id` = `upstream`.`site_id`
 INNER JOIN `method` ON `method`.`id` = `upstream`.`method_id`

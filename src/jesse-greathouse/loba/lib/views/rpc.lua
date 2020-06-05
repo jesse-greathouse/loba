@@ -90,7 +90,6 @@ function _M:sscert()
 
   cmd[#cmd+1] = "openssl req"
   cmd[#cmd+1] = "-x509 -nodes -days 365 -newkey rsa:2048"
-  cmd[#cmd+1] = "-writerand " .. env.SSL .. "/.rnd"
   cmd[#cmd+1] = "-subj \"/CN=" .. args.domain .. "\""
   cmd[#cmd+1] = "-config " .. helpers.get_openssl_conf()
   cmd[#cmd+1] = "-keyout " .. env.SSL_PRIVATE .. "/" .. args.domain .. ".key"

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `upstream` (
   `method_id` INT NOT NULL,
   `hash` VARCHAR(255) NULL,
   `consistent` TINYINT NOT NULL DEFAULT 0,
+  `ssl` TINYINT(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `id_site_id` (`site_id` ASC),
   INDEX `id_method_id` (`method_id` ASC),

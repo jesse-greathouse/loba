@@ -23,6 +23,13 @@
     consistent
   </mat-checkbox>
 
+  <mat-checkbox class="field"
+    [(ngModel)]="site.upstream.ssl"
+    [disabled]="site.upstream.method.id != 4"
+    (change)="focusOut()" >
+    consistent
+  </mat-checkbox>
+
   <mat-accordion class="expansion-headers-align">
     <mat-expansion-panel [expanded]="true" hideToggle >
       <mat-expansion-panel-header>

@@ -37,3 +37,6 @@ etc/ssl/certs/*.crt
 etc/ssl/certs/*.pem
 etc/ssl/private/*.key
 etc/ssl/.rnd
+etc/ssl/.oid
+etc/ssl/openssl.cnf
+etc/ssl/CA/*

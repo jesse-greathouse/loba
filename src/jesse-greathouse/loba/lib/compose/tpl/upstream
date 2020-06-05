@@ -1,5 +1,5 @@
 upstream [% domain %] {
-    [% IF directive %][% directive %][% IF hash %] [% hash %][% IF consistent %] consistent[% END %][% END %];[% END %] 
+    [% IF directive %][% directive %][% IF hash %] [% hash %][% IF consistent %] consistent[% END %][% END %];[% END %]
 [% FOREACH server IN servers -%]
 [% INCLUDE upstream_server
     host            = server.host,

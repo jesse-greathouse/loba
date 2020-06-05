@@ -107,6 +107,7 @@ docker run -d -p __PORT__:3000 \
     -v $(pwd)/etc/ssl/certs/dhparam.pem:/app/etc/ssl/certs/dhparam.pem \
     -v $(pwd)/etc/ssl/certs/loba.crt:/app/etc/ssl/certs/loba.crt \
     -v $(pwd)/etc/ssl/private/loba.key:/app/etc/ssl/private/loba.key \
+    -v $(pwd)/etc/ssl/openssl.cnf:/app/etc/ssl/openssl.cnf \
     -v $(pwd)/src/:/app/src \
     -v $(pwd)/web/:/app/web \
     --restart __RESTART_POLICY__ \

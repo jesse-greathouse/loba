@@ -1,7 +1,10 @@
 server {
-    listen [% port %];
+    listen [% port %][% IF ssl == 1 %] ssl[% END %];
     server_name [% domain %];
-
+    [% IF ssl == 1 %]
+    ssl_certificate ../ssl/certs/[% domain %].crt;
+    ssl_certificate_key ../ssl/private/[% domain %].key;
+    [% END %]
     access_log ../../../var/logs/[% domain %]/access.log proxy_pass_access;
     error_log ../../../var/logs/[% domain %]/error.log warn;
 

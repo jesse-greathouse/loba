@@ -9,4 +9,5 @@ export interface Upstream {
   method: Method;
   hash: string;
   consistent: boolean;
+  ssl: boolean;
 }
