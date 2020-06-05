@@ -344,8 +344,13 @@ if  [ "${CORRECT}" == "y" ]; then
             CORRECTED_DOMAINS=`echo ${SITE_DOMAINS} | sed 's/ /_/g'`
             
             if [[ ! -f ${SSL_CERT}  ||  ! -f ${SSL_KEY} ]]; then
-                rm ${SSL_CERT};
-                rm ${SSL_KEY};
+                if [ -f ${SSL_CERT} ]; then
+                    rm ${SSL_CERT};
+                fi
+
+                if [ -f ${SSL_KEY} ]; then
+                    rm ${SSL_KEY};
+                fi
 
                 openssl req \
                 -x509 -nodes -days 365 -newkey rsa:2048 \
