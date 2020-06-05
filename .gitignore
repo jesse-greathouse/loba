@@ -87,9 +87,13 @@ error.log
 varcache/
 var/cache/*
 var/logs/*
+var/upload/*
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 !var/logs/loba/.gitkeep
+!var/upload/.gitkeep
+!var/upload/certs/.gitkeep
+!var/upload/private/.gitkeep
 
 # tmp
 tmp/
