@@ -234,16 +234,9 @@ local function _from_cstring(data, i)
     return sub(data, i, last), last + 1
 end
 
-
 local function _to_cstring(data)
     return data .. "\0"
 end
-
-
-local function _to_binary_coded_string(data)
-    return strchar(#data) .. data
-end
-
 
 local function _dump(data)
     local len = #data
@@ -254,7 +247,6 @@ local function _dump(data)
     return concat(bytes, " ")
 end
 
-
 local function _dumphex(data, con_str)
     local len = #data
     local bytes = new_tab(len, 0)
@@ -264,6 +256,26 @@ local function _dumphex(data, con_str)
     return concat(bytes, con_str or " ")
 end
 
+local function _encode_varnum(num)
+    if num <= 250 then return strchar(num) end
+
+    --  An unsigned short (16-bit)
+    if num <= 0xffff then
+        return strchar(252) .. _set_byte2(num)
+    end
+
+    -- An unsigned long (32-bit)
+    if num <= 0xffffffff then
+        return strchar(253) .._set_byte3(num)
+    end
+
+    --An unsigned long (greater than 32-bit)
+    return strchar(254) .. _set_byte4(num)
+end
+
+local function _to_binary_coded_string(data)
+    return _encode_varnum(#data) .. data
+end
 
 local function _compute_token(password, scramble)
     if password == "" then

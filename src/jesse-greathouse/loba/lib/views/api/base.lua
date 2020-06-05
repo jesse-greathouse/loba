@@ -9,6 +9,7 @@ local mt = { __index = _M }
 
 local CONTENT_TYPE_X_WWW_FORM_URLENCODED    = "application/x-www-form-urlencoded"
 local CONTENT_TYPE_APPLICATION_JSON         = "application/json"
+local CONTENT_TYPE_MULTIPART_FORM_DATA      = "multipart/form-data"
 
 function _M:get()
     local db = helpers.dbm(self.resource_name)
@@ -131,6 +132,10 @@ function _M:get_post()
     local post = ngx.req.get_post_args()
     if ct == CONTENT_TYPE_X_WWW_FORM_URLENCODED then
         return post
+    elseif helpers.starts_with(ct, CONTENT_TYPE_MULTIPART_FORM_DATA) then
+        local Multipart = require("multipart")
+        local multipart_data = Multipart(ngx.var.request_body, ct)
+        return multipart_data:get_all()
     elseif ct == CONTENT_TYPE_APPLICATION_JSON then
         -- loop through the weird table
         -- decode the first key that has a value of true

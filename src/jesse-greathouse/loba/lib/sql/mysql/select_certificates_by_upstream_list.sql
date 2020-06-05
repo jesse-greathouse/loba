@@ -1,0 +1,1 @@
+SELECT * FROM `upstream_certificate` WHERE `upstream_id` IN  (?) ORDER BY `upstream_id`;

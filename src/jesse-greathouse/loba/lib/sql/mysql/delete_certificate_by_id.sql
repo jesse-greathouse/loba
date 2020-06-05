@@ -1,0 +1,1 @@
+DELETE FROM `upstream_certificate` WHERE id = ?;

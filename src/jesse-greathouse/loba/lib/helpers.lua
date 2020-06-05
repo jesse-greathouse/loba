@@ -264,4 +264,12 @@ function Helpers.get_stacktrace()
     return trace
 end
 
+function Helpers.starts_with(str, start)
+    return str:sub(1, #start) == start
+end
+
+function Helpers.ends_with(str, ending)
+    return ending == "" or str:sub(-#ending) == ending
+end
+
 return Helpers
