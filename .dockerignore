@@ -3,7 +3,6 @@ opt/openresty/
 opt/php/
 opt/perl/
 opt/lua-5.1.2/
-var/
 *-e
 tmp/
 vendor/
@@ -40,3 +39,8 @@ etc/ssl/.rnd
 etc/ssl/.oid
 etc/ssl/openssl.cnf
 etc/ssl/CA/*
+
+var/
+var/cache/*
+var/logs/*
+var/upload/*
