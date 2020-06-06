@@ -13,22 +13,26 @@ export class TransformerInterceptor implements HttpInterceptor {
       // Only transform the request body on POST or PUT
       if (req.method == "POST" || req.method == "PUT") {
 
-        // Don't modify the request directly 
-        // instead, make a copy
-        const newBody = { ...req.body };
+        // dont mess with the req.body if its a FormData type
+        if (!(req.body instanceof FormData)) {
 
-        // Distribute transform based on request url
-        if (/^api\/site/.test(req.url)) {
-          this.transformSite(newBody);
-        } else if (/^api\/upstream/.test(req.url)) {
-          this.transformUpstream(newBody);
-        } else if (/^api\/server/.test(req.url)) {
-          this.transformServer(newBody);
+          // Don't modify the request directly
+          // instead, make a copy
+          const newBody = { ...req.body };
+
+          // Distribute transform based on request url
+          if (/^api\/site/.test(req.url)) {
+            this.transformSite(newBody);
+          } else if (/^api\/upstream/.test(req.url)) {
+            this.transformUpstream(newBody);
+          } else if (/^api\/server/.test(req.url)) {
+            this.transformServer(newBody);
+          }
+
+          // return a clone of the request with the transformed body
+          const newReq = req.clone({ body: newBody });
+          return next.handle(newReq);
         }
-
-        // return a clone of the request with the transformed body
-        const newReq = req.clone({ body: newBody });
-        return next.handle(newReq);
       }
 
       return next.handle(req);

@@ -1,7 +1,9 @@
 -- helper functions for accplimplishing tasks
 local env = require "env"
-
 local Helpers = {}
+
+local CERT_DOWNLOAD_STR = "/download/certificate/%s"
+local KEY_DOWNLOAD_STR = "/download/key/%s"
 
 function Helpers.get_perl_bin()
     return env.OPT .. "/perl/bin/perl"
@@ -17,6 +19,14 @@ end
 
 function Helpers.get_openssl_conf()
     return env.SSL .. "/openssl.cnf"
+end
+
+function Helpers.cert_download_url(certificate)
+    return CERT_DOWNLOAD_STR:format(certificate.id)
+end
+
+function Helpers.key_download_url(certificate)
+    return KEY_DOWNLOAD_STR:format(certificate.id)
 end
 
 -- Creates a string env var assignments

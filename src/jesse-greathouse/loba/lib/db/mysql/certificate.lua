@@ -31,7 +31,23 @@ function _M:get_by_upstream(id)
     return nil
 end
 
+function _M:insert_key(args)
+    local id = base.insert(self, "insert_certificate_key",
+                                    args.upstream_id,
+                                    args.key)
+    return self:get(id)
+end
+
+function _M:insert_certificate(args)
+    local id = base.insert(self, "insert_certificate_certificate",
+                                    args.upstream_id,
+                                    args.certificate)
+    return self:get(id)
+end
+
 function _M:insert(args)
+    if not args.key then return _M.insert_certificate(self, args) end
+    if not args.certificate then return _M.insert_key(self, args) end
     local id = base.insert(self, "insert_certificate",
                                     args.upstream_id,
                                     args.certificate,
@@ -39,7 +55,25 @@ function _M:insert(args)
     return self:get(id)
 end
 
+function _M:update_key(args, id)
+    local _ = base.update(self, "update_certificate_key_by_id",
+                                    args.upstream_id,
+                                    args.key,
+                                    id)
+    return self:get(id)
+end
+
+function _M:update_certificate(args, id)
+    local _ = base.update(self, "update_certificate_certificate_by_id",
+                                    args.upstream_id,
+                                    args.certificate,
+                                    id)
+    return self:get(id)
+end
+
 function _M:update(args, id)
+    if not args.key then return _M.update_certificate(self, args, id) end
+    if not args.certificate then return _M.update_key(self, args, id) end
     local _ = base.update(self, "update_certificate_by_id",
                                     args.upstream_id,
                                     args.certificate,

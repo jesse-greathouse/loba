@@ -34,8 +34,7 @@ export class CertificateService extends BaseService {
   /** PUT: update the certificate */
   updateCertificate( id: number, formData: FormData): Observable<Certificate> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put(url, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
-    .pipe(
+    return this.http.put(url, formData).pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
         return this.transform(resp.data);
@@ -46,11 +45,7 @@ export class CertificateService extends BaseService {
 
   /** POST: add a new certificate */
   addCertificate(formData: FormData): Observable<Certificate> {
-    formData.forEach((val, key) => {
-      console.log(`${key}: ${val}`);
-    });
-    return this.http.post<any>(this.apiUrl, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
-    .pipe(
+    return this.http.post<any>(this.apiUrl, formData).pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
         return this.transform(resp.data);

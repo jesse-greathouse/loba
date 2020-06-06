@@ -128,14 +128,15 @@ end
 function _M:get_post()
     ngx.req.read_body()
     local h = ngx.req.get_headers()
+    local err
     local ct = h['Content-Type'] or nil
     local post = ngx.req.get_post_args()
     if ct == CONTENT_TYPE_X_WWW_FORM_URLENCODED then
-        return post
+        return post, err
     elseif helpers.starts_with(ct, CONTENT_TYPE_MULTIPART_FORM_DATA) then
         local Multipart = require("multipart")
         local multipart_data = Multipart(ngx.var.request_body, ct)
-        return multipart_data:get_all()
+        return multipart_data:get_all(), err
     elseif ct == CONTENT_TYPE_APPLICATION_JSON then
         -- loop through the weird table
         -- decode the first key that has a value of true

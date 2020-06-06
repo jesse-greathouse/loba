@@ -36,6 +36,16 @@ export class CertificateComponent implements OnInit, OnChanges {
     return this.certificateForm.controls;
   }
 
+  onCertificateClick() {
+    const fileUpload = document.getElementById('certificate') as HTMLInputElement;
+    fileUpload.click();
+  }
+
+  onKeyClick() {
+    const fileUpload = document.getElementById('key') as HTMLInputElement;
+    fileUpload.click();
+  }
+
   onCertificateChange(event: any) {
   
     if (event.target.files.length > 0) {
@@ -58,13 +68,24 @@ export class CertificateComponent implements OnInit, OnChanges {
 
   submit(){
     const formData = new FormData();
-    const certificateFile = this.certificateForm.get('certificateSource').value;
-    const keyFile = this.certificateForm.get('keySource').value;
+    let canSubmit: boolean = false;
     formData.append('upstream_id', String(this.site.upstream.id));
-    formData.append('certificate', certificateFile, certificateFile.name);
-    formData.append('key', keyFile, keyFile.name);
 
-    this.save(formData);
+    const keyFile = this.certificateForm.get('keySource').value;
+    if (typeof keyFile == 'object') {
+      formData.append('key', keyFile, keyFile.name);
+      canSubmit = true;
+    }
+
+    const certificateFile = this.certificateForm.get('certificateSource').value;
+    if (typeof certificateFile == 'object') {
+      formData.append('certificate', certificateFile, certificateFile.name);
+      canSubmit = true
+    }
+
+    if (canSubmit) {
+      this.save(formData);
+    }
   }
 
   save(formData: FormData): void {
@@ -84,14 +105,4 @@ export class CertificateComponent implements OnInit, OnChanges {
         });
     }
   }
-
-  private factoryCertificate(): Certificate {
-    return {
-      id: 0,
-      upstream_id: this.site.upstream.id,
-      certificate: null,
-      key: null
-    }
-  }
-
 }

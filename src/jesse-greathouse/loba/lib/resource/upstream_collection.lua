@@ -31,6 +31,8 @@ function _M.new(self, rs)
 
     -- Collate the list of certificates
     for _, c in ipairs(certificate:find_by_uptream_list(list)) do
+        c.certificate = helpers.cert_download_url(c)
+        c.key = helpers.key_download_url(c)
         collation[c.upstream_id].certificate = c
     end
 

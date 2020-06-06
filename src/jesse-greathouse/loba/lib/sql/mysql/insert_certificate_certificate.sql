@@ -1,0 +1,1 @@
+INSERT INTO `upstream_certificate` (`upstream_id`, `certificate`) VALUES (?, ?);

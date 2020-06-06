@@ -24,6 +24,10 @@ function _M:get(id)
     return base.get(self, "select_site_by_id", id)
 end
 
+function _M:get_by_upsream(id)
+    return base.get(self, "select_site_by_upstream_id", id)
+end
+
 function _M:insert(args)
     local id = base.insert(self, "insert_site",
                                     args.domain,

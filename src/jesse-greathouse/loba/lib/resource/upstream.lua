@@ -13,6 +13,8 @@ function _M.new(self, upstream)
     upstream.site = site:get(upstream.site_id)
     upstream.method = method:get(upstream.method_id)
     upstream.certificate = certificate:get_by_upstream(upstream.id)
+    upstream.certificate.certificate = helpers.cert_download_url(upstream.certificate)
+    upstream.certificate.key = helpers.key_download_url(upstream.certificate)
 
     if not upstream.certificate then upstream.certificate = ngx.null end
 

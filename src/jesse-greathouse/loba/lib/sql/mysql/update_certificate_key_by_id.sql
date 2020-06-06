@@ -1,0 +1,1 @@
+UPDATE `upstream_certificate` SET `upstream_id` = ?, `key` = ? WHERE `id` = ?;
