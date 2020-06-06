@@ -58,6 +58,13 @@ export class UpstreamComponent implements OnInit, OnChanges {
     this.getUpstream();
   }
 
+  isSslReady(): boolean {
+    if (this.site.upstream.certificate == null ) return false;
+    if (this.site.upstream.certificate.certificate == null) return false;
+    if (this.site.upstream.certificate.key == null) return false;
+    return true;
+  }
+
   focusOut(): void {
     this.site.upstream.hash = this.hashFormControl.value;
     this.save();
@@ -238,6 +245,7 @@ export class UpstreamComponent implements OnInit, OnChanges {
       hash: null,
       consistent: false,
       ssl: false,
+      certificate: null,
     }
   }
 

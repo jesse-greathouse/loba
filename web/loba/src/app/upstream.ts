@@ -1,6 +1,7 @@
 import { Method } from './method';
 import { Server } from './server';
 import { Site } from './site';
+import { Certificate } from './certificate';
 
 export interface Upstream {
   id: number;
@@ -10,4 +11,5 @@ export interface Upstream {
   hash: string;
   consistent: boolean;
   ssl: boolean;
+  certificate: Certificate;
 }

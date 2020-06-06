@@ -13,6 +13,9 @@ function _M.new(self, upstream)
     upstream.site = site:get(upstream.site_id)
     upstream.method = method:get(upstream.method_id)
     upstream.certificate = certificate:get_by_upstream(upstream.id)
+
+    if not upstream.certificate then upstream.certificate = ngx.null end
+
     return setmetatable(upstream, mt)
 end
 

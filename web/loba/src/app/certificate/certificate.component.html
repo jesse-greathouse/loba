@@ -1,0 +1,29 @@
+<form [formGroup]="certificateForm" (ngSubmit)="submit()">
+  
+  <div class="form-group">
+    <label for="certificate">Certificate</label>
+    <input 
+        formControlName="certificate"
+        id="certificate" 
+        type="file" 
+        class="form-control"
+        (change)="onCertificateChange($event)">
+    <div *ngIf="f.certificate.touched && f.certificate.invalid" class="alert alert-danger">
+        <div *ngIf="f.certificate.errors.required">Certificate File is required.</div>
+    </div>
+  </div>
+    
+  <div class="form-group">
+      <label for="key">Key</label>
+      <input 
+          formControlName="key"
+          id="key" 
+          type="file" 
+          class="form-control"
+          (change)="onKeyChange($event)">
+      <div *ngIf="f.key.touched && f.key.invalid" class="alert alert-danger">
+          <div *ngIf="f.key.errors.required">Key File is required.</div>
+      </div>
+  </div>
+        
+  <button class="btn btn-primary" type="submit">Submit</button>

@@ -25,12 +25,33 @@
 
   <mat-checkbox class="field"
     [(ngModel)]="site.upstream.ssl"
-    [disabled]="site.upstream.method.id != 4"
+    [disabled]="!isSslReady()"
     (change)="focusOut()" >
     ssl
   </mat-checkbox>
 
   <mat-accordion class="expansion-headers-align">
+    <!-- Certificates -->
+    <mat-expansion-panel hideToggle >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Certificates
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="filler"></div>
+          <mat-icon>verified_user</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-certificate 
+        [site]="site" 
+        (certificateUpdated)="getUpstream()"
+        (certificateRemoved)="getUpstream()" >
+      </app-certificate>
+
+    </mat-expansion-panel>
+
+    <!-- Servers -->
     <mat-expansion-panel [expanded]="true" hideToggle >
       <mat-expansion-panel-header>
         <mat-panel-title>

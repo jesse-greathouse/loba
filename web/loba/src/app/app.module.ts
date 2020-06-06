@@ -46,6 +46,7 @@ import { MethodComponent } from './method/method.component';
 import { ServerComponent } from './server/server.component';
 import { RemoveServerConfirmComponent } from './remove-server-confirm/remove-server-confirm.component';
 import { RemoveSiteConfirmComponent } from './remove-site-confirm/remove-site-confirm.component';
+import { CertificateComponent } from './certificate/certificate.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { RemoveSiteConfirmComponent } from './remove-site-confirm/remove-site-co
     MethodComponent,
     ServerComponent,
     RemoveServerConfirmComponent,
-    RemoveSiteConfirmComponent
+    RemoveSiteConfirmComponent,
+    CertificateComponent
   ],
   imports: [
     FormsModule,
