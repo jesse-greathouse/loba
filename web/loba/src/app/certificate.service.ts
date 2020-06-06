@@ -13,7 +13,6 @@ import { Certificate } from './certificate';
 export class CertificateService extends BaseService {
 
   uploadOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
     reportProgress: true
   };
 
@@ -35,7 +34,8 @@ export class CertificateService extends BaseService {
   /** PUT: update the certificate */
   updateCertificate( id: number, formData: FormData): Observable<Certificate> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put(url, formData, this.uploadOptions).pipe(
+    return this.http.put(url, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+    .pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
         return this.transform(resp.data);
@@ -49,7 +49,8 @@ export class CertificateService extends BaseService {
     formData.forEach((val, key) => {
       console.log(`${key}: ${val}`);
     });
-    return this.http.post<any>(this.apiUrl, formData, this.uploadOptions).pipe(
+    return this.http.post<any>(this.apiUrl, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+    .pipe(
       map((resp: any) => {
         this.log(resp.meta.message, 'success');
         return this.transform(resp.data);

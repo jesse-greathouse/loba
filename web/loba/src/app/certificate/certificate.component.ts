@@ -58,9 +58,11 @@ export class CertificateComponent implements OnInit, OnChanges {
 
   submit(){
     const formData = new FormData();
+    const certificateFile = this.certificateForm.get('certificateSource').value;
+    const keyFile = this.certificateForm.get('keySource').value;
     formData.append('upstream_id', String(this.site.upstream.id));
-    formData.append('certificate', this.certificateForm.get('certificateSource').value);
-    formData.append('key', this.certificateForm.get('keySource').value);
+    formData.append('certificate', certificateFile, certificateFile.name);
+    formData.append('key', keyFile, keyFile.name);
 
     this.save(formData);
   }
