@@ -3,6 +3,7 @@
 
 # Requires DBI module
 # Currently the only supported adapter is mysql
+use File::Basename;
 use DBI;
 use DBI qw(:sql_types);
 use Template;
@@ -23,6 +24,8 @@ my $sqlDir = $ENV{'SQL_QUERY_DIR'};
 my $logDir = $ENV{'LOG_DIR'};
 my $upstreamDir = $etc . '/nginx/upstream';
 my $serverDir = $etc . '/nginx/server';
+my $certificateDir = $etc . '/ssl/certs';
+my $keyDir = $etc . '/ssl/private';
 my $tplDir = $lobaDir . '/compose/tpl';
 
 # Template Toolkit instance
@@ -50,17 +53,23 @@ foreach my $key (keys %queries) {
     $queries{$key}{query} = read_file($queries{$key}{file}, $sqlDir);
 }
 
-# Get list of sites from the database
-my @sites = get_sites();
+# Delete the old keys and certificates
+rm_files('*.crt', $certificateDir);
+rm_files('*.key', $keyDir);
 
 # Delete the old configuration files
 rm_files('*.conf', $upstreamDir);
 rm_files('*.conf', $serverDir);
 
+# Get list of sites from the database
+my @sites = get_sites();
+
 # Loop through sites and create configurations with templates
 foreach my $site (@sites) {
     # Create the Directory for Logging
     my $serverLogDir = "$logDir/" . $site->{domain};
+    my $certificateFile = "$certificateDir/" . $site->{domain} . ".crt";
+    my $keyFile = "$keyDir/" . $site->{domain} . ".key";
     if ( !-d $serverLogDir ) {
         mkdir($serverLogDir)
             or die("Couldn't create $serverLogDir");
@@ -71,6 +80,19 @@ foreach my $site (@sites) {
 
     # If upstream is marked as SSL use the standard SSL port
     $upstream{'port'} = ($upstream{'ssl'}) ? '443' : $port;
+
+    # write the key and the certificate to file if applicable
+    if ($upstream{'certificate'}) {
+        open(CRT, '>', $certificateFile) or die $!;
+        print CRT $upstream{'certificate'};
+        close(CRT);
+    }
+
+    if ($upstream{'key'}) {
+        open(KEY, '>', $keyFile) or die $!;
+        print KEY $upstream{'key'};
+        close(KEY);
+    }
 
     # Create the upstream config from template
     my $upstreamConfFile = "$upstreamDir/" . $site->{domain} . ".conf";
@@ -101,12 +123,16 @@ sub read_file {
 # Deletes files in a directory with the given identifier string
 sub rm_files {
     my ($ident, $dir) = @_;
+    my @whiteListedFiles = ("loba.crt", "loba.key");
+    my %whiteList = map { $_ => 1 } @whiteListedFiles;
 
     while ($_ = glob("$dir/$ident")) {
         next if -d $_;
-        
-        unlink($_)
-            or die("Can't remove $_");
+        my $fileName = basename($_);
+        if (!exists($whiteList{$fileName})) {
+            unlink($_)
+                or die("Can't remove $_");
+        }
     }
 }
 
@@ -139,13 +165,15 @@ sub get_upstream {
         or die("Can't prepare " . $queries{"selectUpstream"}{query});
     $sth->bind_param(1, $id);
     $sth->execute();
-    my ($domain, $directive, $hash, $consistent, $ssl) = $sth->fetchrow_array();
+    my ($domain, $directive, $hash, $consistent, $ssl, $certificate, $key) = $sth->fetchrow_array();
     my @servers = get_upstream_servers($id);
     my %upstream = (domain      => $domain, 
                     directive   => $directive, 
                     hash        => $hash, 
                     consistent  => $consistent,
                     ssl         => $ssl,
+                    certificate => $certificate,
+                    key         => $key,
                     servers     => \@servers,
     );
 

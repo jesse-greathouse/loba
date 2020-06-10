@@ -162,7 +162,6 @@ export class CertificateComponent implements OnInit, OnChanges {
   }
 
   onCertificateChange(event: any): void {
-    console.log(event)
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.certificateForm.patchValue({

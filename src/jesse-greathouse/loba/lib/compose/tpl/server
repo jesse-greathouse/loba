@@ -1,7 +1,7 @@
 server {
     listen [% port %][% IF ssl == 1 %] ssl[% END %];
     server_name [% domain %];
-    [% IF ssl == 1 %]
+    [% IF certificate AND key %]
     ssl_certificate ../ssl/certs/[% domain %].crt;
     ssl_certificate_key ../ssl/private/[% domain %].key;
     [% END %]

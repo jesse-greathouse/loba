@@ -37,26 +37,15 @@ export class ToolbarComponent implements OnInit {
   commit() : void {
     this.isLoadingService.add();
 
-    this.rpcService.testNginx()
+    this.rpcService.composeSites()
       .subscribe((rpc: Rpc) => {
-        const res: TestResult = this.parseTestResult(rpc);
-        if (!res.success || !res.syntax) {
-          const syntax: string = (res.syntax) ? 'Syntax is ok. ' : res.error;
-          this.messageService.add(`Testing nginx config failed. ${syntax}`, 'danger');
+        if (!rpc.ok) {
+          this.messageService.add(`compose-sites failed: ${rpc.stderr}`, 'danger');
           this.isLoadingService.remove();
           return;
         }
-
-        this.rpcService.composeSites()
-          .subscribe((rpc: Rpc) => {
-            if (!rpc.ok) {
-              this.messageService.add(`compose-sites failed: ${rpc.stderr}`, 'danger');
-              this.isLoadingService.remove();
-              return;
-            }
-            this.isLoadingService.remove();
-            this.reload();
-          });
+        this.isLoadingService.remove();
+        this.reload();
       });
   }
 
