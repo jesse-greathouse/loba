@@ -1,1 +1,13 @@
-<p>self-signed-confirm works!</p>
+<h1 mat-dialog-title>Generate Self Signed Certificate &#47; Key pair</h1>
+<div mat-dialog-content>
+  <h2>Warning: not intended for production sites</h2>
+  <p> Using a self-signed certificate will indicate to users that your domain's authenticity cannot be trusted</p>
+  <p> This is intended for testing SSL functionality</p>
+  <hr>
+  <h2>Warning: proceding will remove existing certificate  &#47; key</h2>
+  <p>Generating a self-signed pair will overwrite existing certificate for this site.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>Ok</button>
+</div>

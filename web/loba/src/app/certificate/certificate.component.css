@@ -55,6 +55,11 @@ input[type="file"] {
   color: rgba(23, 134, 23, 0.596);
 }
 
+.cell.ccs {
+  justify-content: center;
+  margin: 20px 0 0 0;
+}
+
 ::ng-deep .mat-mini-fab:not([class*=mat-elevation-z]) {
   box-shadow: 0px 1px 2px -2px rgba(0, 0, 0, 0.12),
               2px 3px 2px 0px rgba(0, 0, 0, 0.10),
@@ -77,4 +82,9 @@ input[type="file"] {
 ::ng-deep .mat-form-field.xsmall, .cell.xsmall {
   flex-grow: 0;
   width: 60px !important;
+}
+
+.cell.full {
+  flex-shrink: 0;
+  width: 100% !important;
 }

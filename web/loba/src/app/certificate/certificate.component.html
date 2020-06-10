@@ -79,6 +79,16 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="!hasCertificate || !hasKey">
+    <div class="cell full ccs" >
+      <a
+        #sscLink
+        [routerLink]=""
+        (click)="selfSignedConfirm()" >
+        Generate self signed certificate &amp; key pair</a>
+    </div>
+  </div>
+
   <input
     formControlName="certificate"
     id="certificate"

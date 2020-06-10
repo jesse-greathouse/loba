@@ -54,12 +54,14 @@ export class CertificateComponent implements OnInit, OnChanges {
   }
 
   get hasCertificate(): boolean {
-    if (this.site.upstream.certificate === null ) return false;
+    if (  this.site.upstream.certificate === undefined
+          || this.site.upstream.certificate === null ) return false;
     return (this.site.upstream.certificate.certificate === null) ? false : true;
   }
 
   get hasKey(): boolean {
-    if (this.site.upstream.certificate === null ) return false;
+    if (  this.site.upstream.certificate === undefined
+          || this.site.upstream.certificate === null ) return false;
     return (this.site.upstream.certificate.key === null) ? false : true;
   }
 
@@ -113,8 +115,6 @@ export class CertificateComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        const certificate = document.getElementById('certificate') as HTMLInputElement;
-        certificate.value = "";
         this.certificateRemoved.emit(this.site.upstream.certificate);
         this.getCertificate();
       }
@@ -140,8 +140,6 @@ export class CertificateComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        const key = document.getElementById('key') as HTMLInputElement;
-        key.value = "";
         this.certificateRemoved.emit(this.site.upstream.certificate);
         this.getCertificate();
       }
@@ -150,12 +148,14 @@ export class CertificateComponent implements OnInit, OnChanges {
 
   selfSignedConfirm(): void {
     const dialogRef = this.dialog.open(SelfSignedConfirmComponent, {
-      width: '400px',
-      data: { certificate: this.site.upstream.certificate }
+      width: '600px',
+      data: { domain: this.site.domain }
     });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
+        this.certificateForm.reset();
+        this.certificateUpdated.emit(this.site.upstream.certificate);
         this.getCertificate();
       }
     });

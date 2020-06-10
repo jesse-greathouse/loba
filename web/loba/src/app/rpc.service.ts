@@ -22,6 +22,17 @@ export class RpcService extends BaseService implements Transformable {
       this.apiUrl = this.resourceName;
   }
 
+  ssCert(domain: string) : Observable<Rpc> {
+    const url = `${this.apiUrl}/sscert?domain=${domain}`;
+    return this.http.get<Rpc>(url).pipe(
+      tap(_ => this.log(`executed RPC: composeSites`, false)),
+      map((resp: any) => {
+        return this.transform(resp.data);
+      }),
+      catchError(this.handleError<Rpc>(`composeSites`))
+    );
+  }
+
   composeSites() : Observable<Rpc> {
     const url = `${this.apiUrl}/compose-sites`;
     return this.http.get<Rpc>(url).pipe(

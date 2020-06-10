@@ -9,5 +9,5 @@
 }
 
 ::ng-deep .mat-dialog-content {
-  text-align: center;
+  text-align: left;
 }

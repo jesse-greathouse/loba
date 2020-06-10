@@ -1,0 +1,13 @@
+::ng-deep .mat-dialog-actions
+  , ::ng-deep .mat-dialog-title
+  , ::ng-deep .mat-dialog-content {
+  justify-content: center;
+}
+
+::ng-deep .mat-dialog-title {
+  text-align: center;
+}
+
+::ng-deep .mat-dialog-content {
+  text-align: left;
+}

@@ -83,19 +83,65 @@ function _M:sscert()
   local cmd = {}
   local resp = {}
   local args = ngx.req.get_uri_args()
+
+  -- requires a domain as a url parameter (uri?domain=dev.mydomain.com)
   if not args.domain then
     ngx.log(ngx.ERR, "A domain name is required to create a self-signed certificate.")
     ngx.exit(403);
   end
 
+  -- get the site from the domain name
+  local sdb = helpers.dbm('site')
+  local site = sdb:get_domain(args.domain)
+  if not site then
+    ngx.log(ngx.ERR, "A site with the domain: ", args.domain, " was not found.")
+    ngx.exit(404);
+  end
+
+  -- Get the upstream from the site
+  local udb = helpers.dbm('upstream')
+  local upstream = udb:get_by_site(site.id)
+  -- If the site doesn't have an upstream already, just create it on the fly
+  if not upstream then
+    upstream = udb:insert({
+      site_id = site.id,
+      method_id = 1,
+      hash = 'NULL',
+      consistent = false,
+      ssl = false
+    })
+  end
+
+  local cert_file_uri = env.SSL_CERTS .. "/" .. args.domain .. ".crt"
+  local key_file_uri =  env.SSL_PRIVATE .. "/" .. args.domain .. ".key"
+
+  -- generate the certificate/key pair and save them to the database
   cmd[#cmd+1] = "openssl req"
   cmd[#cmd+1] = "-x509 -nodes -days 365 -newkey rsa:2048"
   cmd[#cmd+1] = "-subj \"/CN=" .. args.domain .. "\""
   cmd[#cmd+1] = "-config " .. helpers.get_openssl_conf()
-  cmd[#cmd+1] = "-keyout " .. env.SSL_PRIVATE .. "/" .. args.domain .. ".key"
-  cmd[#cmd+1] = "-out " .. env.SSL_CERTS .. "/" .. args.domain .. ".crt"
+  cmd[#cmd+1] = "-keyout " .. key_file_uri
+  cmd[#cmd+1] = "-out " .. cert_file_uri
 
   local ok, stdout, stderr, reason, status = shell.run(table.concat(cmd, " "))
+
+  -- get the content of the generated files
+  local cert_file = io.open(cert_file_uri, "r")
+  local certstr = cert_file:read("a")
+  cert_file:close()
+
+  local key_file = io.open(key_file_uri, "r")
+  local keystr = key_file:read("a")
+  key_file:close()
+
+  -- If an existing certificate record exists, update it, if not create a new certificate
+  local cdb = helpers.dbm('certificate')
+  local certificate = cdb:get_by_upstream(upstream.id)
+  if not certificate then
+    certificate = cdb:insert({upstream_id = upstream.id, certificate = certstr, key = keystr})
+  else
+    certificate = cdb:update({upstream_id = upstream.id, certificate = certstr, key = keystr}, certificate.id)
+  end
 
   resp.stdout = stdout
   resp.stderr = stderr
