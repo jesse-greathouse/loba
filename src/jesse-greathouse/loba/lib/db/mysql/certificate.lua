@@ -8,8 +8,23 @@ function _M:all()
     return base.all(self, "select_certificates")
 end
 
+function _M:find(args)
+    return base.find(self, "select_certificates", args)
+end
+
 function _M:get(id)
-    return base.get(self, "select_certificate_by_id", id)
+    local res, err, errcode, sqlstate = self.db:query(self:get_query("select_certificate_by_id", id))
+    if err then
+        ngx.log(ngx.ERR, "select failed.", err)
+        return ngx.exit(500)
+    end
+
+    -- If not empty, only return one result
+    if next(res) ~= nil then
+        return res[1];
+    end
+
+    return nil
 end
 
 function _M:find_by_uptream_list(list)
@@ -17,7 +32,7 @@ function _M:find_by_uptream_list(list)
 end
 
 function _M:get_by_upstream(id)
-    local res, err = self.db:execute(self:get_statement("select_certificate_by_upstream"), id)
+    local res, err, errcode, sqlstate = self.db:query(self:get_query("select_certificate_by_upstream", id))
     if err then
         ngx.log(ngx.ERR, "select failed.", err)
         return ngx.exit(500)
@@ -63,11 +78,21 @@ function _M:update_key(args, id)
     return self:get(id)
 end
 
+function _M:remove_key(id)
+    local _ = base.update(self, "remove_certificate_key_by_id", id)
+    return self:get(id)
+end
+
 function _M:update_certificate(args, id)
     local _ = base.update(self, "update_certificate_certificate_by_id",
                                     args.upstream_id,
                                     args.certificate,
                                     id)
+    return self:get(id)
+end
+
+function _M:remove_certificate(id)
+    local _ = base.update(self, "remove_certificate_certificate_by_id", id)
     return self:get(id)
 end
 

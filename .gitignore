@@ -72,7 +72,6 @@ etc/ssl/.oid
 etc/ssl/openssl.cnf
 etc/ssl/CA/*
 
-
 !etc/com.greathouse.technology.template.plist
 
 # opt

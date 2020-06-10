@@ -18,7 +18,7 @@ function _M._get_condition(self, cond)
 end
 
 function _M.all(self, sname)
-    local res, err, errcode, sqlstate = self.db:query(self.query[sname])
+    local res, err, errcode, sqlstate = self.db:query(self:get_query(sname))
     if not res then
         ngx.log(ngx.ERR, "bad result: ", err, ": ", errcode, ": ", sqlstate, ".")
         return ngx.exit(500)
@@ -182,6 +182,16 @@ function _M:compose_where(t, cond, clause)
     end
 
     return clause, values
+end
+
+function _M:get_query(name, ...)
+    local args = {...}
+    local query = self.query[name]
+    if next(args) then
+        query = query:gsub("%?", "%%s")
+        query = query:format(...)
+    end
+    return query
 end
 
 -- A way of only preparing a statement a single time

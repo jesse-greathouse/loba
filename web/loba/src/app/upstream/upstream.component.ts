@@ -1,8 +1,10 @@
-import { Component, ViewChildren, QueryList, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, ViewChildren, QueryList, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+
+import { MatCheckbox } from '@angular/material/checkbox';
 
 import { Site } from '../site';
 import { Method } from '../method';
@@ -36,6 +38,7 @@ export class UpstreamComponent implements OnInit, OnChanges {
   @Input() lockHealth: boolean = false;
   @Input() fail_timeout: number = null;
   @Input() max_fails: number = null;
+  @ViewChild("sslCheckbox") sslCheckbox: MatCheckbox;
   hashMatcher = new HashErrorStateMatcher();
   hashFormControl = new FormControl({
     value: '',
@@ -58,10 +61,19 @@ export class UpstreamComponent implements OnInit, OnChanges {
     this.getUpstream();
   }
 
-  isSslReady(): boolean {
-    if (this.site.upstream.certificate == null ) return false;
-    if (this.site.upstream.certificate.certificate == null) return false;
-    if (this.site.upstream.certificate.key == null) return false;
+  get isSslReady(): boolean {
+    if (this.site.upstream.certificate == null ) {
+      return false;
+    }
+
+    if (this.site.upstream.certificate.certificate == null) {
+      return false;
+    }
+
+    if (this.site.upstream.certificate.key == null) {
+      return false;
+    }
+
     return true;
   }
 
@@ -110,6 +122,14 @@ export class UpstreamComponent implements OnInit, OnChanges {
       this.upstreamService.getUpstream(this.site.upstream.id)
         .subscribe(upstream => {
           this.site.upstream = upstream;
+
+          // Sometimes a certificate or key can be removed
+          // In this case, unflag the upstream for SSL and save it
+          if (!this.isSslReady && this.site.upstream.ssl) {
+            this.site.upstream.ssl = false;
+            this.save();
+          }
+
           this.updateHashFormControl();
           this.checkHealthLocked();
           this.isLoadingService.remove();

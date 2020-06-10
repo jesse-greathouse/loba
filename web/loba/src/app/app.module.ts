@@ -47,6 +47,9 @@ import { ServerComponent } from './server/server.component';
 import { RemoveServerConfirmComponent } from './remove-server-confirm/remove-server-confirm.component';
 import { RemoveSiteConfirmComponent } from './remove-site-confirm/remove-site-confirm.component';
 import { CertificateComponent } from './certificate/certificate.component';
+import { RemoveCertificateConfirmComponent } from './remove-certificate-confirm/remove-certificate-confirm.component';
+import { RemoveKeyConfirmComponent } from './remove-key-confirm/remove-key-confirm.component';
+import { SelfSignedConfirmComponent } from './self-signed-confirm/self-signed-confirm.component';
 
 
 @NgModule({
@@ -64,7 +67,10 @@ import { CertificateComponent } from './certificate/certificate.component';
     ServerComponent,
     RemoveServerConfirmComponent,
     RemoveSiteConfirmComponent,
-    CertificateComponent
+    CertificateComponent,
+    RemoveCertificateConfirmComponent,
+    RemoveKeyConfirmComponent,
+    SelfSignedConfirmComponent
   ],
   imports: [
     FormsModule,

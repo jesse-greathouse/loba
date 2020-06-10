@@ -1,9 +1,15 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
+
+import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Site } from '../site';
 import { Certificate } from '../certificate';
 import { CertificateService } from '../certificate.service';
+import { RemoveCertificateConfirmComponent } from '../remove-certificate-confirm/remove-certificate-confirm.component'
+import { RemoveKeyConfirmComponent } from '../remove-key-confirm/remove-key-confirm.component'
+import { SelfSignedConfirmComponent } from '../self-signed-confirm/self-signed-confirm.component'
 
 @Component({
   selector: 'app-certificate',
@@ -15,6 +21,14 @@ export class CertificateComponent implements OnInit, OnChanges {
   @Input() site: Site;
   @Output() certificateUpdated: EventEmitter<Certificate> = new EventEmitter();
   @Output() certificateRemoved: EventEmitter<Certificate> = new EventEmitter();
+  @ViewChild("certificateRemoveButton") certificateRemoveButton: MatButton;
+  @ViewChild("certificateUploadButton") certificateUploadButton: MatButton;
+  @ViewChild("certificateDownloadButton") certificateDownloadButton: MatButton;
+  @ViewChild("keyRemoveButton") keyRemoveButton: MatButton;
+  @ViewChild("keyUploadButton") keyUploadButton: MatButton;
+  @ViewChild("keyDownloadButton") keyDownloadButton: MatButton;
+  showCertIcon: boolean = false;
+  showKeyIcon: boolean = false;
 
   certificateForm = new FormGroup({
     certificate: new FormControl('', [Validators.required]),
@@ -24,61 +38,163 @@ export class CertificateComponent implements OnInit, OnChanges {
   });
 
  constructor(
+    public dialog: MatDialog,
     private certificateService: CertificateService) { }
 
   ngOnInit(): void {
+    this.getCertificate();
   }
 
   ngOnChanges(): void {
+    this.getCertificate();
   }
 
-  get f(){
+  get f() {
     return this.certificateForm.controls;
   }
 
-  onCertificateClick() {
+  get hasCertificate(): boolean {
+    if (this.site.upstream.certificate === null ) return false;
+    return (this.site.upstream.certificate.certificate === null) ? false : true;
+  }
+
+  get hasKey(): boolean {
+    if (this.site.upstream.certificate === null ) return false;
+    return (this.site.upstream.certificate.key === null) ? false : true;
+  }
+
+  getCertificate(): void {
+    this.certificateService.getCertificateByUpstream(this.site.upstream)
+      .subscribe((certificate: Certificate) => {
+        if (certificate === undefined ) certificate = null;
+        this.site.upstream.certificate = certificate;
+        this.updateButtonStatus();
+      });
+  }
+
+  updateButtonStatus(): void {
+    if (this.hasCertificate) {
+      this.certificateRemoveButton.disabled = false;
+      this.certificateDownloadButton.disabled = false;
+      this.showCertIcon = true;
+    } else {
+      this.certificateRemoveButton.disabled = true;
+      this.certificateDownloadButton.disabled = true;
+      this.showCertIcon = false;
+    }
+
+    if (this.hasKey) {
+      this.keyRemoveButton.disabled = false;
+      this.keyDownloadButton.disabled = false;
+      this.showKeyIcon = true;
+    } else {
+      this.keyRemoveButton.disabled = true;
+      this.keyDownloadButton.disabled = true;
+      this.showKeyIcon = false;
+    }
+  }
+
+  onCertificateClick(): void {
     const fileUpload = document.getElementById('certificate') as HTMLInputElement;
     fileUpload.click();
   }
 
-  onKeyClick() {
+  onCertificateDownload(): void {
+    if (this.hasCertificate) {
+      this.downloadFile(this.site.upstream.certificate.certificate);
+    }
+  }
+
+  removeCertificateConfirm(): void {
+    const dialogRef = this.dialog.open(RemoveCertificateConfirmComponent, {
+      width: '400px',
+      data: { certificate: this.site.upstream.certificate }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        const certificate = document.getElementById('certificate') as HTMLInputElement;
+        certificate.value = "";
+        this.certificateRemoved.emit(this.site.upstream.certificate);
+        this.getCertificate();
+      }
+    });
+  }
+
+  onKeyClick(): void {
     const fileUpload = document.getElementById('key') as HTMLInputElement;
     fileUpload.click();
   }
 
-  onCertificateChange(event: any) {
-  
+  onKeyDownload(): void {
+    if (this.hasKey) {
+      this.downloadFile(this.site.upstream.certificate.key);
+    }
+  }
+
+  removeKeyConfirm(): void {
+    const dialogRef = this.dialog.open(RemoveKeyConfirmComponent, {
+      width: '400px',
+      data: { certificate: this.site.upstream.certificate }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        const key = document.getElementById('key') as HTMLInputElement;
+        key.value = "";
+        this.certificateRemoved.emit(this.site.upstream.certificate);
+        this.getCertificate();
+      }
+    });
+  }
+
+  selfSignedConfirm(): void {
+    const dialogRef = this.dialog.open(SelfSignedConfirmComponent, {
+      width: '400px',
+      data: { certificate: this.site.upstream.certificate }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.getCertificate();
+      }
+    });
+  }
+
+  onCertificateChange(event: any): void {
+    console.log(event)
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.certificateForm.patchValue({
         certificateSource: file
       });
+      this.submit();
     }
   }
 
-  onKeyChange(event: any) {
-  
+  onKeyChange(event: any): void {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.certificateForm.patchValue({
         keySource: file
       });
+      this.submit();
     }
   }
 
-  submit(){
-    const formData = new FormData();
+  submit(): void {
+    const formData: FormData = new FormData();
     let canSubmit: boolean = false;
     formData.append('upstream_id', String(this.site.upstream.id));
 
     const keyFile = this.certificateForm.get('keySource').value;
-    if (typeof keyFile == 'object') {
+    if (keyFile instanceof File) {
       formData.append('key', keyFile, keyFile.name);
       canSubmit = true;
     }
 
     const certificateFile = this.certificateForm.get('certificateSource').value;
-    if (typeof certificateFile == 'object') {
+    if (certificateFile instanceof File) {
       formData.append('certificate', certificateFile, certificateFile.name);
       canSubmit = true
     }
@@ -95,14 +211,27 @@ export class CertificateComponent implements OnInit, OnChanges {
       this.certificateService.addCertificate(formData)
         .subscribe(certificate => {
           this.site.upstream.certificate = certificate;
+          this.certificateForm.reset();
+          this.updateButtonStatus();
           this.certificateUpdated.emit(this.site.upstream.certificate);
         });
     } else {
       this.certificateService.updateCertificate(this.site.upstream.certificate.id, formData)
         .subscribe(certificate => {
           this.site.upstream.certificate = certificate;
+          this.certificateForm.reset();
+          this.updateButtonStatus();
           this.certificateUpdated.emit(this.site.upstream.certificate);
         });
     }
+  }
+
+  private downloadFile(url: string): void {
+    var a = document.createElement('A') as HTMLAnchorElement;
+    a.href = url;
+    a.download = url.substr(url.lastIndexOf('/') + 1);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 }

@@ -1,33 +1,101 @@
 <form [formGroup]="certificateForm" (ngSubmit)="submit()">
-  <button mat-button color="warn" (click)="onCertificateClick()">
-    <mat-icon>file_upload</mat-icon>
-    Certificate File
-  </button>
+  <div class="row">
+    <div class="remove-button-container">
+      <button
+        #certificateRemoveButton
+        aria-label="Remove Certificate"
+        mat-mini-fab
+        (click)="removeCertificateConfirm()" >
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
 
-  <button mat-button color="warn" (click)="onKeyClick()">
-    <mat-icon>file_upload</mat-icon>
-    Key File
-  </button>
+    <div class="cell xsmall">
+      <div class="icon-wrapper" *ngIf="showCertIcon">
+        <mat-icon>verified_user</mat-icon>
+      </div>
+    </div>
+
+    <div class="cell small">
+      <button
+        #certificateUploadButton
+        mat-button
+        color="accent"
+        (click)="onCertificateClick()">
+          <mat-icon>file_upload</mat-icon>
+          Upload Certificate
+      </button>
+    </div>
+
+    <div class="cell small">
+      <button
+        #certificateDownloadButton
+        mat-button
+        color="download"
+        (click)="onCertificateDownload()" >
+          <mat-icon>file_download</mat-icon>
+          Download Certificate
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="remove-button-container">
+      <button
+        #keyRemoveButton
+        aria-label="Remove Key"
+        mat-mini-fab
+        (click)="removeKeyConfirm()" >
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="cell xsmall">
+      <div class="icon-wrapper" *ngIf="showKeyIcon">
+        <mat-icon>vpn_key</mat-icon>
+      </div>
+    </div>
+
+    <div class="cell small">
+      <button
+        #keyUploadButton
+        mat-button
+        color="accent"
+        (click)="onKeyClick()">
+          <mat-icon>file_upload</mat-icon>
+          Upload Key
+      </button>
+    </div>
+
+    <div class="cell small">
+      <button
+        #keyDownloadButton
+        mat-button
+        color="download"
+        (click)="onKeyDownload()" >
+          <mat-icon>file_download</mat-icon>
+          Download Key
+      </button>
+    </div>
+  </div>
 
   <input
-      formControlName="certificate"
-      id="certificate"
-      type="file"
-      class="form-control"
-      (change)="onCertificateChange($event)">
+    formControlName="certificate"
+    id="certificate"
+    type="file"
+    class="form-control"
+    (change)="onCertificateChange($event)">
   <div *ngIf="f.certificate.touched && f.certificate.invalid" class="alert alert-danger">
-      <div *ngIf="f.certificate.errors.required">Certificate File is required.</div>
+    <div *ngIf="f.certificate.errors.required">Certificate File is required.</div>
   </div>
 
   <input
-      formControlName="key"
-      id="key"
-      type="file"
-      class="form-control"
-      (change)="onKeyChange($event)">
+    formControlName="key"
+    id="key"
+    type="file"
+    class="form-control"
+    (change)="onKeyChange($event)">
   <div *ngIf="f.key.touched && f.key.invalid" class="alert alert-danger">
-      <div *ngIf="f.key.errors.required">Key File is required.</div>
+    <div *ngIf="f.key.errors.required">Key File is required.</div>
   </div>
-
-        
-  <button class="btn btn-primary" type="submit">Submit</button>
+</form>

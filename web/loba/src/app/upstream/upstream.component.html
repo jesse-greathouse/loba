@@ -16,16 +16,18 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-checkbox class="field"
+  <mat-checkbox
+      class="field"
       [(ngModel)]="site.upstream.consistent"
       [disabled]="site.upstream.method.id != 4"
       (change)="focusOut()" >
     consistent
   </mat-checkbox>
 
-  <mat-checkbox class="field"
+  <mat-checkbox
+    class="field"
     [(ngModel)]="site.upstream.ssl"
-    [disabled]="!isSslReady()"
+    [disabled]="!isSslReady"
     (change)="focusOut()" >
     ssl
   </mat-checkbox>
@@ -39,7 +41,7 @@
         </mat-panel-title>
         <mat-panel-description>
           <div class="filler"></div>
-          <mat-icon>verified_user</mat-icon>
+          <mat-icon>lock</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
 

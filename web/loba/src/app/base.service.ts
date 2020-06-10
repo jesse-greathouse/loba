@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -113,6 +113,34 @@ export abstract class BaseService implements Transformable {
   protected handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       const message = (typeof error.error !== "undefined"  && typeof error.error.meta !== "undefined") 
+        ? error.error.meta.message : error.message;
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error);
+
+      this.log(`${operation} failed -- ${message}`, 'danger');
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+    /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  protected handle404AbleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 404) {
+          error.error.data = null;
+          return of(result as T);
+        }
+      }
+
+      const message = (typeof error.error !== "undefined"  && typeof error.error.meta !== "undefined")
         ? error.error.meta.message : error.message;
 
       // TODO: send the error to remote logging infrastructure

@@ -22,10 +22,16 @@ function Helpers.get_openssl_conf()
 end
 
 function Helpers.cert_download_url(certificate)
+    if not certificate.certificate or certificate.certificate == ngx.null then
+        return ngx.null
+    end
     return CERT_DOWNLOAD_STR:format(certificate.id)
 end
 
 function Helpers.key_download_url(certificate)
+    if not certificate.key or certificate.key == ngx.null then
+        return ngx.null
+    end
     return KEY_DOWNLOAD_STR:format(certificate.id)
 end
 

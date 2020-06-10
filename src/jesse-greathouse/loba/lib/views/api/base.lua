@@ -171,7 +171,9 @@ function _M:response(data, message, status)
         ngx.status = status
     end
 
-    ngx.say(cjson.encode(response:new(data, meta)))
+    if ngx.var.request_method ~= "HEAD" then
+        ngx.say(cjson.encode(response:new(data, meta)))
+    end
 end
 
 function _M:error(message)
@@ -197,7 +199,9 @@ function _M:error(message)
         end
     end
 
-    ngx.say(cjson.encode(response:new({}, meta)))
+    if ngx.var.request_method ~= "HEAD" then
+        ngx.say(cjson.encode(response:new({}, meta)))
+    end
 end
 
 function _M:route_params()

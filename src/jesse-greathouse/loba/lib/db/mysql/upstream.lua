@@ -40,7 +40,8 @@ function _M:insert(args)
                                     args.site_id,
                                     args.method_id,
                                     args.hash,
-                                    args.consistent)
+                                    args.consistent,
+                                    args.ssl)
     return self:get(id)
 end
 
@@ -50,6 +51,7 @@ function _M:update(args, id)
                                     args.method_id,
                                     args.hash,
                                     args.consistent,
+                                    args.ssl,
                                     id)
     return self:get(id)
 end

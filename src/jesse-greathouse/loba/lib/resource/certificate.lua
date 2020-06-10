@@ -6,9 +6,11 @@ local mt = { __index = _M }
 
 function _M.new(self, certificate)
     local upstream = helpers.dbm('upstream')
-    certificate.upstream = upstream:get(certificate.upstream_id)
-    certificate.certificate = helpers.cert_download_url(certificate)
-    certificate.key = helpers.key_download_url(certificate)
+    if certificate then
+        certificate.upstream = upstream:get(certificate.upstream_id)
+        certificate.certificate = helpers.cert_download_url(certificate)
+        certificate.key = helpers.key_download_url(certificate)
+    end
     return setmetatable(certificate, mt)
 end
 

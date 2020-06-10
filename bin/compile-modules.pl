@@ -4,50 +4,68 @@ use strict;
 
 my $etc = $ENV{'ETC'};
 my $opt = $ENV{'OPT'};
-my $lobaDir = $ENV{'LOBA_DIR'};
-my $cDir = "$lobaDir/c";
+my $src = $ENV{'SRC'};
+my $lobaSrc = $ENV{'LOBA_DIR'};
+my $lobaCDir = "$lobaSrc/c";
 my $luaDir = "$opt/openresty/luajit";
 
-# Change to the Directory with the C Modules
-chdir "$cDir";
+my @compileDirs = ($lobaCDir);
 
-# pic compile pass (https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html#step-1-compiling-with-position-independent-code)
-while ($_ = glob("$cDir/*.c")) {
-    next if -d $_;
-
-    my @cmd = ('gcc');
-    push @cmd, '-c';
-    push @cmd, '-Wall';
-    push @cmd, '-Werror';
-    push @cmd, $_;
-    push @cmd, "-I$luaDir/include/luajit-2.1";
-    push @cmd, '-fPIC';
-    system(@cmd);
-
-    command_result($?, $!, "PIC pass for: $_", \@cmd);
-}
-
-# Create shared library from object files
-while ($_ = glob("$cDir/*.o")) {
-    next if -d $_;
-
-    my $name = get_module_name($_);
-    my @cmd = ('gcc');
-    push @cmd, '-shared';
-    push @cmd, '-o';
-    push @cmd, "$name.so";
-    push @cmd, $_;
-    push @cmd, "-I$luaDir/include/luajit-2.1";
-    push @cmd, "-L$luaDir/lib";
-    push @cmd, '-lluajit-5.1';
-    system(@cmd);
-
-    command_result($?, $!, "Shared library pass for: $_", \@cmd);
+foreach (@compileDirs)
+{
+    my $cDir = $_;
+    pic_pass_dir($cDir);
+    so_pass_dir($cDir);
 }
 
 # ====================================
 #    Subroutines below this point
 # ====================================
+
+sub pic_pass_dir {
+    my ($picDir) = @_;
+
+    # Change to the Directory with the C Modules
+    chdir "$picDir";
+
+    # pic compile pass (https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html#step-1-compiling-with-position-independent-code)
+    while ($_ = glob("$picDir/*.c")) {
+        next if -d $_;
+
+        my @cmd = ('gcc');
+        push @cmd, '-c';
+        push @cmd, '-Wall';
+        push @cmd, '-Werror';
+        push @cmd, $_;
+        push @cmd, "-I$luaDir/include/luajit-2.1";
+        push @cmd, '-fPIC';
+        system(@cmd);
+
+        command_result($?, $!, "PIC pass for: $_", \@cmd);
+    }
+}
+
+sub so_pass_dir {
+    my ($soDir) = @_;
+
+    # Create shared library from object files
+    while ($_ = glob("$soDir/*.o")) {
+        next if -d $_;
+
+        my $name = get_module_name($_);
+        my @cmd = ('gcc');
+        push @cmd, '-shared';
+        push @cmd, '-o';
+        push @cmd, "$name.so";
+        push @cmd, $_;
+        push @cmd, "-I$luaDir/include/luajit-2.1";
+        push @cmd, "-L$luaDir/lib";
+        push @cmd, '-lluajit-5.1';
+        system(@cmd);
+
+        command_result($?, $!, "Shared library pass for: $_", \@cmd);
+    }
+}
 
 sub get_module_name {
     my ($uri) = @_;
@@ -59,7 +77,7 @@ sub get_module_name {
 
 sub command_result {
     my ($exit, $err, $operation_str, @cmd) = @_;
-    
+
     if ($exit == -1) {
         print "failed to execute: $err \n";
         exit $exit;
