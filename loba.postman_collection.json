@@ -238,6 +238,11 @@
 											"key": "consistent",
 											"value": "0",
 											"type": "text"
+										},
+										{
+											"key": "ssl",
+											"value": "0",
+											"type": "text"
 										}
 									]
 								},
@@ -300,6 +305,11 @@
 										},
 										{
 											"key": "consistent",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "ssl",
 											"value": "0",
 											"type": "text"
 										}
@@ -673,6 +683,173 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "certificate",
+					"item": [
+						{
+							"name": "certificate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "certificate",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "upstream_id",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "certificate",
+											"type": "file",
+											"src": "/Users/jgreathouse/loba/mycert.crt"
+										},
+										{
+											"key": "key",
+											"type": "file",
+											"src": "/Users/jgreathouse/loba/mykey.key"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "certificate/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate/10",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "certificate/:id",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "upstream_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "certificate",
+											"type": "file",
+											"src": "/Users/jgreathouse/loba/mycert.crt"
+										},
+										{
+											"key": "key",
+											"type": "file",
+											"src": "/Users/jgreathouse/loba/mykey.key"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate/5",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "certificate/:id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate/5",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "certificate/remove/certificate/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/api/certificate/remove/certificate/9",
+									"protocol": "{{loba-protocol}}",
+									"host": [
+										"{{loba-domain}}{{loba-port}}"
+									],
+									"path": [
+										"api",
+										"certificate",
+										"remove",
+										"certificate",
+										"9"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -732,6 +909,31 @@
 							"path": [
 								"rpc",
 								"test-nginx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sscert/:domain",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{loba-protocol}}://{{loba-domain}}{{loba-port}}/rpc/sscert?domain=dev.jessegreathouse.com",
+							"protocol": "{{loba-protocol}}",
+							"host": [
+								"{{loba-domain}}{{loba-port}}"
+							],
+							"path": [
+								"rpc",
+								"sscert"
+							],
+							"query": [
+								{
+									"key": "domain",
+									"value": "dev.jessegreathouse.com"
+								}
 							]
 						}
 					},
