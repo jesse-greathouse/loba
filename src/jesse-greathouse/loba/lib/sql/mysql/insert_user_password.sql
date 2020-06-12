@@ -1,0 +1,1 @@
+INSERT INTO `user_password` (`user_id`, `password_id`) VALUES (?, ?);

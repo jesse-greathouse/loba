@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS `password` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `password` VARCHAR(224) NOT NULL,
+  `salt` VARCHAR(224) NULL,
+  PRIMARY KEY (`id`));

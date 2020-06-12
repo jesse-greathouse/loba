@@ -15,6 +15,12 @@ my @initScripts = (
     'create_table_upstream_server.sql',
     'create_table_upstream_certificate.sql',
     'create_table_user.sql',
+    'create_table_password.sql',
+    'create_table_role.sql',
+    'insert_initial_roles.sql',
+    'create_table_user_role.sql',
+    'create_table_user_password.sql',
+    'create_trigger_before_password_insert.sql'
 );
 
 # Set up variables from the environment

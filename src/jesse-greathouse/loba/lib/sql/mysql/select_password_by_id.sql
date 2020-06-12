@@ -1,0 +1,1 @@
+SELECT * FROM `password` WHERE `id` = ?;

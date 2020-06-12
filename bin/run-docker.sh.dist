@@ -92,6 +92,8 @@ docker run -d -p __PORT__:3000 \
     -e CACHE_DIR="/app/var/cache" \
     -e LOG_DIR="/app/var/logs" \
     -e PORT="__PORT__" \
+    -e GOOGLE_OAUTH_CLIENT_ID="__GOOGLE_OAUTH_CLIENT_ID__" \
+    -e GOOGLE_OAUTH_CLIENT_SECRET="__GOOGLE_OAUTH_CLIENT_SECRET__" \
     -e REDIS_HOST="__REDIS_HOST__" \
     -e DB_DRIVER="__DB_DRIVER__" \
     -e DB_NAME="__DB_NAME__" \

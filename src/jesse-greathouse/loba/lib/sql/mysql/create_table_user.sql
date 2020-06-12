@@ -5,4 +5,5 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_name` VARCHAR(100) NULL,
   `avatar_url` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
+  INDEX `email` (`email` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC));

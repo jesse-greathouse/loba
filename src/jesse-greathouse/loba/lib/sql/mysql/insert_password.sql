@@ -1,0 +1,1 @@
+INSERT INTO `password` (`password`) VALUES (?);

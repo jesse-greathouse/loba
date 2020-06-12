@@ -1,5 +1,6 @@
 -- methods for producing each endpoint of the application
 local helpers = require "helpers"
+local env = require "env"
 
 local _M = {}
 
@@ -12,11 +13,13 @@ function _M.get_view(tpl, layout)
     if helpers.is_debug() then
         template.caching(false)
     end
-
     local view  = template.new(tpl, layout)
+
     view.page_id = get_template_name(tpl)
     view.uri = ngx.var.uri
+    view.google_oauth_client_id = env.GOOGLE_OAUTH_CLIENT_ID
     view.qs = helpers.format_query(ngx.req.get_uri_args(), "&")
+
     return view
 end
 

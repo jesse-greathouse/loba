@@ -1,0 +1,1 @@
+UPDATE `user_password` SET `user_id` = ?, `password_id` = ? WHERE `id` = ?;

@@ -47,6 +47,7 @@ ADD opt /app/opt
 ADD bin/install.sh /app/bin/install.sh
 ADD bin/compile-modules.pl /app/bin/compile-modules.pl
 ADD bin/db-init.pl /app/bin/db-init.pl
+ADD bin/create-admin.pl /app/bin/create-admin.pl
 ADD bin/compose-sites.pl /app/bin/compose-sites.pl
 
 WORKDIR /app

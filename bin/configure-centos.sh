@@ -43,6 +43,9 @@ DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 TMP="$( cd -P "$DIR/tmp" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
+VAR="$( cd -P "$DIR/var" && pwd )"
+SRC="$( cd -P "$DIR/src" && pwd )"
+LOBA_DIR=${SRC}/jesse-greathouse/loba/lib
 USER="$(whoami)"
 RUN_SCRIPT="${BIN}/run-centos.sh"
 SERVICE_RUN_SCRIPT="${BIN}/run-centos-service.sh"
@@ -50,6 +53,8 @@ NGINX_CONF="${ETC}/nginx/nginx.conf"
 SSL_CONF="${ETC}/ssl/openssl.cnf"
 SSL_PARAMS_CONF="${ETC}/nginx/ssl-params.conf"
 FORCE_SSL_CONF="${ETC}/nginx/force-ssl.conf"
+PERL_BASE="${OPT}/perl"
+PERL5LIB="${PERL_BASE}/lib/perl5"
 
 printf "\n"
 printf "\n"
@@ -81,7 +86,15 @@ printf "=================================================================\n"
 printf "\n"
 printf "Enter the Admin Email: "
 read ADMIN_EMAIL
-printf "Enter your name of your site [loba]: "
+printf "Create an Admin Password for the app: "
+read -s ADMIN_PASSWORD
+printf "\nConfirm the Admin Password: "
+read -s ADMIN_PASSWORD_CONFIRM
+if  [ "${ADMIN_PASSWORD}" != "${ADMIN_PASSWORD_CONFIRM}" ]; then
+    printf "\nPassword confirmation failed. Please run this script again.\n"
+    exit 1
+fi
+printf "\nEnter your name of your site [loba]: "
 read SITE_NAME
 if  [ "${SITE_NAME}" == "" ]; then
     SITE_NAME="loba"
@@ -95,6 +108,16 @@ printf "Enter your website port [80]: "
 read PORT
 if  [ "${PORT}" == "" ]; then
     PORT="80"
+fi
+printf "Enter your Google Oauth Client Id [optional]: "
+read GOOGLE_OAUTH_CLIENT_ID
+if  [ "${GOOGLE_OAUTH_CLIENT_ID}" == "" ]; then
+    GOOGLE_OAUTH_CLIENT_ID="248720560989-j1jpfb3qv8s9thh3633nn8vfkpc484aq.apps.googleusercontent.com"
+fi
+printf "Enter your Google Oauth Client Secret [optional]: "
+read GOOGLE_OAUTH_CLIENT_SECRET
+if  [ "${GOOGLE_OAUTH_CLIENT_SECRET}" == "" ]; then
+    GOOGLE_OAUTH_CLIENT_SECRET="qNZPihVIjV6Oon5ntBceZRqP"
 fi
 printf "Enter your database driver [mysql]: "
 read DB_DRIVER
@@ -187,6 +210,7 @@ printf "\n"
 printf "You have entered the following configuration: \n"
 printf "\n"
 printf "Admin Email: ${ADMIN_EMAIL} \n"
+printf "Admin Password: ***** \n"
 printf "Site Name: ${SITE_NAME} \n"
 printf "Site Domains: ${SITE_DOMAINS} \n"
 printf "Web Port: ${PORT} \n"
@@ -247,6 +271,8 @@ if  [ "${CORRECT}" == "y" ]; then
     sed -i -e s/__DB_PASSWORD__/"${DB_PASSWORD}"/g ${RUN_SCRIPT}
     sed -i -e s/__REDIS_HOST__/"${REDIS_HOST}"/g ${RUN_SCRIPT}
     sed -i -e s/__DB_PORT__/"${DB_PORT}"/g ${RUN_SCRIPT}
+    sed -i -e s/__GOOGLE_OAUTH_CLIENT_ID__/"${GOOGLE_OAUTH_CLIENT_ID}"/g ${RUN_SCRIPT}
+    sed -i -e s/__GOOGLE_OAUTH_CLIENT_SECRET__/"${GOOGLE_OAUTH_CLIENT_SECRET}"/g ${RUN_SCRIPT}
     sed -i -e s/__SSL__/"${SSL}"/g ${RUN_SCRIPT}
     sed -i -e s/__DEBUG__/"${DEBUG}"/g ${RUN_SCRIPT}
     chmod +x ${RUN_SCRIPT}
@@ -369,6 +395,47 @@ if  [ "${CORRECT}" == "y" ]; then
     sed -i -e "s __SSL_CERT_LINE__ $SSL_CERT_LINE g" ${NGINX_CONF}
     sed -i -e "s __SSL_KEY_LINE__ $SSL_KEY_LINE g" ${NGINX_CONF}
     sed -i -e "s __INCLUDE_FORCE_SSL__ $INCLUDE_FORCE_SSL g" ${NGINX_CONF}
+
+
+    ##==================================================================
+    ## Initialize the database and populate the admin user and password
+    ##==================================================================
+
+    printf "Initializing the database... \n"
+    ETC=${ETC} \
+    LOBA_DIR=${LOBA_DIR} \
+    SQL_QUERY_DIR=${LOBA_DIR}/sql/${DB_DRIVER} \
+    LOG_DIR=${VAR}/logs \
+    CACHE_DIR=${VAR}/cache \
+    DB_DRIVER=${DB_DRIVER} \
+    DB_HOST=${DB_HOST} \
+    DB_USER=${DB_USER} \
+    DB_PASSWORD=${DB_PASSWORD} \
+    DB_NAME=${DB_NAME} \
+    DB_PORT=${DB_PORT} \
+    PERL5LIB=${PERL5LIB} \
+    ${PERL_BASE}/bin/perl ${BIN}/db-init.pl
+    printf "Database tables created.\n"
+
+
+    ##==========================================
+    ## Create the Admin user, password and roles
+    ##==========================================
+
+    printf "Creating the Admin user, password and roles... \n"
+    ADMIN_EMAIL=${ADMIN_EMAIL} \
+    ADMIN_PASSWORD=${ADMIN_PASSWORD} \
+    SQL_QUERY_DIR=${LOBA_DIR}/sql/${DB_DRIVER} \
+    DB_DRIVER=${DB_DRIVER} \
+    DB_HOST=${DB_HOST} \
+    DB_USER=${DB_USER} \
+    DB_PASSWORD=${DB_PASSWORD} \
+    DB_NAME=${DB_NAME} \
+    DB_PORT=${DB_PORT} \
+    PERL5LIB=${PERL5LIB} \
+    ${PERL_BASE}/bin/perl ${BIN}/create-admin.pl
+    printf "Admin created.\n"
+
 
 printf "\n"
 printf "\n"

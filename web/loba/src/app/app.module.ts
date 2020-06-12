@@ -25,6 +25,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // 3rd party libraries
 import { NgxFitTextModule } from 'ngx-fit-text';
+import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import { GoogleLoginProvider} from "angularx-social-login";
 
 // routers
 import { AppRoutingModule } from './app-routing.module';
@@ -51,6 +53,21 @@ import { RemoveCertificateConfirmComponent } from './remove-certificate-confirm/
 import { RemoveKeyConfirmComponent } from './remove-key-confirm/remove-key-confirm.component';
 import { SelfSignedConfirmComponent } from './self-signed-confirm/self-signed-confirm.component';
 
+
+// Create a new AuthServiceConfig object to set up OAuth2
+// Use your Client ID in the GoogleLoginProvider()
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    // @ts-ignore GOOGLE_OAUTH_CLIENT_ID added to window in index.html
+    provider: new GoogleLoginProvider(window.GOOGLE_OAUTH_CLIENT_ID)
+  }
+]);
+
+// Function to retrieve the AuthServiceConfig object
+export function provideConfig() {
+  return config;
+}
 
 @NgModule({
   declarations: [

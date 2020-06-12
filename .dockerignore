@@ -21,6 +21,7 @@ bin/*
 !bin/install.sh
 !bin/compile-modules.pl
 !bin/db-init.pl
+!bin/create-admin.pl
 !bin/compose-sites.pl
 !bin/run_tests.sh
 

@@ -9,7 +9,7 @@ function HomeView.index()
     local view = base.get_view("index.html")
 
     -- Dress the view
-    view.title      = "Loba"
+    view.title = "Loba"
     view:render()
 end
 
@@ -24,7 +24,9 @@ function HomeView.error()
             view.trace = trace
         end
     end
-    view.title      = "Loba  | " .. view.status .. " " .. view.message
+
+    view.title = "Loba  | " .. view.status .. " " .. view.message
+
     view:render()
 end
 

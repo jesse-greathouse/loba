@@ -30,6 +30,7 @@
 *-e
 /bin/*
 !bin/db-init.pl
+!bin/create-admin.pl
 !bin/compose-sites.pl
 !bin/compile-modules.pl
 !bin/generate-diffie-hellman.pl
