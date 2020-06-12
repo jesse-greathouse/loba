@@ -1,0 +1,1 @@
+UPDATE `token` SET `token` = ?, `ttl` = ?, `user_id` = ?, `provider` = ? WHERE `id` = ?;

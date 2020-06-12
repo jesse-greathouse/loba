@@ -1,0 +1,1 @@
+INSERT INTO `token` (`token`, `ttl`, `user_id`, `provider`) VALUES (?, ?, ?, ?);

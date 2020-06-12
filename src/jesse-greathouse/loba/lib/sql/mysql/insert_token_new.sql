@@ -1,0 +1,1 @@
+INSERT INTO `token` (`token`) VALUES (?);

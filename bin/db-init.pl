@@ -20,7 +20,9 @@ my @initScripts = (
     'insert_initial_roles.sql',
     'create_table_user_role.sql',
     'create_table_user_password.sql',
-    'create_trigger_before_password_insert.sql'
+    'create_trigger_before_password_insert.sql',
+    'create_table_token.sql',
+    'create_trigger_before_token_insert.sql',
 );
 
 # Set up variables from the environment

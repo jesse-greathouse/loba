@@ -1,9 +1,21 @@
 -- helper functions for accplimplishing tasks
 local env = require "env"
+local random = require "resty.random"
+local str = require "resty.string"
 local Helpers = {}
 
 local CERT_DOWNLOAD_STR = "/download/certificate/%s"
 local KEY_DOWNLOAD_STR = "/download/key/%s"
+
+function Helpers.factory_token()
+    local sha = require "resty.sha224":new()
+    local ok = sha:update(random.bytes(8,true))
+    if not ok then
+        ngx.log(ngx.ERR, "Failure updating sha hash.")
+        return ngx.exit(500)
+    end
+    return str.to_hex(sha:final())
+end
 
 function Helpers.get_perl_bin()
     return env.OPT .. "/perl/bin/perl"
