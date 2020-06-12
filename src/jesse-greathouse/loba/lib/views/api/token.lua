@@ -8,8 +8,9 @@ local mt = { __index = _M }
 function _M:get_new()
     local db = helpers.dbm(self.resource_name)
     local resource = helpers.resource(self.resource_name)
+    local token = helpers.factory_token()
 
-    local o = db:get_new(helpers.factory_token())
+    local o = db:get_new(token)
     if not o then
         self:not_found("A %s, with the token: %s, could not be created.", self.resource_name, token)
     else
