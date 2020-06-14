@@ -7,14 +7,34 @@ local Helpers = {}
 local CERT_DOWNLOAD_STR = "/download/certificate/%s"
 local KEY_DOWNLOAD_STR = "/download/key/%s"
 
-function Helpers.factory_token()
+local function gen_token()
     local sha = require "resty.sha224":new()
-    local ok = sha:update(random.bytes(8,true))
+    local ok = sha:update(random.bytes(8, true))
     if not ok then
         ngx.log(ngx.ERR, "Failure updating sha hash.")
         return ngx.exit(500)
     end
     return str.to_hex(sha:final())
+end
+
+function Helpers.factory_token()
+    local token
+    while not token or not Helpers.token_unique(token) do
+        token = gen_token()
+    end
+
+    return token
+end
+
+function Helpers.token_unique(token)
+    local db = Helpers.dbm('token')
+    local o = db:get_token(token)
+
+    if not o then
+        return true
+    end
+
+    return false
 end
 
 function Helpers.get_perl_bin()

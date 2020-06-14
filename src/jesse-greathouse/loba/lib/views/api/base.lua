@@ -1,4 +1,5 @@
 -- methods for producing each endpoint of the api
+local base = require "views.base"
 local helpers = require "helpers"
 local cjson = require "cjson"
 local response = require "models.api.response"
@@ -215,7 +216,12 @@ function _M:route_params()
 end
 
 function _M.new(self, resource_name, route)
-    return setmetatable({route = route, resource_name = resource_name}, mt)
+    local t = base:new()
+    t.resource_name = resource_name
+    t.route = route
+    return setmetatable(t, mt)
 end
+
+setmetatable( _M, { __index = base } )
 
 return _M

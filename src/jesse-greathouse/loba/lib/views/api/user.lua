@@ -10,4 +10,4 @@ end
 
 setmetatable( _M, { __index = base } )
 
-return _M;
+return _M

@@ -11,7 +11,10 @@
     window.GOOGLE_OAUTH_CLIENT_ID = "{{ google_oauth_client_id }}";
   </script>
 </head>
-<body data-uri="{{ uri }}" data-qs="{{ qs }}" data-page-id="{{ page_id }}" class="mat-typography">
+<body class="mat-typography"
+    data-qs="{{ qs }}"
+    data-page-id="{{ page_id }}"
+    data-token="{{ token }}" >
   <app-root></app-root>
 </body>
 </html>
