@@ -7,7 +7,9 @@
         <div class="logo-text" >Loba</div>
     </div>
 
-    <div id="middle-menu-container">
+    <div *ngIf="!isLoggedIn" id="middle-menu-container"></div>
+
+    <div *ngIf="isLoggedIn" id="middle-menu-container">
         <button mat-button [matMenuTriggerFor]="opMenu" >Operations</button>
         <mat-menu #opMenu="matMenu" yPosition="below">
             <button mat-menu-item (click)="commit()" >Commit New Changes</button>
@@ -24,6 +26,14 @@
             <button mat-menu-item (click)="goHome()">
                 <mat-icon>info</mat-icon>
                 <span> <a routerLink="">About</a></span>
+            </button>
+            <button *ngIf="isLoggedIn" mat-menu-item (click)="goLogout()">
+                <mat-icon>info</mat-icon>
+                <span> <a routerLink="">Log Out</a></span>
+            </button>
+            <button *ngIf="!isLoggedIn" mat-menu-item (click)="goLogin()">
+                <mat-icon>person</mat-icon>
+                <span> <a routerLink="/login">Log In</a></span>
             </button>
         </mat-menu>
     </nav>

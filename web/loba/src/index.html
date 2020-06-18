@@ -9,12 +9,12 @@
 
   <script>
     window.GOOGLE_OAUTH_CLIENT_ID = "{{ google_oauth_client_id }}";
+    window.TOKEN = "{{ token }}";
+    window.PAGEID = "{{ page_id }}";
+    window.QS = "{{ qs }}";
   </script>
 </head>
-<body class="mat-typography"
-    data-qs="{{ qs }}"
-    data-page-id="{{ page_id }}"
-    data-token="{{ token }}" >
-  <app-root></app-root>
+<body class="mat-typography" >
+  <app-root id="app"></app-root>
 </body>
 </html>

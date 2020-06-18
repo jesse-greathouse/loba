@@ -16,6 +16,24 @@ function _M:get(id)
     return base.get(self, "select_user_by_id", id)
 end
 
+function _M:login(email, password)
+    local res, err = self.db:execute(self:get_statement("select_user_by_login_credentials"),
+                                                            email,
+                                                            password)
+
+    if err then
+        ngx.log(ngx.ERR, "select failed.", err)
+        return ngx.exit(500)
+    end
+
+    -- If not empty, only return one result
+    if next(res) ~= nil then
+        return res[1];
+    end
+
+    return nil
+end
+
 function _M:insert(args)
     local id = base.insert(self, "insert_user",
                                     args.email,

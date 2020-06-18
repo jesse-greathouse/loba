@@ -1,14 +1,27 @@
+#container {
+  display: flex;
+  padding: 20px 20px 20px 20px;
+  flex-grow: 1;
+}
+
 /* The sidebar menu */
 #sidenav {
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
   width: 240px; /* Set the width of the sidebar */
   z-index: 1; /* Stay on top */
-  top: 60px; /* Stay at the top */
-  bottom: 30px; /* Stay at the top */
   left: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding: 20px 20px 0 20px;
   border: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+/* Structural frame element of layout */
+#content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-left: 20px;
 }
 
 #sidenav::-webkit-scrollbar {
@@ -39,27 +52,21 @@
   outline:none;
 }
 
-/* Structural frame element of layout */
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  top: 60px;
-  height: 84%;
-  margin: 82px 30px 80px 280px; /* greater than the width + padding of the sidebar */
-  padding: 0 20px 0 20px;
-}
-
-.content-container {
+#content-container {
   width: 100%;
 }
 
 #spinner-wrapper {
   display: flex;
-  height: 100%;
+  z-index: 2;
+  width: 100%;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+::ng-deep .mat-drawer {
+  background-color: transparent;
 }
 
 @media screen and (max-height: 450px) {

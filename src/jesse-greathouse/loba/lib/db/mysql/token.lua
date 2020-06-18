@@ -45,6 +45,13 @@ function _M:insert(args)
     return self:get(id)
 end
 
+function _M:bind_user(user_id, token)
+    local _ = base.update(self, "update_token_user_by_token",
+                                    user_id,
+                                    token)
+    return self:get_token(token)
+end
+
 function _M:update(args, id)
     local _ = base.update(self, "update_token_by_id",
                                     args.token,

@@ -1,12 +1,9 @@
 #top-toolbar {
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
   display: flex;
-  flex-flow: row;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 60px;
   background-color: #000000;
   color: white;
   padding: 0 20px 0 20px;
@@ -38,12 +35,12 @@
 #middle-menu-container {
   display: flex;
   width: 100%;
-  padding: 0 0 0 40px;
+  padding: 0 0 0 20px;
 }
 
 #top-toolbar nav {
   flex-grow: 0px;
-  margin: 0 30px 0 30px;
+  margin: 0 0 0 20px;
 }
 
 #top-toolbar nav button {

@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.hide {
+  display: none !important;
+}
+
 .field {
   margin: 0 10px 10px 0;
 }

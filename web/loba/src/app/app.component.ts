@@ -1,26 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { Site } from './site';
 import { IsLoadingService } from './is-loading.service';
+import { IsLoggedInService } from './is-logged-in.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy {
   title = 'loba';
   refresh = false;
   isLoading: Observable<boolean>;
 
   constructor(
     private isLoadingService: IsLoadingService,
-    private router: Router) { }
+    private isLoggedInService: IsLoggedInService,
+    private router: Router) {
+      this.loggedInSubscription = this.isLoggedInService.isLoggedIn$.subscribe(
+        loggedIn => {
+          this.isLoggedIn = loggedIn;
+      });
+  }
+
+  @Input() isLoggedIn: boolean;
+  loggedInSubscription: Subscription
 
   ngOnInit(): void {
+    this.isLoggedInService.fetchToken();
     this.isLoading = this.isLoadingService.isLoading$();
 
     this.router.events
@@ -46,15 +57,23 @@ export class AppComponent implements OnInit{
   }
 
   onActivate(componentReference: any) {
-    //Below will subscribe to the siteUpdated emitter
-    componentReference.siteUpdated.subscribe((site: Site) => {
-      this.refresh = (this.refresh == false);
-      this.router.navigateByUrl(`/site/${site.domain}`);
-    });
+    if (componentReference.siteUpdated !== undefined) {
+      //Below will subscribe to the siteUpdated emitter
+      componentReference.siteUpdated.subscribe((site: Site) => {
+        this.refresh = (this.refresh == false);
+        this.router.navigateByUrl(`/site/${site.domain}`);
+      });
+    }
 
-    componentReference.siteRemoved.subscribe((site: Site) => {
-      this.refresh = (this.refresh == false);
-      this.router.navigateByUrl(``);
-    });
+    if (componentReference.siteRemoved !== undefined) {
+      componentReference.siteRemoved.subscribe((site: Site) => {
+        this.refresh = (this.refresh == false);
+        this.router.navigateByUrl(``);
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.loggedInSubscription.unsubscribe();
   }
 }

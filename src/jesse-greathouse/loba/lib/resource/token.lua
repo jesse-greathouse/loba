@@ -5,8 +5,12 @@ local _M = {}
 local mt = { __index = _M }
 
 function _M.new(self, token)
-    local user = helpers.dbm('user')
-    token.user = user:get(token.user_id)
+    local udb = helpers.dbm('user')
+    token.user = udb:get(token.user_id)
+
+    if not token.user then
+        token.user = ngx.null
+    end
 
     return setmetatable(token, mt)
 end

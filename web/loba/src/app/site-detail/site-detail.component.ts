@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { Site } from '../site';
 import { SiteService } from '../site.service';
@@ -28,12 +29,20 @@ export class SiteDetailComponent implements OnInit {
     private isLoadingService: IsLoadingService,
     private router: Router) {
 
+      this.isLoadingSubscription = this.isLoadingService.isLoading$()
+        .subscribe(isLoading => {
+            this.isLoading = isLoading;
+        });
+
       this.router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
           this.loadSiteDetail();
         }
       });
   }
+
+  @Input() isLoading: boolean;
+  isLoadingSubscription: Subscription;
 
   ngOnInit(): void {
   }

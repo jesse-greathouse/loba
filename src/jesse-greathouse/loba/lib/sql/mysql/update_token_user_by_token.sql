@@ -1,0 +1,1 @@
+UPDATE `token` SET `user_id` = ? WHERE `token` = ?;

@@ -1,0 +1,35 @@
+<div 
+  class="login-container"
+  [ngClass]="{'hide': isLoading}" >
+
+  <div 
+    class="login-form" 
+    (keydown)="loginKeyDown($event)" >
+  
+    <mat-form-field class="login-field">
+      <mat-label>Email</mat-label>
+      <input 
+        matInput
+        [(ngModel)]="email" >
+    </mat-form-field>
+    <br>
+    <mat-form-field class="login-field">
+      <mat-label>Password</mat-label>
+      <input 
+        matInput 
+        [type]="hide ? 'password' : 'text'"
+        [(ngModel)]="password" >
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    <br>
+    <button 
+      mat-raised-button
+      color="primary" 
+      (click)="login()" >
+      Login
+    </button>
+  </div>
+  
+</div>

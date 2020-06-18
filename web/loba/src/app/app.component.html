@@ -1,21 +1,23 @@
 <!-- Toolbar -->
 <app-toolbar></app-toolbar>
 
-<!-- Side Navigation -->
-<mat-sidenav mode="side" opened id="sidenav">
-  <app-sites [refresh]="refresh"></app-sites>
-</mat-sidenav>
+<div id="container">
+  <!-- Side Navigation -->
+  <mat-sidenav *ngIf="isLoggedIn" mode="side" opened id="sidenav">
+    <app-sites [refresh]="refresh"></app-sites>
+  </mat-sidenav>
 
-<!-- Main Panel -->
-<div class="content" role="main">
-  <div *ngIf="isLoading | async" id="spinner-wrapper">
-    <mat-spinner></mat-spinner>
+  <!-- Main Panel -->
+  <div id="content" role="main">
+    <div *ngIf="isLoading | async" id="spinner-wrapper">
+      <mat-spinner></mat-spinner>
+    </div>
+    <router-outlet id="router-outlet" (activate)="onActivate($event)" ></router-outlet>
+
+    <!-- Links -->
+    <!-- TODO: links -->
+    <!-- <app-links></app-links> -->
   </div>
-  <router-outlet id="router-outlet" (activate)="onActivate($event)" ></router-outlet>
-
-  <!-- Links -->
-  <!-- TODO: links -->
-  <!-- <app-links></app-links> -->
 </div>
 
 <!-- Messages -->

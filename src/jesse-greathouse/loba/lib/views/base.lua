@@ -21,6 +21,11 @@ local function get_template_name(tpl)
     return string.match(tpl, "([%a|_]+)%.html")
 end
 
+function _M:bind_user(user)
+    local db = helpers.dbm('token')
+    return db:bind_user(user.id, self.session.data.token.token)
+end
+
 function _M:init_session()
     self.session = require "resty.session".new()
     self.session:open()

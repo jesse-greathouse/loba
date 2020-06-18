@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { Rpc } from  '../rpc';
+import { TokenService } from '../token.service';
 import { RpcService } from '../rpc.service';
 import { IsLoadingService } from '../is-loading.service';
+import { IsLoggedInService } from '../is-logged-in.service';
 import { MessageService } from '../message.service';
 
 interface TestResult {
@@ -18,20 +21,44 @@ interface TestResult {
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
-  constructor(  
+  constructor(
+    private tokenService: TokenService,
     private rpcService: RpcService,
     private messageService: MessageService,
     private isLoadingService: IsLoadingService,
+    private isLoggedInService: IsLoggedInService,
     private route: ActivatedRoute,
-    private router: Router ) { }
+    private router: Router ) {
+      this.loggedInsubscription = this.isLoggedInService.isLoggedIn$.subscribe(
+        loggedIn => {
+          this.isLoggedIn = loggedIn;
+      });
+  }
+
+  @Input() isLoggedIn: boolean;
+  loggedInsubscription: Subscription
 
   ngOnInit(): void {
   }
 
   goHome() : void {
     this.router.navigate([''], { relativeTo: this.route });
+  }
+
+  goLogin() : void {
+    this.router.navigate(['login'], { relativeTo: this.route });
+  }
+
+  goLogout(): void {
+    this.isLoadingService.add();
+    this.tokenService.logout()
+      .subscribe(() => {
+        this.isLoggedInService.logout();
+        this.isLoadingService.remove();
+        location.reload();
+      });
   }
 
   commit() : void {
@@ -75,6 +102,10 @@ export class ToolbarComponent implements OnInit {
         }
         this.isLoadingService.remove();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.loggedInsubscription.unsubscribe();
   }
 
   private parseTestResult(rpc: Rpc) : TestResult {

@@ -35,6 +35,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpInterceptorProviders} from './http-interceptors/index';
 
 // components
+import { AppConfig } from './app.config';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FooterComponent } from './footer/footer.component';
@@ -52,11 +53,21 @@ import { CertificateComponent } from './certificate/certificate.component';
 import { RemoveCertificateConfirmComponent } from './remove-certificate-confirm/remove-certificate-confirm.component';
 import { RemoveKeyConfirmComponent } from './remove-key-confirm/remove-key-confirm.component';
 import { SelfSignedConfirmComponent } from './self-signed-confirm/self-signed-confirm.component';
+import { LoginComponent } from './login/login.component';
 
 
 // Create a new AuthServiceConfig object to set up OAuth2
 // Use your Client ID in the GoogleLoginProvider()
-let config = new AuthServiceConfig([
+let appConfig: AppConfig = {
+  // @ts-ignore TOKEN added to window in index.html
+  token: window.TOKEN,
+  // @ts-ignore PAGEID added to window in index.html
+  pageId: window.PAGEID,
+};
+
+// Create a new AuthServiceConfig object to set up OAuth2
+// Use your Client ID in the GoogleLoginProvider()
+let authServiceConfig = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
     // @ts-ignore GOOGLE_OAUTH_CLIENT_ID added to window in index.html
@@ -64,9 +75,14 @@ let config = new AuthServiceConfig([
   }
 ]);
 
+// Function to retrieve the appConfig object
+export function provideAppServiceConfig() {
+  return appConfig;
+}
+
 // Function to retrieve the AuthServiceConfig object
-export function provideConfig() {
-  return config;
+export function provideAuthServiceConfig() {
+  return authServiceConfig;
 }
 
 @NgModule({
@@ -87,7 +103,8 @@ export function provideConfig() {
     CertificateComponent,
     RemoveCertificateConfirmComponent,
     RemoveKeyConfirmComponent,
-    SelfSignedConfirmComponent
+    SelfSignedConfirmComponent,
+    LoginComponent
   ],
   imports: [
     FormsModule,
@@ -128,6 +145,14 @@ export function provideConfig() {
     MatDialogModule
   ],
   providers: [
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideAuthServiceConfig
+    },
+    {
+      provide: AppConfig,
+      useFactory: provideAppServiceConfig
+    },
     HttpInterceptorProviders,
   ],
   bootstrap: [AppComponent]

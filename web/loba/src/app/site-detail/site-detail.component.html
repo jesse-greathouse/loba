@@ -1,4 +1,8 @@
-<div *ngIf="site" id="site-detail">
+<div
+  *ngIf="site"
+  id="site-detail"
+  [ngClass]="{'hide': isLoading}" >
+
   <form id="site-form" >
     <mat-form-field class="field">
       <mat-label>Domain</mat-label>
