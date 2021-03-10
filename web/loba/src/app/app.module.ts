@@ -24,8 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // 3rd party libraries
-import { NgxFitTextModule } from 'ngx-fit-text';
-import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import {AngularFittextModule} from 'angular-fittext';
+import { SocialLoginModule, SocialAuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider} from "angularx-social-login";
 
 // routers
@@ -67,24 +67,9 @@ let appConfig: AppConfig = {
   pageId: window.PAGEID,
 };
 
-// Create a new AuthServiceConfig object to set up OAuth2
-// Use your Client ID in the GoogleLoginProvider()
-let authServiceConfig = new AuthServiceConfig([
-  {
-    id: GoogleLoginProvider.PROVIDER_ID,
-    // @ts-ignore GOOGLE_OAUTH_CLIENT_ID added to window in index.html
-    provider: new GoogleLoginProvider(window.GOOGLE_OAUTH_CLIENT_ID)
-  }
-]);
-
 // Function to retrieve the appConfig object
 export function provideAppServiceConfig() {
   return appConfig;
-}
-
-// Function to retrieve the AuthServiceConfig object
-export function provideAuthServiceConfig() {
-  return authServiceConfig;
 }
 
 @NgModule({
@@ -116,7 +101,7 @@ export function provideAuthServiceConfig() {
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    NgxFitTextModule.forRoot(),
+    AngularFittextModule,
     BrowserAnimationsModule,
     MatSidenavModule,
     MatToolbarModule,
@@ -150,8 +135,18 @@ export function provideAuthServiceConfig() {
   ],
   providers: [
     {
-      provide: AuthServiceConfig,
-      useFactory: provideAuthServiceConfig
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              'clientId'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
     },
     {
       provide: AppConfig,

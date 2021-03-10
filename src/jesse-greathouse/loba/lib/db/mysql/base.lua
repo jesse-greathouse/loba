@@ -79,7 +79,7 @@ end
 function _M.get(self, sname, id)
     local res, err = self.db:execute(self:get_statement(sname), id)
     if err then
-        ngx.log(ngx.ERR, "select failed.", err)
+        ngx.log(ngx.ERR, "select failed with:", err)
         return ngx.exit(500)
     end
 

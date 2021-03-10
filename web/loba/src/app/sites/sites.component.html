@@ -8,9 +8,9 @@
 
 <ul id="sites">
   <li *ngFor="let site of sites" >
-    <a  [ngxFitText] 
-        [ngxFitTextMin]="16"
-        [ngxFitTextMax]="20"
+    <a  fittext
+        [minFontSize]="16"
+        [maxFontSize]="20"
         class="card card-small" 
         routerLink="/site/{{site.domain}}" >
       {{site.domain | slice : 0 : 24 }} 
