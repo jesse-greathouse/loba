@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SelfSignedConfirmComponent } from './self-signed-confirm.component';
 
@@ -6,7 +6,7 @@ describe('SelfSignedConfirmComponent', () => {
   let component: SelfSignedConfirmComponent;
   let fixture: ComponentFixture<SelfSignedConfirmComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SelfSignedConfirmComponent ]
     })
