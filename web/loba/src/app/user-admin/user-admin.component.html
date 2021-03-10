@@ -1,0 +1,16 @@
+<div class="meta-controls" >
+  <mat-form-field id="new-user" class="small" >
+    <mat-label>New User</mat-label>
+    <input matInput type="text" #email placeholder="name@email.com" >
+    <button mat-button *ngIf="email" matSuffix mat-icon-button aria-label="Create" (click)="addUser(email.value); email.value=''" >
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div *ngFor="let user of users" >
+  <app-user
+    [user]="user"
+    (userRemoved)="getUsers()" >
+  </app-user>
+</div>

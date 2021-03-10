@@ -57,7 +57,7 @@ export class SiteService extends BaseService implements Transformable {
 
   transform(data: any): any {
     data = super.transform(data);
-    if (data.upstream !== null) {
+    if (data.upstream !== null && data.upstream !== undefined) {
       data.upstream.servers = (Object.keys(data.upstream.servers).length === 0) ? [] : data.upstream.servers;
     }
     return data;

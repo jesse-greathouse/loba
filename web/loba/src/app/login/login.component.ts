@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { TokenService } from '../token.service';
 import { IsLoadingService } from '../is-loading.service';
-import { IsLoggedInService } from '../is-logged-in.service';
+import { AuthorizationService } from '../authorization.service';
 
 const ENTER_KEY = 13;
 
@@ -20,13 +20,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private tokenService: TokenService,
     private isLoadingService: IsLoadingService,
-    private isLoggedInService: IsLoggedInService) {
+    private authorizationService: AuthorizationService) {
       this.isLoadingSubscription = this.isLoadingService.isLoading$()
         .subscribe(isLoading => {
             this.isLoading = isLoading;
         });
 
-      this.loggedInsubscription = this.isLoggedInService.isLoggedIn$
+      this.loggedInsubscription = this.authorizationService.isLoggedIn$
         .subscribe(() => {
           let returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoadingService.add();
     this.tokenService.login(this.email, this.password)
     .subscribe(() => {
-      this.isLoggedInService.fetchToken();
+      this.authorizationService.fetchToken();
     });
   }
 

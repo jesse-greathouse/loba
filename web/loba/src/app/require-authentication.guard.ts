@@ -2,7 +2,7 @@ import { Injectable, Input } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
-import { IsLoggedInService } from './is-logged-in.service';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class RequireAuthenticationGuard implements CanActivate {
 
   constructor(
     private router: Router,
-    private isLoggedInService: IsLoggedInService) {
-      this.subscription = this.isLoggedInService.isLoggedIn$.subscribe(
+    private authorizationService: AuthorizationService) {
+      this.subscription = this.authorizationService.isLoggedIn$.subscribe(
         loggedIn => {
           this.isLoggedIn = loggedIn;
       });
@@ -24,7 +24,7 @@ export class RequireAuthenticationGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
+
     if (this.isLoggedIn) {
       return true;
     } else {

@@ -16,6 +16,13 @@
             <button mat-menu-item (click)="test()" >Test Configs</button>
             <button mat-menu-item (click)="reload()" >Reload Nginx</button>
         </mat-menu>
+
+        <span *ngIf="isAdmin">
+            <button mat-button [matMenuTriggerFor]="adminMenu" >Admin</button>
+            <mat-menu #adminMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="goUserAdmin()" >Users and Roles</button>
+            </mat-menu>
+        </span>
     </div>
 
     <nav>

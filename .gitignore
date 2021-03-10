@@ -26,6 +26,9 @@
 *.crt
 *.key
 
+# build artifacts
+get-pip.py
+
 # bin
 *-e
 /bin/*

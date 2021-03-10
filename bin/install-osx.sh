@@ -55,15 +55,23 @@ brew upgrade
 brew install intltool icu4c autoconf automake python@3.8 gcc \
   pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client
 
-export PATH=$PATH:/usr/local/mysql/bin
-
 # If curl isn't available to the command line then add it to the PATH
 if ! [ -x "$(command -v curl)" ]; then
   echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> ~/.bash_profile
   export PATH="/usr/local/opt/curl/bin:${PATH}"
 fi
 
+# install supervisor with pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+chmod +x get-pip.py
+python3 get-pip.py
+rm get-pip.py
 pip install supervisor
+
+# install angular cli
+npm install -g @angular/cli
+
+export PATH=$PATH:/usr/local/mysql/bin
 
 # Compile and Install Openresty
 tar -xf ${OPT}/openresty-*.tar.gz -C ${OPT}/
@@ -86,7 +94,7 @@ make install
 
 cd ${DIR}
 
-# Compile Perl 5.30.2
+# Compile Perl 5.32.1
 tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
 
 cd ${OPT}/perl-*/
@@ -98,7 +106,9 @@ make install
 curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
 
 # Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBD::mysql
+PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm Template
 
 cd ${DIR}
 

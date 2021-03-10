@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 
 import { Site } from './site';
 import { IsLoadingService } from './is-loading.service';
-import { IsLoggedInService } from './is-logged-in.service';
+import { AuthorizationService } from './authorization.service';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +19,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private isLoadingService: IsLoadingService,
-    private isLoggedInService: IsLoggedInService,
+    private authorizationService: AuthorizationService,
     private router: Router) {
-      this.loggedInSubscription = this.isLoggedInService.isLoggedIn$.subscribe(
+      this.loggedInSubscription = this.authorizationService.isLoggedIn$.subscribe(
         loggedIn => {
           this.isLoggedIn = loggedIn;
       });
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   loggedInSubscription: Subscription
 
   ngOnInit(): void {
-    this.isLoggedInService.fetchToken();
+    this.authorizationService.fetchToken();
     this.isLoading = this.isLoadingService.isLoading$();
 
     this.router.events

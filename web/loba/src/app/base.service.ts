@@ -30,6 +30,9 @@ export abstract class BaseService implements Transformable {
     return this.http.get<any[]>(this.apiUrl).pipe(
       // tap(_ => this.log('fetched obs')),
       map((resp: any) => {
+        for (let i = 0; i < resp.data.length; i++) {
+          resp.data[i] = this.transform(resp.data[i]);
+        }
         return resp.data;
       }),
       catchError(this.handleError<any[]>(`get${this.capResourceName}s`, []))

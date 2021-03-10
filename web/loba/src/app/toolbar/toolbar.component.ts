@@ -6,7 +6,7 @@ import { Rpc } from  '../rpc';
 import { TokenService } from '../token.service';
 import { RpcService } from '../rpc.service';
 import { IsLoadingService } from '../is-loading.service';
-import { IsLoggedInService } from '../is-logged-in.service';
+import { AuthorizationService } from '../authorization.service';
 import { MessageService } from '../message.service';
 
 interface TestResult {
@@ -28,19 +28,31 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private rpcService: RpcService,
     private messageService: MessageService,
     private isLoadingService: IsLoadingService,
-    private isLoggedInService: IsLoggedInService,
+    private authorizationService: AuthorizationService,
     private route: ActivatedRoute,
     private router: Router ) {
-      this.loggedInsubscription = this.isLoggedInService.isLoggedIn$.subscribe(
+      this.loggedInSubscription = this.authorizationService.isLoggedIn$.subscribe(
         loggedIn => {
           this.isLoggedIn = loggedIn;
       });
+
+      this.adminSubscription = this.authorizationService.isAdmin$.subscribe(
+        admin => {
+          this.isAdmin = admin;
+      });
   }
 
+  @Input() isAdmin: boolean;
+  adminSubscription: Subscription
+
   @Input() isLoggedIn: boolean;
-  loggedInsubscription: Subscription
+  loggedInSubscription: Subscription
 
   ngOnInit(): void {
+  }
+
+  goUserAdmin() : void {
+    this.router.navigate(['admin/user'], { relativeTo: this.route });
   }
 
   goHome() : void {
@@ -55,7 +67,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.isLoadingService.add();
     this.tokenService.logout()
       .subscribe(() => {
-        this.isLoggedInService.logout();
+        this.authorizationService.logout();
         this.isLoadingService.remove();
         location.reload();
       });
@@ -105,7 +117,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.loggedInsubscription.unsubscribe();
+    this.loggedInSubscription.unsubscribe();
+    this.adminSubscription.unsubscribe();
   }
 
   private parseTestResult(rpc: Rpc) : TestResult {

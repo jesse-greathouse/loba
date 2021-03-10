@@ -53,4 +53,11 @@ export class UserService extends BaseService {
   deleteUser(user: User | number): Observable<User> {
     return this.delete(user);
   }
+
+  transform(data: any) {
+    data = super.transform(data);
+    data.first_name = (data.first_name) ? data.first_name : '';
+    data.last_name = (data.last_name) ? data.last_name : '';
+    return data;
+  }
 }

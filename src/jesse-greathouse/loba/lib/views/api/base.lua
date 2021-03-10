@@ -139,7 +139,7 @@ function _M:get_post()
         local multipart_data = Multipart(ngx.var.request_body, ct)
         return multipart_data:get_all(), err
     elseif ct == CONTENT_TYPE_APPLICATION_JSON then
-        -- loop through the weird table
+        -- loop through the wierd table
         -- decode the first key that has a value of true
         for k, v in pairs(post) do
             if v then

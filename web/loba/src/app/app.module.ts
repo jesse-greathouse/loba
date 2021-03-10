@@ -54,6 +54,8 @@ import { RemoveCertificateConfirmComponent } from './remove-certificate-confirm/
 import { RemoveKeyConfirmComponent } from './remove-key-confirm/remove-key-confirm.component';
 import { SelfSignedConfirmComponent } from './self-signed-confirm/self-signed-confirm.component';
 import { LoginComponent } from './login/login.component';
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { UserComponent } from './user/user.component';
 
 
 // Create a new AuthServiceConfig object to set up OAuth2
@@ -104,7 +106,9 @@ export function provideAuthServiceConfig() {
     RemoveCertificateConfirmComponent,
     RemoveKeyConfirmComponent,
     SelfSignedConfirmComponent,
-    LoginComponent
+    LoginComponent,
+    UserAdminComponent,
+    UserComponent
   ],
   imports: [
     FormsModule,

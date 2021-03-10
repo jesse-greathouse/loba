@@ -1,0 +1,46 @@
+<div *ngIf="user" class="user-wrapper">
+  <div class="remove-button-container">
+    <button aria-label="Remove User"
+      mat-mini-fab 
+      (click)="removeConfirm()" >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field  class="small">
+    <mat-label>Email</mat-label>
+    <input 
+        matInput
+        name="email"
+        placeholder="user@email.com"
+        [(ngModel)]="user.email"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="xsmall">
+    <mat-label>First Name</mat-label>
+    <input
+        matInput
+        name="first_name"
+        [(ngModel)]="user.first_name"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="xsmall">
+    <mat-label>Last Name</mat-label>
+    <input
+        matInput
+        name="last_name"
+        [(ngModel)]="user.last_name"
+        (focusout)="focusOut()" />
+  </mat-form-field>
+
+  <mat-form-field  class="field">
+    <mat-label>Role</mat-label>
+    <mat-select name="role" [(value)]="role" (selectionChange)="roleChange($event)">
+      <mat-option *ngFor="let role of roles" [value]="role.id">
+        {{role.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
