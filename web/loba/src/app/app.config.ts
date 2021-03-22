@@ -1,4 +1,4 @@
-export declare class AppConfig {
+export class AppConfig {
   pageId: string;
   token: string;
 }

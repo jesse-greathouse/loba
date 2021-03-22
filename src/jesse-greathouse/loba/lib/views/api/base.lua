@@ -5,7 +5,6 @@ local cjson = require "cjson"
 local response = require "models.api.response"
 
 local _M = {}
-
 local mt = { __index = _M }
 
 local CONTENT_TYPE_X_WWW_FORM_URLENCODED    = "application/x-www-form-urlencoded"

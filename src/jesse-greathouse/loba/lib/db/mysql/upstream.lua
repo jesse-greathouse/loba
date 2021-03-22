@@ -39,9 +39,9 @@ function _M:insert(args)
     local id = base.insert(self, "insert_upstream",
                                     args.site_id,
                                     args.method_id,
-                                    args.hash,
                                     args.consistent,
-                                    args.ssl)
+                                    args.ssl,
+                                    args.hash)
     return self:get(id)
 end
 

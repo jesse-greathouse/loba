@@ -1,1 +1,1 @@
-INSERT INTO `upstream_server` (`host`, `weight`, `backup`, `fail_timeout`, `max_fails`, `upstream_id`) VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO `upstream_server` (`host`, `backup`, `fail_timeout`, `max_fails`, `upstream_id`, `weight`) VALUES (?, ?, ?, ?, ?, ?);

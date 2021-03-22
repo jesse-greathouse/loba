@@ -1,1 +1,1 @@
-INSERT INTO `upstream` (`site_id` , `method_id`, `hash`, `consistent`, `ssl`) VALUES (?, ?, ?, ?, ?);
+INSERT INTO `upstream` (`site_id` , `method_id`, `consistent`, `ssl`, `hash`) VALUES (?, ?, ?, ?, ?);

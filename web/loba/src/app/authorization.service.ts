@@ -63,7 +63,7 @@ export class AuthorizationService {
     // If no token was passed, user is not authorized
     if (token) {
       // If token is attached to a user then the user is authorized
-      if (token.user !== null) {
+      if (token.user !== null && token.user !== undefined) {
         this.ss.isLoggedIn = true;
         const roles = token.user.roles
 

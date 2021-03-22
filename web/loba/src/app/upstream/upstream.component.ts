@@ -36,8 +36,8 @@ export class UpstreamComponent implements OnInit, OnChanges {
 
   @Input() site: Site;
   @Input() lockHealth: boolean = false;
-  @Input() fail_timeout: number = null;
-  @Input() max_fails: number = null;
+  @Input() fail_timeout: string = null;
+  @Input() max_fails: string = null;
   @ViewChild("sslCheckbox") sslCheckbox: MatCheckbox;
   hashMatcher = new HashErrorStateMatcher();
   hashFormControl = new FormControl({
@@ -149,7 +149,7 @@ export class UpstreamComponent implements OnInit, OnChanges {
   addServer(host: string): void {
     // There can be a situation where the upstream has not been saved
     // In this case save the new upstream and call addServer
-    if (!this.site.upstream.id) {
+    if (this.site.upstream !== null && !this.site.upstream.id) {
       this.addNew()
         .subscribe(upstream => {
           this.addServer(host);
@@ -262,20 +262,20 @@ export class UpstreamComponent implements OnInit, OnChanges {
       site: this.site,
       servers: [],
       method: method,
-      hash: null,
       consistent: false,
       ssl: false,
-      certificate: null,
+      hash: "null",
+      certificate: null
     }
   }
 
-  private factoryNewServer(host: string, fail_timeout: number = null, max_fails: number = null): Server {
+  private factoryNewServer(host: string, fail_timeout: string = "null", max_fails: string = "null"): Server {
     return {
       id: 0,
       host: host,
       backup: 0,
       upstream_id: this.site.upstream.id,
-      weight: null,
+      weight: "null",
       fail_timeout: fail_timeout,
       max_fails: max_fails
     }

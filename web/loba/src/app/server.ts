@@ -1,9 +1,9 @@
 export interface Server {
     id: number;
     host: string;
-    weight: boolean;
+    weight: string;
     upstream_id: number;
-    fail_timeout: number;
+    fail_timeout: string;
     backup: number;
-    max_fails: number;
+    max_fails: string;
 }

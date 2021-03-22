@@ -33,6 +33,17 @@ export class ServerService extends BaseService {
 
   /** POST: add a new server */
   addServer(server: Server): Observable<Server> {
+
+    // workaround to deal with db:execute problem
+    if (server.fail_timeout === null) {
+      server.fail_timeout = "null"
+    }
+
+    // workaround to deal with db:execute problem
+    if (server.max_fails === null) {
+      server.max_fails = "null"
+    }
+
     return this.add(server);
   }
 

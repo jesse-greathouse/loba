@@ -232,6 +232,7 @@ function _M:get_statement(name, args, cond, is_list)
         self.statement[sname], err = self.db:prepare(query)
         if err then
             ngx.log(ngx.ERR, "prepare failed:", err)
+            ngx.log(ngx.ERR, "stmt: ", sname)
             return ngx.exit(500)
         end
     end

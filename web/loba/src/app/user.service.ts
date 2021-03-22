@@ -41,11 +41,23 @@ export class UserService extends BaseService {
 
   /** PUT: update the user */
   updateUser(user: User): Observable<any> {
+
+    // workaround to deal with db:execute problem
+    if (user.avatar_url === null) {
+      user.avatar_url = "null"
+    }
+
     return this.update(user);
   }
 
   /** POST: add a new user */
   addUser(user: User): Observable<User> {
+
+    // workaround to deal with db:execute problem
+    if (user.avatar_url === null) {
+      user.avatar_url = "null"
+    }
+
     return this.add(user);
   }
 

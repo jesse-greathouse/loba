@@ -12,7 +12,7 @@ function _M:find(args)
     return base.find(self, "select_servers", args)
 end
 
-function _M:find_by_uptream_list(list)
+function _M:find_by_upstream_list(list)
     return base.find_by_list(self, "select_servers_by_upstream_list", list)
 end
 
@@ -33,11 +33,11 @@ end
 function _M:insert(args)
     local id = base.insert(self, "insert_server",
                                     args.host,
-                                    args.weight,
                                     args.backup,
                                     args.fail_timeout,
                                     args.max_fails,
-                                    args.upstream_id)
+                                    args.upstream_id,
+                                    args.weight)
     return self:get(id)
 end
 
@@ -58,8 +58,7 @@ function _M:delete(id)
 end
 
 function _M.new(self)
-    self = base:new()
-    return setmetatable(self, mt)
+    return setmetatable(base:new(), mt)
 end
 
 setmetatable( _M, { __index = base } )

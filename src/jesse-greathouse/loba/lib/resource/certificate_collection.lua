@@ -1,8 +1,8 @@
 local helpers = require "helpers"
 local setmetatable = setmetatable
+local cjson = require "cjson"
 
 local _M = {}
-local mt = { __index = _M }
 
 function _M.new(self, rs)
 
@@ -12,7 +12,7 @@ function _M.new(self, rs)
     rs[i].key = helpers.key_download_url(rs[i])
   end
 
-  return setmetatable(rs, mt)
+  return setmetatable(rs, cjson.array_mt)
 end
 
 return _M

@@ -1,0 +1,1 @@
+UPDATE `user_role` SET `role_id` = ?, `user_id` = ? WHERE `id` = ?;

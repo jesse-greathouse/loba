@@ -1,9 +1,9 @@
 local helpers = require "helpers"
 local setmetatable = setmetatable
+local cjson = require "cjson"
 local null = ngx.null
 
 local _M = {}
-local mt = { __index = _M }
 
 function _M.new(self, rs)
     local server = helpers.dbm('server')
@@ -55,7 +55,7 @@ function _M.new(self, rs)
         rs[i].site = c.site
     end
 
-    return setmetatable(rs, mt)
+    return setmetatable(rs, cjson.array_mt)
 end
 
 return _M

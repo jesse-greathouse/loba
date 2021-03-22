@@ -70,9 +70,11 @@ export class TokenService extends BaseService implements Transformable {
 
   private getSessionToken(): any {
     const tokenStr = localStorage.getItem(this.appConfig.token);
-    if (!tokenStr) return tokenStr;
-    console.log(tokenStr);
-    return JSON.parse(tokenStr);
+    if (tokenStr === 'undefined'|| (!tokenStr)) {
+      return tokenStr;
+    } else {
+      return JSON.parse(tokenStr);
+    }
   }
 
   private storeSessionToken(token: Token): void {
