@@ -16,26 +16,21 @@ const USER = "USER";
 })
 export class UserComponent implements OnInit, OnChanges {
   @Input() user: User;
-  @Input() role: Role;
-  roles: Role[] = [
-    {id: 1, name: ADMIN},
-    {id: 2, name: SUPER_USER},
-    {id: 3, name: USER},
-  ]
+  @Input() role: string;
+  roles: string[] = [ADMIN, SUPER_USER, USER]
 
   constructor(
     private isLoadingService: IsLoadingService,
     private userService: UserService) { }
 
   ngOnInit(): void {
-    console.log(this.user);
+    this.resetRole();
   }
 
   ngOnChanges(): void {
   }
 
   removeConfirm(): void {
-    
   }
 
   roleChange($event): void {
@@ -48,11 +43,29 @@ export class UserComponent implements OnInit, OnChanges {
 
   save(): void {
     this.isLoadingService.add();
+    this.user.roles = [this.role]
     this.userService.updateUser(this.user)
       .subscribe(user => {
         this.user = user;
+        this.resetRole();
         this.isLoadingService.remove();
       });
+  }
+
+  resetRole(): void {
+    if (this.user.roles.length > 0) {
+      if (this.user.roles.indexOf(ADMIN) !== -1) {
+        this.role = this.roles[0];
+      }
+
+      if (this.user.roles.indexOf(SUPER_USER) !== -1) {
+        this.role = this.roles[1];
+      }
+
+      if (this.user.roles.indexOf(USER) !== -1) {
+        this.role = this.roles[2];
+      }
+    }
   }
 
 }

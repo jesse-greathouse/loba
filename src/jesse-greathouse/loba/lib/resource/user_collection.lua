@@ -1,7 +1,6 @@
 local helpers = require "helpers"
 local setmetatable = setmetatable
 local cjson = require "cjson"
-local null = ngx.null
 
 local _M = {}
 local mt = { __index = _M }
@@ -20,7 +19,7 @@ function _M.new(self, rs)
     end
 
     -- Collate the list of roles
-    for _, r in ipairs(role:role_list_by_user_list(list)) do
+    for _, r in ipairs(role:role_by_user_list(list)) do
         collation[r.user_id].roles[#collation[r.user_id].roles + 1] = r.role
     end
 

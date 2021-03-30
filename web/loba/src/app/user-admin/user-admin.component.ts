@@ -27,10 +27,10 @@ export class UserAdminComponent implements OnInit, OnChanges {
   addUser(email: string): void {
     this.isLoadingService.add();
     this.userService.addUser({
+      email: email,
       id: null,
       first_name: null,
       last_name: null,
-      email: email,
       roles: null,
       avatar_url: null,
     })

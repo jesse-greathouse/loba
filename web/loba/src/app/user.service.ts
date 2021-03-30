@@ -44,7 +44,7 @@ export class UserService extends BaseService {
 
     // workaround to deal with db:execute problem
     if (user.avatar_url === null) {
-      user.avatar_url = "null"
+      user.avatar_url = ""
     }
 
     return this.update(user);
@@ -55,7 +55,17 @@ export class UserService extends BaseService {
 
     // workaround to deal with db:execute problem
     if (user.avatar_url === null) {
-      user.avatar_url = "null"
+      user.avatar_url = ""
+    }
+
+    // workaround to deal with db:execute problem
+    if (user.first_name === null) {
+      user.first_name = ""
+    }
+
+    // workaround to deal with db:execute problem
+    if (user.last_name === null) {
+      user.last_name = ""
     }
 
     return this.add(user);

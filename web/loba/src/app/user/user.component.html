@@ -38,8 +38,8 @@
   <mat-form-field  class="field">
     <mat-label>Role</mat-label>
     <mat-select name="role" [(value)]="role" (selectionChange)="roleChange($event)">
-      <mat-option *ngFor="let role of roles" [value]="role.id">
-        {{role.name}}
+      <mat-option *ngFor="let name of roles" [value]="name">
+        {{name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
