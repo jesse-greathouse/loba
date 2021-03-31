@@ -29,6 +29,11 @@ export class UpstreamService extends BaseService implements Transformable {
 
   /** PUT: update the upstream */
   updateUpstream(upstream: Upstream): Observable<any> {
+    // workaround to deal with db:execute problem
+    if (upstream.hash === null) {
+      upstream.hash = ""
+    }
+
     return this.update(upstream);
   }
 
@@ -45,6 +50,7 @@ export class UpstreamService extends BaseService implements Transformable {
   transform(data: any) {
     data = super.transform(data);
     data.consistent = (data.consistent) ? true : false;
+    data.hash = (data.hash === null) ? "" : data.hash;
     data.ssl = (data.ssl) ? true : false;
     data.servers = (Object.keys(data.servers).length === 0) ? [] : data.servers;
     return data;

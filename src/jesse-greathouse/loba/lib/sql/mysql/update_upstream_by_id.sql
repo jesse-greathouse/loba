@@ -1,1 +1,1 @@
-UPDATE `upstream` SET `site_id` = ?, `method_id` = ?, `hash` = ?, `consistent` = ?, `ssl` = ? WHERE `id` = ?;
+UPDATE `upstream` SET `site_id` = ?, `method_id` = ?, `consistent` = ?, `ssl` = ?, `hash` = ? WHERE `id` = ?;

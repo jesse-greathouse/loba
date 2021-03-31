@@ -49,9 +49,9 @@ function _M:update(args, id)
     local _ = base.update(self, "update_upstream_by_id",
                                     args.site_id,
                                     args.method_id,
-                                    args.hash,
                                     args.consistent,
                                     args.ssl,
+                                    args.hash,
                                     id)
     return self:get(id)
 end
