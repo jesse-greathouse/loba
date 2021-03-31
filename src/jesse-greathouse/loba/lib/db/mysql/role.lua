@@ -1,4 +1,5 @@
 local base = require "db.mysql.base"
+local cjson = require "cjson"
 local setmetatable = setmetatable
 
 local _M = {}
@@ -24,6 +25,63 @@ end
 
 function _M:find(args)
   return base.find(self, "select_role", args)
+end
+
+function _M:remove_user_roles(user_id)
+
+  local res, err = self.db:execute(self:get_statement("delete_user_role_by_user"), user_id)
+  if err then
+    ngx.log(ngx.ERR, "delete_user_role_by_user failure. ", err)
+    ngx.log(ngx.ERR, "user_id: ", user_id)
+    return ngx.exit(500)
+  end
+
+  return res
+end
+
+function _M:remove_user_role(user_id, role_id)
+
+  local res, err = self.db:execute(self:get_statement("delete_user_role_by_user_and_role"), user_id, role_id)
+  if err then
+    ngx.log(ngx.ERR, "delete_user_role_by_user_and_role failure. ", err)
+    ngx.log(ngx.ERR, "user_id: ", user_id, " role_id: ", role_id)
+    return ngx.exit(500)
+  end
+
+  return res
+end
+
+function _M:assign_user_role(user_id, role_id)
+  local id, query
+  local args = { user_id, role_id, id }
+  local res, err = self.db:execute(self:get_statement("select_user_role_by_user_and_role"), unpack(args))
+  if err then
+    ngx.log(ngx.ERR, "select_user_role_by_user_and_role failed.", err)
+    return ngx.exit(500)
+  end
+
+  local i = next(res)
+
+  if i then
+    id = res[i].id
+    args[#args+1] = id
+    query = "update_user_role"
+  else
+    query = "insert_user_role"
+  end
+
+  res, err = self.db:execute(self:get_statement(query), unpack(args))
+  if err then
+    ngx.log(ngx.ERR, query, " failure. ", err)
+    ngx.log(ngx.ERR, "args: ", cjson.decode(args))
+    return ngx.exit(500)
+  end
+
+  if (res.insert_id > 0) then
+    id = res.insert_id
+  end
+
+  return { id = id, user_id = user_id, role_id = role_id }
 end
 
 function _M:role_list_by_user(user_id)

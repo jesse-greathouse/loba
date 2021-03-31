@@ -1,0 +1,1 @@
+SELECT * FROM `user_role` WHERE `user_id` = ? AND `role_id` = ?;

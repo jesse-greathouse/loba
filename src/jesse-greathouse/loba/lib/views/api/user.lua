@@ -24,6 +24,7 @@ function _M:login()
     local db = helpers.dbm(self.resource_name)
     local resource = helpers.resource('token')
     local args, err = self:get_post()
+
     if err then
         ngx.log(ngx.ERR, "bad post args: ", cjson.encode(args), " ", err)
         return ngx.exit(500)
@@ -46,6 +47,20 @@ function _M:login()
     end
 
     self:response(token, string.format("User: %s Logged in.", args.email), 200)
+end
+
+function _M:delete()
+    local roles = helpers.dbm('role')
+    local r = self:route_params()
+
+    -- remove user_role associated with the user
+    local _, err = roles:remove_user_roles(r.id)
+    if err then
+        ngx.log(ngx.ERR, "failed to remove user roles. ", err)
+        return ngx.exit(500)
+    end
+
+    base.delete(self)
 end
 
 function _M.new(self, route)

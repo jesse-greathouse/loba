@@ -56,6 +56,7 @@ import { SelfSignedConfirmComponent } from './self-signed-confirm/self-signed-co
 import { LoginComponent } from './login/login.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { UserComponent } from './user/user.component';
+import { RemoveUserConfirmComponent } from './remove-user-confirm/remove-user-confirm.component';
 
 
 // Create a new AuthServiceConfig object to set up OAuth2
@@ -93,7 +94,8 @@ export function provideAppServiceConfig() {
     SelfSignedConfirmComponent,
     LoginComponent,
     UserAdminComponent,
-    UserComponent
+    UserComponent,
+    RemoveUserConfirmComponent
   ],
   imports: [
     FormsModule,

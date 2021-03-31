@@ -106,8 +106,8 @@ end
 function _M:delete()
     local db = helpers.dbm(self.resource_name)
     local r = self:route_params()
-
     local o = db:get(r.id)
+
     if not o then
         self:not_found("A %s, with the id: %s, was not found.", self.resource_name, r.id)
     else

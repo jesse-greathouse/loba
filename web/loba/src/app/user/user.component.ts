@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, OnChanges} from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
-import { Role } from '../role';
 import { User } from '../user';
 import { IsLoadingService } from '../is-loading.service';
 import { UserService } from '../user.service';
+import { RoleService } from '../role.service';
+import { RemoveUserConfirmComponent } from '../remove-user-confirm/remove-user-confirm.component'
 
 const ADMIN = "ADMIN";
 const SUPER_USER = "SUPER_USER";
@@ -17,24 +19,64 @@ const USER = "USER";
 export class UserComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Input() role: string;
+  @Output() userRemoved: EventEmitter<User> = new EventEmitter();
+
+  oldRoleId: number;
   roles: string[] = [ADMIN, SUPER_USER, USER]
+  roleOffset: number = 1; // offset to start the index at 1 to mirror the roles table
 
   constructor(
+    public dialog: MatDialog,
     private isLoadingService: IsLoadingService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private roleService: RoleService) { }
+
+  getRoleIndex(roleName: string): number {
+    return (this.roles.indexOf(roleName) + this.roleOffset);
+  }
 
   ngOnInit(): void {
     this.resetRole();
+    this.oldRoleId = this.getRoleIndex(this.role);
   }
 
   ngOnChanges(): void {
   }
 
   removeConfirm(): void {
+    const dialogRef = this.dialog.open(RemoveUserConfirmComponent, {
+      width: '400px',
+      data: { user: this.user }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.userRemoved.emit(this.user);
+      }
+    });
   }
 
   roleChange($event): void {
-    this.save();
+    let newRoleId = this.getRoleIndex($event.value);
+
+    if (this.oldRoleId !== newRoleId) {
+      // Attempt to remove the old role
+      this.roleService.removeRole(this.user, {
+        id: this.oldRoleId,
+        name: this.roles[this.oldRoleId]
+      })
+      .subscribe(_ => {
+        // Assign the new role
+        this.roleService.assignRole(this.user, {
+          id: newRoleId,
+          name: this.roles[newRoleId]
+        })
+        .subscribe(_ => {
+          this.oldRoleId = newRoleId;
+          this.isLoadingService.remove();
+        });
+      });
+    }
   }
 
   focusOut(): void {
