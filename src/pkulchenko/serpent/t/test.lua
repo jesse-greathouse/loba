@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-index, duplicate-set-field
 local serpent = require("serpent")
 local serialize = serpent.dump
 
@@ -454,7 +455,7 @@ print("All tests passed.")
 if arg[1] == 'perf' then
   print("\nSerializing large numeric-only tables:")
 
-  local a, str = {}
+  local a, str = {}, nil
   for i = 1, 100000 do a[i] = i end
 
   local start = os.clock()
