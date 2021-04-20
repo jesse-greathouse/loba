@@ -99,6 +99,10 @@ nvm install 14.4
 nvm use 14.4
 npm install -g @angular/cli
 
+cd ${WEB}/loba
+npm install
+cd ${DIR}
+
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
 ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
