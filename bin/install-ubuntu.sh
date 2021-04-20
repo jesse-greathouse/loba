@@ -50,8 +50,8 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 #install dependencies
 sudo apt-get update && sudo apt-get install -y \
     gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
-    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev \
-    ncurses-dev cmake sendmail libmysqlclient-dev curl python libpcre++-dev supervisor mysql-client
+    libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev ncurses-dev \
+    libpcre++-dev cmake sendmail libmysqlclient-dev curl python authbind supervisor mysql-client
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
