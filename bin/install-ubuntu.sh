@@ -90,6 +90,13 @@ PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT
 
 cd ${DIR}
 
+# Install nvm and angular
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+exec bash
+nvm install 14.4
+nvm use 14.4
+npm install -g @angular/cli
+
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
 ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
