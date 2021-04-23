@@ -40,6 +40,9 @@ BIN="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
+SRC="$( cd -P "$DIR/src" && pwd )"
+WEB="$( cd -P "$DIR/web" && pwd )"
+PUBLIC="$( cd -P "$DIR/web" && pwd )"
 PERL_BASE="${OPT}/perl"
 PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
 PERL_MB_OPT="--install_base ${PERL_BASE}"
@@ -82,6 +85,9 @@ curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus --no-wget
 PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template --no-wget
 
 cd ${DIR}
+
+# Install Angular cli
+npm install -g @angular/cli
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx

@@ -42,6 +42,7 @@ DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
+WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
 PERL_BASE="${OPT}/perl"
 PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
@@ -54,6 +55,14 @@ brew upgrade
 
 brew install intltool icu4c autoconf automake python@3.8 gcc \
   pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client
+
+#install authbind -- allows a non root user to allow a program to bind to a port under 1025
+cd ${OPT}
+git clone https://github.com/Castaglia/MacOSX-authbind.git
+cd ${OPT}/MacOSX-authbind
+make
+sudo make install
+cd ${DIR}
 
 # If curl isn't available to the command line then add it to the PATH
 if ! [ -x "$(command -v curl)" ]; then
@@ -110,6 +119,19 @@ PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT
 PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBD::mysql
 PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm Template
 
+cd ${DIR}
+
+# Install nvm and angular
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm install 14.4
+nvm use 14.4
+npm install -g @angular/cli
+
+cd ${WEB}/loba
+npm install
 cd ${DIR}
 
 # Cleanup

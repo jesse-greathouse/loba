@@ -41,6 +41,7 @@ DIR="$( cd -P "$BIN/../" && pwd )"
 ETC="$( cd -P "$DIR/etc" && pwd )"
 OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
+WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
 PERL_BASE="${OPT}/perl"
 PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
@@ -50,8 +51,8 @@ PERL5LIB="${PERL_BASE}/lib/perl5"
 # install dependencies
 sudo yum -y update && sudo yum -y install \
     gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl devtoolset-8 \
-    pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel gcc-toolset-9-make \
-    zlib ncurses-devel sendmail mariadb-devel python38 python38-pip mariadb-client
+    pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel gcc-toolset-9-make ncurses-devel \
+    libpcre-devel zlib sendmail mariadb-devel python38 python38-pip authbind mariadb-client
 
 sudo pip install supervisor
 
@@ -90,6 +91,19 @@ curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
 # Install perl modules
 PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template
 
+cd ${DIR}
+
+# Install nvm and angular
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm install 14.4
+nvm use 14.4
+npm install -g @angular/cli
+
+cd ${WEB}/loba
+npm install
 cd ${DIR}
 
 # Cleanup
