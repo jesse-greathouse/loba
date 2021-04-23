@@ -431,8 +431,15 @@ if  [ "${CORRECT}" == "y" ]; then
     ${PERL_BASE}/bin/perl ${BIN}/create-admin.pl
     printf "Admin created.\n"
 
+    # Set up SSL port
+    if [ ! -f "/etc/authbind/byport/443" ]; then
+        sudo touch /etc/authbind/byport/443
+        sudo chown ${USER} /etc/authbind/byport/443
+        sudo chmod 500 /etc/authbind/byport/443
+    fi
+
     # Allow binding to ports if below 1025
-    if [ "$PORT" -lt "1025" ]; then
+    if [ "$PORT" -lt "1025" -a "$PORT" -ne "443" -a ! -f "/etc/authbind/byport/$PORT"]; then
         sudo touch /etc/authbind/byport/${PORT}
         sudo chown ${USER} /etc/authbind/byport/${PORT}
         sudo chmod 500 /etc/authbind/byport/${PORT}

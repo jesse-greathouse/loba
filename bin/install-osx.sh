@@ -58,6 +58,7 @@ brew install intltool icu4c autoconf automake python@3.8 gcc \
 
 #install authbind -- allows a non root user to allow a program to bind to a port under 1025
 cd ${OPT}
+rm -rf ${OPT}/MacOSX-authbind/
 git clone https://github.com/Castaglia/MacOSX-authbind.git
 cd ${OPT}/MacOSX-authbind
 make
