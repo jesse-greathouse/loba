@@ -436,12 +436,17 @@ if  [ "${CORRECT}" == "y" ]; then
     ${PERL_BASE}/bin/perl ${BIN}/create-admin.pl
     printf "Admin created.\n"
 
+    # Allow binding to ports if below 1025
+    if [ "$PORT" -lt "1025" ]; then
+        sudo touch /etc/authbind/byport/${PORT}
+        sudo chown ${USER} /etc/authbind/byport/${PORT}
+        sudo chmod 500 /etc/authbind/byport/${PORT}
+    fi
 
-printf "\n"
-printf "\n"
-printf "\n"
-printf "================================================================\n"
-
+    printf "\n"
+    printf "\n"
+    printf "\n"
+    printf "================================================================\n"
     printf "Your run script has been created at: \n"
     printf "${RUN_SCRIPT}\n"
     printf "\n"

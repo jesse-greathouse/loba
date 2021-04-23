@@ -431,6 +431,12 @@ if  [ "${CORRECT}" == "y" ]; then
     ${PERL_BASE}/bin/perl ${BIN}/create-admin.pl
     printf "Admin created.\n"
 
+    # Allow binding to ports if below 1025
+    if [ "$PORT" -lt "1025" ]; then
+        sudo touch /etc/authbind/byport/${PORT}
+        sudo chown ${USER} /etc/authbind/byport/${PORT}
+        sudo chmod 500 /etc/authbind/byport/${PORT}
+    fi
 
     ## Template lines will be blank if the "Use https" option was not selected
     sed -i -e s/__SSL__/${SSL_FLAG}/g ${NGINX_CONF}
@@ -438,10 +444,10 @@ if  [ "${CORRECT}" == "y" ]; then
     sed -i -e "s __SSL_KEY_LINE__ $SSL_KEY_LINE g" ${NGINX_CONF}
     sed -i -e "s __INCLUDE_FORCE_SSL__ $INCLUDE_FORCE_SSL g" ${NGINX_CONF}
 
-printf "\n"
-printf "\n"
-printf "\n"
-printf "================================================================\n"
+    printf "\n"
+    printf "\n"
+    printf "\n"
+    printf "================================================================\n"
 
     printf "Your run script has been created at: \n"
     printf "${RUN_SCRIPT}\n"

@@ -83,6 +83,7 @@ opt/php*/*
 opt/perl*/*
 opt/openresty*/*
 opt/lua*/*
+opt/MacOSX*/*
 
 # cache and logs
 build-event.log
