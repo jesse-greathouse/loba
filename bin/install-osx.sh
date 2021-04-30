@@ -140,6 +140,7 @@ ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
 ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
 rm -rf ${OPT}/perl-*/
+rm -rf ${OPT}/MacOSX-*/
 
 # Run the configuration
 ${BIN}/configure-osx.sh
