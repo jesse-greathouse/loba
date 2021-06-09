@@ -28,11 +28,11 @@
 . /etc/init.d/functions
 
 start() {
-    __START_SCRIPT__
+   /sbin/runuser __USER__ -s /bin/bash -c __START_SCRIPT__
 }
 
 stop() {
-    __STOP_SCRIPT__
+   __STOP_SCRIPT__
 }
 
 case "$1" in

@@ -486,6 +486,7 @@ fi
 
 cp "${ETC}/com.greathouse.technology.template.plist" ${LAUNCHD_CONF}
 
+sed -i '' "s __USER__ $USER " ${LAUNCHD_CONF}
 sed -i '' "s __LABEL__ $SITE_NAME " ${LAUNCHD_CONF}
 sed -i '' "s __RUN_SCRIPT__ $RUN_SCRIPT " ${LAUNCHD_CONF}
 sed -i '' "s __ERROR_PATH__ $DIR/error.log " ${LAUNCHD_CONF}

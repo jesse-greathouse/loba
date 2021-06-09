@@ -488,6 +488,7 @@ cp "${ETC}/init.d/init-template.sh.dist" ${INITD_SCRIPT}
 
 chmod +x "${INITD_SCRIPT}"
 
+sed -i -e s/__USER__/${USER}/g ${INITD_SCRIPT}
 sed -i -e "s __START_SCRIPT__ $SERVICE_RUN_SCRIPT " ${INITD_SCRIPT}
 sed -i -e "s __STOP_SCRIPT__ $STOP_SCRIPT " ${INITD_SCRIPT}
 

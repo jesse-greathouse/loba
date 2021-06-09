@@ -487,6 +487,7 @@ if [ "${MAJOR_VERSION}" -gt "14" ]; then
     printf "\n" >> ${SYSTEMD_CONF_FILE}
     printf "[Service]\n" >> ${SYSTEMD_CONF_FILE}
     printf "Type=forking\n" >> ${SYSTEMD_CONF_FILE}
+    printf "User=${USER}\n" >> ${SYSTEMD_CONF_FILE}
     printf "WorkingDirectory=${DIR}\n" >> ${SYSTEMD_CONF_FILE}
     printf "ExecStop=${BIN}/stop.sh\n" >> ${SYSTEMD_CONF_FILE}
     printf "ExecStart=${SERVICE_RUN_SCRIPT}\n" >> ${SYSTEMD_CONF_FILE}
@@ -512,6 +513,8 @@ else
     printf "\n"  >> ${UPSTART_CONF_FILE}
     printf "description \"Service for running the ${SITE_NAME} website\"\n" >> ${UPSTART_CONF_FILE}
     printf "author \"Jesse Greathouse <jesse@greathouse.technology>\" \n" >> ${UPSTART_CONF_FILE}
+    printf "\n" >> ${UPSTART_CONF_FILE}
+    printf "setuid ${USER}" >> ${UPSTART_CONF_FILE}
     printf "\n" >> ${UPSTART_CONF_FILE}
     printf "chdir ${DIR}\n" >> ${UPSTART_CONF_FILE}
     printf "\n" >> ${UPSTART_CONF_FILE}

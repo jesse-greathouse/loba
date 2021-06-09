@@ -7,6 +7,8 @@
                 <key>SuccessfulExit</key>
                 <false/>
         </dict>
+        <key>UserName</key>
+        <string>__USER__</string>
         <key>Label</key>
         <string>__LABEL__</string>
         <key>Program</key>

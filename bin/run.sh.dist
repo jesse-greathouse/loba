@@ -43,6 +43,7 @@ SRC="$( cd -P "$DIR/src" && pwd )"
 TMP="$( cd -P "$DIR/tmp" && pwd )"
 VAR="$( cd -P "$DIR/var" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
+USER="$(whoami)"
 PERL_BASE="${OPT}/perl"
 PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
 PERL_MB_OPT="--install_base ${PERL_BASE}"
@@ -59,7 +60,7 @@ rm -r ${DIR}/supervisord.log
 touch ${DIR}/error.log
 touch ${DIR}/supervisord.log
 
-BIN=${BIN} DIR=${DIR} ETC=${ETC} OPT=${OPT} SRC=${SRC} TMP=${TMP} VAR=${VAR} WEB=${WEB} \
+USER=${USER} BIN=${BIN} DIR=${DIR} ETC=${ETC} OPT=${OPT} SRC=${SRC} TMP=${TMP} VAR=${VAR} WEB=${WEB} \
 ENV=${ENV} DEBUG=${DEBUG} LOBA_DIR=${LOBA_DIR} PERL5LIB=${PERL5LIB} PERL_BASE=$PERL_BASE \
 SQL_QUERY_DIR=${LOBA_DIR}/sql/__DB_DRIVER__ \
 CACHE_DIR=${VAR}/cache \
