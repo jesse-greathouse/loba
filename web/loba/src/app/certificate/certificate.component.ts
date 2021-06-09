@@ -1,4 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 
 import { MatButton } from '@angular/material/button';
@@ -6,7 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Site } from '../site';
 import { Certificate } from '../certificate';
+import { Upstream } from '../upstream';
 import { CertificateService } from '../certificate.service';
+import { UpstreamService } from '../upstream.service';
 import { RemoveCertificateConfirmComponent } from '../remove-certificate-confirm/remove-certificate-confirm.component'
 import { RemoveKeyConfirmComponent } from '../remove-key-confirm/remove-key-confirm.component'
 import { SelfSignedConfirmComponent } from '../self-signed-confirm/self-signed-confirm.component'
@@ -39,6 +43,7 @@ export class CertificateComponent implements OnInit, OnChanges {
 
  constructor(
     public dialog: MatDialog,
+    private upstreamService: UpstreamService,
     private certificateService: CertificateService) { }
 
   ngOnInit(): void {
@@ -66,12 +71,17 @@ export class CertificateComponent implements OnInit, OnChanges {
   }
 
   getCertificate(): void {
+    if (this.site.upstream.id > 0) {
     this.certificateService.getCertificateByUpstream(this.site.upstream)
       .subscribe((certificate: Certificate) => {
         if (certificate === undefined ) certificate = null;
         this.site.upstream.certificate = certificate;
         this.updateButtonStatus();
       });
+    } else {
+      this.site.upstream.certificate = null;
+      this.updateButtonStatus();
+    }
   }
 
   updateButtonStatus(): void {
@@ -204,25 +214,44 @@ export class CertificateComponent implements OnInit, OnChanges {
   }
 
   save(formData: FormData): void {
-    // If the upstream doesn't have a certificate
-    // then it's new and it should be posted.
-    if (this.site.upstream.certificate === null) {
-      this.certificateService.addCertificate(formData)
-        .subscribe(certificate => {
-          this.site.upstream.certificate = certificate;
-          this.certificateForm.reset();
-          this.updateButtonStatus();
-          this.certificateUpdated.emit(this.site.upstream.certificate);
+    // If the upstream id has a value of zero, the upstream hasn't been saved yet.
+    // First persist the upstream and then try to save the certificate
+    if (this.site.upstream.id == 0) {
+      this.addNewUpstream()
+        .subscribe((upstream) => {
+          formData.set('upstream_id', `${upstream.id}`);
+          this.save(formData);
         });
     } else {
-      this.certificateService.updateCertificate(this.site.upstream.certificate.id, formData)
-        .subscribe(certificate => {
-          this.site.upstream.certificate = certificate;
-          this.certificateForm.reset();
-          this.updateButtonStatus();
-          this.certificateUpdated.emit(this.site.upstream.certificate);
-        });
+      // If the upstream doesn't have a certificate
+      // then it's new and it should be posted.
+      if (this.site.upstream.certificate === null) {
+        this.certificateService.addCertificate(formData)
+          .subscribe(certificate => {
+            this.site.upstream.certificate = certificate;
+            this.certificateForm.reset();
+            this.updateButtonStatus();
+            this.certificateUpdated.emit(this.site.upstream.certificate);
+          });
+      } else {
+        this.certificateService.updateCertificate(this.site.upstream.certificate.id, formData)
+          .subscribe(certificate => {
+            this.site.upstream.certificate = certificate;
+            this.certificateForm.reset();
+            this.updateButtonStatus();
+            this.certificateUpdated.emit(this.site.upstream.certificate);
+          });
+      }
     }
+  }
+
+  addNewUpstream(): Observable<Upstream> {
+    return this.upstreamService.addUpstream(this.site.upstream).pipe(
+      map(upstream => {
+        this.site.upstream = upstream;
+        return upstream;
+      })
+    );
   }
 
   private downloadFile(url: string): void {
