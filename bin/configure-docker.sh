@@ -339,6 +339,7 @@ if  [ "${CORRECT}" == "y" ]; then
 
     SESSION_SECRET=`openssl rand -hex 32`
 
+    sed -i -e s/__USER__/"${USER}"/g ${NGINX_CONF}
     sed -i -e "s __LOG__ $LOG g" ${NGINX_CONF}
     sed -i -e s/__SITE_DOMAINS__/"${SITE_DOMAINS}"/g ${NGINX_CONF}
     sed -i -e s/__PORT__/"${PORT}"/g ${NGINX_CONF}

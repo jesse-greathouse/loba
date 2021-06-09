@@ -324,6 +324,7 @@ if  [ "${CORRECT}" == "y" ]; then
 
     SESSION_SECRET=`openssl rand -hex 32`
 
+    sed -i '' s/__USER__/"${USER}"/g ${NGINX_CONF}
     sed -i '' "s __LOG__ $LOG g" ${NGINX_CONF}
     sed -i '' s/__SITE_DOMAINS__/"${SITE_DOMAINS}"/g ${NGINX_CONF}
     sed -i '' s/__PORT__/"${PORT}"/g ${NGINX_CONF}
@@ -453,7 +454,7 @@ if  [ "${CORRECT}" == "y" ]; then
     fi
 
     # Allow binding to ports if below 1025
-    if [ "$PORT" -lt "1025" -a "$PORT" -ne "443" -a ! -f "/etc/authbind/byport/$PORT"]; then
+    if [ "$PORT" -lt "1025" -a "$PORT" -ne "443" -a ! -f "/etc/authbind/byport/$PORT" ]; then
         sudo touch /etc/authbind/byport/${PORT}
         sudo chown ${USER} /etc/authbind/byport/${PORT}
         sudo chmod 500 /etc/authbind/byport/${PORT}
