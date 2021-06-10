@@ -47,11 +47,15 @@ export class CertificateComponent implements OnInit, OnChanges {
     private certificateService: CertificateService) { }
 
   ngOnInit(): void {
-    this.getCertificate();
+    setTimeout(() => {
+      this.getCertificate();
+    }, 0);
   }
 
   ngOnChanges(): void {
-    this.getCertificate();
+    setTimeout(() => {
+      this.getCertificate();
+    }, 0);
   }
 
   get f() {
