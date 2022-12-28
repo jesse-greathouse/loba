@@ -80,7 +80,6 @@ etc/ssl/CA/*
 
 # opt
 opt/php*/*
-opt/perl*/*
 opt/openresty*/*
 opt/lua*/*
 opt/MacOSX*/*

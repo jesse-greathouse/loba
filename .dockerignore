@@ -1,7 +1,6 @@
 node_modules/
 opt/openresty/
 opt/php/
-opt/perl/
 opt/lua-5.1.2/
 *-e
 tmp/

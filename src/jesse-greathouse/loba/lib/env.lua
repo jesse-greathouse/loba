@@ -31,6 +31,5 @@ _M.DB_PASSWORD = ngx.var.DB_PASSWORD
 _M.DB_HOST = ngx.var.DB_HOST
 _M.DB_HOST = ngx.var.DB_HOST
 _M.DB_PORT = ngx.var.DB_PORT
-_M.PERL5LIB = _M.OPT .."/perl/lib/perl5"
 
 return _M

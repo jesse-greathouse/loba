@@ -28,7 +28,7 @@ ENV PATH /app/bin:$PATH
 RUN apk add --no-cache \
     bash curl openssh nasm dpkg-dev dpkg file coreutils libc-dev ncurses-dev curl-dev \
     libressl-dev python py-curl supervisor pcre-dev perl mariadb-dev mariadb-connector-c \
-    g++ gcc make ca-certificates pkgconf mysql-client readline-dev authbind nodejs
+    g++ gcc make ca-certificates pkgconf mysql-client readline-dev authbind nodejs cpanm
 
 # Add preliminary file structure
 RUN mkdir /app

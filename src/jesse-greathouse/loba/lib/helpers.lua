@@ -37,10 +37,6 @@ function Helpers.token_unique(token)
     return false
 end
 
-function Helpers.get_perl_bin()
-    return env.OPT .. "/perl/bin/perl"
-end
-
 function Helpers.get_nginx_bin()
     return env.OPT .. "/openresty/nginx/sbin/nginx"
 end

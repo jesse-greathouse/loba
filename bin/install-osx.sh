@@ -44,17 +44,13 @@ OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
-PERL_BASE="${OPT}/perl"
-PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
-PERL_MB_OPT="--install_base ${PERL_BASE}"
-PERL5LIB="${PERL_BASE}/lib/perl5"
 YACC="$( brew --prefix bison )/bin/bison"
 
 #install dependencies
 brew upgrade
 
 brew install intltool icu4c autoconf automake python@3.8 gcc \
-  pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client
+  pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client cpanm
 
 #install authbind -- allows a non root user to allow a program to bind to a port under 1025
 cd ${OPT}
@@ -104,23 +100,10 @@ make install
 
 cd ${DIR}
 
-# Compile Perl 5.32.1
-tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
-
-cd ${OPT}/perl-*/
-
-./Configure -des -Dprefix=${OPT}/perl
-make
-make install
-
-curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
-
 # Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBD::mysql
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm Template
-
-cd ${DIR}
+sudo cpanm DBI DBD::mysql Template
+sudo cpanm DBI DBD::mysql DBI
+sudo cpanm DBI DBD::mysql DBD::mysql
 
 # Install nvm and angular
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -137,9 +120,7 @@ cd ${DIR}
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
-rm -rf ${OPT}/perl-*/
 rm -rf ${OPT}/MacOSX-*/
 
 # Run the configuration

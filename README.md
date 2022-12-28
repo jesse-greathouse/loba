@@ -57,11 +57,11 @@ The install script accomplishes several things:
     * Elevated privelages are normally required for applications that serve on these ports, however Loba does not run with elevated privelages and so autoconf bridges the necessity of opening these ports for Loba, without allowing Loba to have elevated privelages.
   * It installs [Openresty](https://openresty.org/en/).
     * Open resty is a web platform that integrates Nginx with LuaJIT and allows for programming in the Lua programming language. Loba's API is written in Lua.
-  * It installs [Perl](https://www.perl.org/) and the Perl [Template Toolkit](https://metacpan.org/pod/Template) and [DBM](https://metacpan.org/pod/DBD::DBM) modules.
+  * It installs the Perl [Template Toolkit](https://metacpan.org/pod/Template) and [DBM](https://metacpan.org/pod/DBD::DBM) modules.
   * It installs [Angular](https://angular.io/).
     * The Loba user interface is built on Angular with Typescript.
   * Loba installs these programs discretly into its own appplication folder under `./opt`.
-    * This allows Loba to use its own versions of Nginx, LuaJIT, and Perl, without depending on or interfering with the system wide installations of these programs.
+    * This allows Loba to use its own versions of Nginx, LuaJIT, and Perl Modules, without depending on or interfering with the system wide installations of these programs.
   * After the install script is finished Loba will automatically run the configure script for the intended OS.
 
 ## Configure Script

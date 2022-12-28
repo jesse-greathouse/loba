@@ -1,5 +1,4 @@
-# We don't know where the script is going to live on the host system
-# Let's force this script to be invoked with the perl interpreter instead of a shebang line
+#!/usr/bin/perl
 
 # Requires DBI module
 # Currently the only supported adapter is mysql

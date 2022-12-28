@@ -43,10 +43,6 @@ OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
-PERL_BASE="${OPT}/perl"
-PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
-PERL_MB_OPT="--install_base ${PERL_BASE}"
-PERL5LIB="${PERL_BASE}/lib/perl5"
 
 export PATH=$PATH:/usr/local/mysql/bin
 
@@ -67,22 +63,12 @@ cd ${OPT}/openresty-*/
             -j2 && \
 make
 make install
-
-cd ${DIR}
-
-# Compile Perl 5.30.2
-tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
-
-cd ${OPT}/perl-*/
-
-./Configure -des -Dprefix=${OPT}/perl
-make
-make install
-
-curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus --no-wget
+ --no-wget
 
 # Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template --no-wget
+sudo cpanm DBI DBD::mysql Template
+sudo cpanm DBI DBD::mysql DBI
+sudo cpanm DBI DBD::mysql DBD::mysql --no-wget
 
 cd ${DIR}
 
@@ -91,9 +77,7 @@ npm install -g @angular/cli
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
-rm -rf ${OPT}/perl-*/
 
 printf "\n"
 printf "\n"

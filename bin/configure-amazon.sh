@@ -54,8 +54,7 @@ NGINX_CONF="${ETC}/nginx/nginx.conf"
 SSL_CONF="${ETC}/ssl/openssl.cnf"
 SSL_PARAMS_CONF="${ETC}/nginx/ssl-params.conf"
 FORCE_SSL_CONF="${ETC}/nginx/force-ssl.conf"
-PERL_BASE="${OPT}/perl"
-PERL5LIB="${PERL_BASE}/lib/perl5"
+
 
 printf "\n"
 printf "\n"
@@ -284,7 +283,7 @@ if  [ "${CORRECT}" == "y" ]; then
     ##==============================
 
     # Generate Diffie-hellman param
-    ${OPT}/perl/bin/perl ${BIN}/generate-diffie-hellman.pl --etc ${ETC}
+    ${BIN}/generate-diffie-hellman.pl --etc ${ETC}
 
     if [ -f ${SSL_PARAMS_CONF} ]; then
        rm ${SSL_PARAMS_CONF}
@@ -415,8 +414,7 @@ if  [ "${CORRECT}" == "y" ]; then
     DB_PASSWORD=${DB_PASSWORD} \
     DB_NAME=${DB_NAME} \
     DB_PORT=${DB_PORT} \
-    PERL5LIB=${PERL5LIB} \
-    ${PERL_BASE}/bin/perl ${BIN}/db-init.pl
+    ${BIN}/db-init.pl
     printf "Database tables created.\n"
 
 
@@ -434,8 +432,7 @@ if  [ "${CORRECT}" == "y" ]; then
     DB_PASSWORD=${DB_PASSWORD} \
     DB_NAME=${DB_NAME} \
     DB_PORT=${DB_PORT} \
-    PERL5LIB=${PERL5LIB} \
-    ${PERL_BASE}/bin/perl ${BIN}/create-admin.pl
+    ${BIN}/create-admin.pl
     printf "Admin created.\n"
 
     # Set up SSL port

@@ -12,12 +12,11 @@ local mt = { __index = _M }
 
 function _M:compose_sites()
   local env_str = helpers.get_env_str(
-    "PERL5LIB", "DB_DRIVER", "DB_NAME", "DB_HOST", "DB_USER", "DB_PASSWORD",
+    "DB_DRIVER", "DB_NAME", "DB_HOST", "DB_USER", "DB_PASSWORD",
     "ETC", "PORT", "LOBA_DIR", "SQL_QUERY_DIR", "LOG_DIR"
   )
-  local perl = helpers.get_perl_bin()
   local script = env.BIN .. "/" .. "compose-sites.pl"
-  local cmd = string.format("%s %s %s", env_str, perl, script)
+  local cmd = string.format("%s %s", env_str, script)
   local resp = {}
 
   local ok, stdout, stderr, reason, status = shell.run(cmd)

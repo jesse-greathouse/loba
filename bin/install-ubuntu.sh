@@ -43,16 +43,17 @@ OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
-PERL_BASE="${OPT}/perl"
-PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
-PERL_MB_OPT="--install_base ${PERL_BASE}"
-PERL5LIB="${PERL_BASE}/lib/perl5"
 
 #install dependencies
 sudo apt-get update && sudo apt-get install -y \
     gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev \
     libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev ncurses-dev \
-    libpcre++-dev cmake sendmail libmysqlclient-dev curl python authbind supervisor mysql-client
+    libpcre++-dev cmake sendmail libmysqlclient-dev curl python authbind supervisor mysql-client cpanminus
+
+# Install perl modules
+sudo cpanm Template
+sudo cpanm DBI
+sudo cpanm DBD::mysql
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
@@ -75,29 +76,13 @@ make install
 
 cd ${DIR}
 
-# Compile Perl 5.30.2
-tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
-
-cd ${OPT}/perl-*/
-
-./Configure -des -Dprefix=${OPT}/perl
-make
-make install
-
-curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
-
-# Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template
-
-cd ${DIR}
-
 # Install nvm and angular
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm install 14.4
-nvm use 14.4
+nvm install 16.13
+nvm use 16.13
 npm install -g @angular/cli
 
 cd ${WEB}/loba
@@ -106,8 +91,6 @@ cd ${DIR}
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
-rm -rf ${OPT}/perl-*/
 
 ${BIN}/configure-ubuntu.sh

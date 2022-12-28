@@ -43,10 +43,6 @@ OPT="$( cd -P "$DIR/opt" && pwd )"
 SRC="$( cd -P "$DIR/src" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
 PUBLIC="$( cd -P "$DIR/web" && pwd )"
-PERL_BASE="${OPT}/perl"
-PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
-PERL_MB_OPT="--install_base ${PERL_BASE}"
-PERL5LIB="${PERL_BASE}/lib/perl5"
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
@@ -75,23 +71,10 @@ cd ${OPT}/openresty-*/
 make
 make install
 
-cd ${DIR}
-
-# Compile Perl 5.30.2
-tar -xf ${OPT}/perl-*.tar.gz -C ${OPT}/
-
-cd ${OPT}/perl-*/
-
-./Configure -des -Dprefix=${OPT}/perl
-make
-make install
-
-curl -L http://cpanmin.us | ${OPT}/perl/bin/perl - App::cpanminus
-
 # Install perl modules
-PERL_MM_OPT=${PERL_MM_OPT} PERL_MB_OPT=${PERL_MB_OPT} PERL5LIB=${PERL5LIB} ${OPT}/perl/bin/cpanm DBI DBD::mysql Template
-
-cd ${DIR}
+sudo cpanm DBI DBD::mysql Template
+sudo cpanm DBI DBD::mysql DBI
+sudo cpanm DBI DBD::mysql DBD::mysql
 
 # Install nvm and angular
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -108,9 +91,7 @@ cd ${DIR}
 
 # Cleanup
 ln -sf ${OPT}/openresty/nginx/sbin/nginx ${BIN}/nginx
-ln -sf ${OPT}/perl/bin/perl ${BIN}/perl
 rm -rf ${OPT}/openresty-*/
-rm -rf ${OPT}/perl-*/
 
 ${BIN}/install-wordpress.sh
 ${BIN}/configure-rhel.sh

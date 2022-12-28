@@ -44,10 +44,6 @@ TMP="$( cd -P "$DIR/tmp" && pwd )"
 VAR="$( cd -P "$DIR/var" && pwd )"
 WEB="$( cd -P "$DIR/web" && pwd )"
 USER="$(whoami)"
-PERL_BASE="${OPT}/perl"
-PERL_MM_OPT="INSTALL_BASE=${PERL_BASE}"
-PERL_MB_OPT="--install_base ${PERL_BASE}"
-PERL5LIB="${PERL_BASE}/lib/perl5"
 LOBA_DIR=${SRC}/jesse-greathouse/loba/lib
 PATH=~/Library/Python/2.7/bin:${PATH}
 
@@ -55,13 +51,31 @@ if [ -z "$ENV" ]; then
     ENV=local
 fi
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+printf "\n"
+printf "\n"
+printf "==== Building User Interface ====\n"
+printf "=================================\n"
+printf "\n"
+nvm use 16.13
+cd ${WEB}/loba
+DEBUG=${DEBUG} ng build loba
+cd ${DIR}
+printf "\n"
+printf "==== User Interface Finished ====\n"
+printf "=================================\n"
+printf "\n"
+printf "\n"
+
 rm -r ${DIR}/error.log
 rm -r ${DIR}/supervisord.log
 touch ${DIR}/error.log
 touch ${DIR}/supervisord.log
 
 USER=${USER} BIN=${BIN} DIR=${DIR} ETC=${ETC} OPT=${OPT} SRC=${SRC} TMP=${TMP} VAR=${VAR} WEB=${WEB} \
-ENV=${ENV} DEBUG=${DEBUG} LOBA_DIR=${LOBA_DIR} PERL5LIB=${PERL5LIB} PERL_BASE=$PERL_BASE \
+ENV=${ENV} DEBUG=${DEBUG} LOBA_DIR=${LOBA_DIR} \
 SQL_QUERY_DIR=${LOBA_DIR}/sql/__DB_DRIVER__ \
 CACHE_DIR=${VAR}/cache \
 LOG_DIR=${VAR}/logs \

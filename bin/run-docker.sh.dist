@@ -85,8 +85,6 @@ docker run -d -p __PORT__:3000 \
     -e TMP="/app/tmp" \
     -e VAR="/app/var" \
     -e WEB="/app/web" \
-    -e PERL_BASE="/app/opt/perl" \
-    -e PERL5LIB="/app/opt/perl/lib/perl5" \
     -e LOBA_DIR="/app/src/jesse-greathouse/loba/lib" \
     -e SQL_QUERY_DIR="/app/src/jesse-greathouse/loba/lib/sql/__DB_DRIVER__" \
     -e CACHE_DIR="/app/var/cache" \
