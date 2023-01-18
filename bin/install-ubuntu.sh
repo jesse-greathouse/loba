@@ -51,9 +51,9 @@ sudo apt-get update && sudo apt-get install -y \
     libpcre++-dev cmake sendmail libmysqlclient-dev curl authbind supervisor mysql-client
 
 # Install perl modules
-sudo cpanminus Template
-sudo cpanminus DBI
-sudo cpanminus DBD::mysql
+sudo cpanm Template
+sudo cpanm DBI
+sudo cpanm DBD::mysql
 
 # Compile and Install Openresty
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
