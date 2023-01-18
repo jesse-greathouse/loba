@@ -49,7 +49,7 @@ YACC="$( brew --prefix bison )/bin/bison"
 #install dependencies
 brew upgrade
 
-brew install intltool icu4c autoconf automake python@3.8 gcc cpanminus \
+brew install intltool icu4c autoconf automake python@3.8 gcc \
   pcre curl-openssl libiconv pkg-config openssl@1.1 mysql-client cpanm
 
 #install authbind -- allows a non root user to allow a program to bind to a port under 1025

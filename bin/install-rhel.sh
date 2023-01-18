@@ -46,9 +46,9 @@ PUBLIC="$( cd -P "$DIR/web" && pwd )"
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
-    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl devtoolset-8 cpanminus python3 \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl libcurl-devel curl devtoolset-8 cpanm python38 python38-pip \
     pkgconfig libtool-ltdl-devel readline-devel libicu-devel zlib-devel gcc-toolset-9-make ncurses-devel \
-    libpcre-devel zlib sendmail mariadb-devel python38 python38-pip authbind mariadb-client
+    libpcre-devel zlib sendmail mariadb-devel authbind mariadb-client
 
 sudo pip install supervisor
 

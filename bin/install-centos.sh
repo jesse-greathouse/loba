@@ -46,7 +46,7 @@ PUBLIC="$( cd -P "$DIR/web" && pwd )"
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
-    gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl cpanminus python3 \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl cpanm python3 \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel ncurses-devel \
     libpcre-devel zlib-devel zlib cmake sendmail mariadb-devel authbind mariadb-client
 
