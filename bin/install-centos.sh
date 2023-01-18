@@ -46,7 +46,7 @@ PUBLIC="$( cd -P "$DIR/web" && pwd )"
 
 # install dependencies
 sudo yum -y update && sudo yum -y install \
-    gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl cpanminus python \
+    gcc gcc-c++ git-core gmp-devel openssl-devel openssl-libs openssl cpanminus python3 \
     libcurl-devel curl pkgconfig libtool-ltdl-devel readline-devel libicu-devel ncurses-devel \
     libpcre-devel zlib-devel zlib cmake sendmail mariadb-devel authbind mariadb-client
 
@@ -56,7 +56,7 @@ sudo easy_install supervisor
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 
 # Fix the escape frontslash feature of cjson
-sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
+sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.10/lua_cjson.c
 
 cd ${OPT}/openresty-*/
 ./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \

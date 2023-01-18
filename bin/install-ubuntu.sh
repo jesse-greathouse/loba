@@ -46,7 +46,7 @@ PUBLIC="$( cd -P "$DIR/web" && pwd )"
 
 #install dependencies
 sudo apt-get update && sudo apt-get install -y \
-    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev cpanminus python \
+    gcc build-essential git-core autoconf libgmp-dev libmcrypt-dev openssl libssl-dev cpanminus python3 \
     libcurl4-openssl-dev pkg-config libltdl-dev libreadline-dev libicu-dev zlib1g-dev ncurses-dev \
     libpcre++-dev cmake sendmail libmysqlclient-dev curl python authbind supervisor mysql-client cpanminus
 
@@ -59,7 +59,7 @@ sudo cpanm DBD::mysql
 tar -xzf ${OPT}/openresty-*.tar.gz -C ${OPT}/
 
 # Fix the escape frontslash feature of cjson
-sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.7/lua_cjson.c
+sed -i -e s/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, \"\\\\\\\\\/\","/"    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,"/g ${OPT}/openresty-*/bundle/lua-cjson-2.1.0.10/lua_cjson.c
 
 cd ${OPT}/openresty-*/
 ./configure --with-cc-opt="-I/usr/local/include -I/usr/local/opt/openssl/include" \
