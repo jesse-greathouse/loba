@@ -59,7 +59,7 @@ printf "\n"
 printf "==== Building User Interface ====\n"
 printf "=================================\n"
 printf "\n"
-nvm use 16.13
+nvm use 16.14
 cd ${WEB}/loba
 DEBUG=${DEBUG} ng build loba
 cd ${DIR}
