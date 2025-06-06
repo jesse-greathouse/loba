@@ -50,7 +50,6 @@ USER="$(whoami)"
 RUN_SCRIPT="${BIN}/run-centos.sh"
 SERVICE_RUN_SCRIPT="${BIN}/run-centos-service.sh"
 NGINX_CONF="${ETC}/nginx/nginx.conf"
-SSL_CONF="${ETC}/ssl/openssl.cnf"
 SSL_PARAMS_CONF="${ETC}/nginx/ssl-params.conf"
 FORCE_SSL_CONF="${ETC}/nginx/force-ssl.conf"
 
@@ -242,16 +241,6 @@ printf "\n"
 if  [ "${CORRECT}" == "y" ]; then
 
     ##============================
-    ## Template SSL Config
-    ##============================
-
-    if [ -f ${SSL_CONF} ]; then
-       rm ${SSL_CONF}
-    fi
-    cp ${ETC}/ssl/openssl.dist.cnf ${SSL_CONF}
-    sed -i -e "s __ETC__ $ETC g" ${SSL_CONF}
-
-    ##============================
     ## Template Run Script
     ##============================
 
@@ -327,7 +316,7 @@ if  [ "${CORRECT}" == "y" ]; then
         ## Directives for the SSL cert and key
         SSL_CERT_LINE="ssl_certificate\\ ${ETC}/ssl/certs/loba.crt;"
         SSL_KEY_LINE="ssl_certificate_key\\ ${ETC}/ssl/private/loba.key;"
-    
+
         ## If there is a SSL Key Pair, provided by the user, copy them in place
         if  [ "${SSL_PAIR}" == "y" ]; then
             # Checking to see if the provided key pair already exists
@@ -364,7 +353,7 @@ if  [ "${CORRECT}" == "y" ]; then
             SSL_CERT="${ETC}/ssl/certs/loba.crt"
             SSL_KEY="${ETC}/ssl/private/loba.key"
             CORRECTED_DOMAINS=`echo ${SITE_DOMAINS} | sed 's/ /_/g'`
-            
+
             if [[ ! -f ${SSL_CERT}  ||  ! -f ${SSL_KEY} ]]; then
                 if [ -f ${SSL_CERT} ]; then
                     rm ${SSL_CERT};
@@ -382,7 +371,7 @@ if  [ "${CORRECT}" == "y" ]; then
                 -keyout ${SSL_KEY} \
                 -out ${SSL_CERT}
 
-            else 
+            else
                 printf "SSL Key pair already exists. Skipping... \n"
             fi
         fi
