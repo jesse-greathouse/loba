@@ -7,10 +7,12 @@
 *.launch
 .settings/
 *.sublime-workspace
+commit.txt
 
 #vscode junk
 .history/*
 .vscode/*
+.vstags
 # !.vscode/settings.json
 # !.vscode/tasks.json
 # !.vscode/launch.json
@@ -58,6 +60,7 @@ get-pip.py
 !bin/configure-rhel.sh
 
 # etc
+etc/.rnd
 etc/php/php.ini
 etc/php/php-fpm.conf
 etc/nginx/nginx.conf
