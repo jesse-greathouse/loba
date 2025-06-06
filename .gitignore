@@ -74,6 +74,7 @@ etc/init.d/*.sh
 etc/*.plist
 etc/ssl/certs/*
 etc/ssl/private/*
+etc/ssl/letsencrypt/*
 etc/ssl/.rnd
 etc/ssl/.oid
 etc/ssl/openssl.cnf

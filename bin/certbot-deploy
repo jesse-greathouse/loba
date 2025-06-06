@@ -1,0 +1,70 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use File::Basename;
+use File::Copy;
+use File::Path qw(make_path);
+use Cwd qw(abs_path);
+use POSIX qw(strftime getpwuid getpwnam getgrnam);
+use English qw( -no_match_vars );  # For readable vars like $REAL_USER_ID
+
+# Determine real username (handle sudo if used)
+my $username = $ENV{'SUDO_USER'} // getpwuid($REAL_USER_ID);
+my $groupname = $username;
+
+# Resolve UID and GID
+my $uid = getpwnam($username);
+my $gid = getgrnam($groupname);
+
+die "Failed to resolve UID for user '$username'\n" unless defined $uid;
+die "Failed to resolve GID for group '$groupname'\n" unless defined $gid;
+
+# Define base directories
+my $bin = abs_path(dirname(__FILE__));
+my $applicationRoot = abs_path("$bin/..");
+my $sourceBase = "/etc/letsencrypt/live";
+my $destBase = "$applicationRoot/etc/ssl/letsencrypt";
+
+# Verify source base exists
+die "Source directory $sourceBase does not exist.\n" unless -d $sourceBase;
+
+# Open source base and iterate over entries
+opendir(my $dh, $sourceBase) or die "Failed to open $sourceBase: $!\n";
+while (my $entry = readdir($dh)) {
+    next if $entry =~ /^\.\.?$/; # Skip . and ..
+    my $sourceDir = "$sourceBase/$entry";
+    next unless -d $sourceDir;
+
+    my $destDir = "$destBase/$entry";
+
+    # Create destination directory if needed
+    unless (-d $destDir) {
+        make_path($destDir) or die "Failed to create directory $destDir: $!\n";
+    }
+
+    # Copy all relevant files
+    for my $file (qw(cert.pem chain.pem fullchain.pem privkey.pem)) {
+        my $linkPath = "$sourceDir/$file";
+        next unless -e $linkPath;
+
+        my $realPath = abs_path($linkPath);
+        unless ($realPath && -f $realPath) {
+            warn "Unable to resolve or access $file for $entry\n";
+            next;
+        }
+
+        my $dstFile = "$destDir/$file";
+        copy($realPath, $dstFile) or warn "Failed to copy $realPath -> $dstFile: $!\n";
+        chmod 0600, $dstFile if $file eq 'privkey.pem';
+        chown $uid, $gid, $dstFile or warn "Failed to chown $dstFile: $!\n";
+    }
+
+    # Reassign ownership of the destination directory
+    chown $uid, $gid, $destDir or warn "Failed to chown directory $destDir: $!\n";
+
+    print "Copied and reassigned cert files for $entry -> $destDir\n";
+}
+closedir($dh);
+
+exit 0;
